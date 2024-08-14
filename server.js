@@ -37,12 +37,12 @@ app.use(session({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads');
+    cb(null, 'dosc/uploads');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -80,8 +80,16 @@ const postSchema = new mongoose.Schema({
   timestamp: Date
 });
 
+const productSchema = new mongoose.Schema({
+  description: String,
+  price: Number,
+  imageUrl: String,
+  owner: String,
+});
+
 const User = mongoose.model('User', userSchema);
 const Post = mongoose.model('Post', postSchema);
+const Product = mongoose.model('Product', productSchema);
 
 // Register route
 app.post('/register', (req, res) => {
@@ -105,7 +113,7 @@ app.post('/register', (req, res) => {
       transporter.sendMail({
         to: email,
         subject: 'OTP Verification',
-        text: `Hello ${fullName} from Bebeji Plaza phone center. This is your OTP code: ${otp}`
+        text: `Hello ${fullName} from Bebeji Plaza phone center. This is your OTP verify email code: ${otp}`
       });
       res.json({ success: true, message: 'Registration successful. Check your email for your OTP verify email code.' });
     })
@@ -123,7 +131,7 @@ app.post('/verify-otp', (req, res) => {
       }
 
       if (user.otp !== otp) {
-        return res.json({ success: false, message: 'The OTP verify code is not correct, check your email, and tying again.' });
+        return res.json({ success: false, message: 'The OTP verify code is not correct, check your email, and trying again.' });
       }
 
       user.verified = true;
@@ -239,10 +247,10 @@ const sendFridayNotifications = () => {
         transporter.sendMail({
           to: user.email,
           subject: 'Happy Juma\'a!',
-          text: `Hello ${user.fullName}, from Bebeji Plaza, Phone Center, Leaders and Developer. Happy Juma'a! Don't forget to check out our latest products.`,
+          text: `Assalamu alaikum, ${user.fullName}, A yau da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
           attachments: [{
             filename: 'icon.png',
-            path: path.join(__dirname, 'public', 'icon.png'),
+            path: path.join(__dirname, 'docs', 'icon.png'),
             cid: 'icon' // same cid value as in the html img src
           }]
         });
@@ -268,22 +276,22 @@ const sendPostNotifications = () => {
             if (user) {
               transporter.sendMail({
                 to: user.email,
-                subject: 'BEBEJI PLAZA Notification',
-                text: `Dear ${user.fullName},
+                subject: 'BEBEJI PLAZA, your business center',
+                text: `Barka ${user.fullName}',
 
-We noticed that you've visited Bebeji Plaza twice today. Don't miss out on the latest updates and offers from us!`,
-            attachments: [{
-              filename: 'icon.png',
-              path: path.join(__dirname, 'public', 'icon.png'),
-              cid: 'ipIcon'
-            }],
-            html: `<p>Dear ${user.fullName},</p><p>We noticed that you've visited Bebeji Plaza twice today. Don't miss out on the latest updates and offers from us!</p><img src="cid:ipIcon" />`
+'Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!`,
+                attachments: [{
+                  filename: 'icon.png',
+                  path: path.join(__dirname, 'docs', 'icon.png'),
+                  cid: 'ipIcon'
+                }],
+                html: `<p>Barka ${user.fullName},</p><p>Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!</p><img src="cid:ipIcon" />`
+              });
+            }
           });
-        }
       });
-    });
-  })
-  .catch(error => console.log('Error sending post notifications:', error));
+    })
+    .catch(error => console.log('Error sending post notifications:', error));
 };
 
 // Schedule the post notification job to run at 10 AM and 6 PM daily
@@ -298,62 +306,18 @@ io.on('connection', (socket) => {
   });
 });
 
+// Route to serve the homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', 'index.html'));
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-});
-
-// Store.html
-// Route to display store page
-app.get('/store', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'store.html'));
-});
-
-// Route to handle adding a product to the store
-app.post('/store/add-product', upload.single('image'), async (req, res) => {
-  const { description, price, owner } = req.body;
-  const imageUrl = `/uploads/${req.file.filename}`;
-
-  const newProduct = new Product({
-    description,
-    price,
-    imageUrl,
-    owner
-  });
-
-  try {
-    await newProduct.save();
-    res.redirect('/store');
-  } catch (error) {
-    console.error('Error adding product:', error);
-    res.status(500).send('Error adding product');
-  }
-});
-
-// Route to fetch all products for display on the store page
-app.get('/store/products', async (req, res) => {
-  try {
-    const products = await Product.find({});
-    res.json(products);
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).send('Error fetching products');
-  }
-});
-
-// Route to delete a product
-app.post('/store/delete-product', async (req, res) => {
-  try {
-    const product = await Product.findById(req.body.id);
-    if (product) {
-      fs.unlinkSync(path.join(__dirname, 'public', product.imageUrl)); // Delete image from server
-      await product.remove();
-      res.redirect('/store');
-    } else {
-      res.status(404).send('Product not found');
-    }
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    res.status(500).send('Error deleting product');
-  }
 });
