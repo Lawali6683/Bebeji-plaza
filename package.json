@@ -1,0 +1,34 @@
+{
+  "name": "bebeji-plaza",
+  "version": "1.0.0",
+  "description": "A modern web application for Bebeji Plaza with user registration, posts, notifications, and more.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'No build step required'",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "bcrypt": "^5.1.0",
+    "connect-mongo": "^4.4.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^7.3.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
+    "node-schedule": "^2.1.1",
+    "socket.io": "^4.6.1",
+    "web-push": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "Haruna Lawali",
+  "license": "MIT"
+}
