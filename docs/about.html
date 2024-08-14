@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BEBEJI PLAZA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-image: url("b7.png");
+            color: white;
+            padding: 4em 0;
+            text-align: center;
+            Font-size:17px;
+            text-shadow: 4px 4px 4px #141828;
+        }
+        nav ul {
+            list-style: none;
+            padding: 10px;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 1em;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        main {
+            padding: 1px;
+        }
+        section {
+            margin-bottom: 2em;
+        }
+        section img {
+        Position:center;
+            width: 100%;
+            height: 50%;
+            display: bulok;
+            margin: 0 auto 1em;
+            border-radius: 5%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.10);
+            Text-align:center;
+         Color:green;
+        }
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 280px;
+            height: 200px;
+            margin: 1em auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .controls button {
+            margin: 5px;
+            background: #66ff2b;
+            border-radius: 30px;
+        }
+      Footer{
+            background-image: url("b7.png");
+            width: 200%;
+            height: %;
+            
+    color: white;                    text-shadow: 0px 0px 1px white;
+            text-align: center;
+                 
+     text-shadow: 0px 0px 1px white;      text-align: center;
+       font-size: 20px;
+            padding: 1em 0;
+            position: fixed;
+            width: 100%;
+            
+            bottom: 0;
+        }
+        .lang {
+            display: none;
+            font-size: 13px;
+            color: blue;
+        }
+        .lang[lang="en"] {
+            display: block;
+        }
+        .Hello {
+            margin: 30px;
+            text-align: center;
+            color: #8f00ff;
+            font-size: 13px;
+            padding: 1px;
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);       
+        }
+        .style{
+            text-align: center;
+            color: blue;
+            font-size: 14px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);   
+            margin-bottom: em;
+        }
+        
+       .lang{
+           Text-align:center;
+           Font-size: 12px;
+      text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);    
+                  }
+   .has{
+         Text-align:center;
+         Color:#af15ff;
+      text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);   
+     }         
+       
+    </style>
+    <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var players = [];
+        var videoIds = {
+            en: ['LINOndh4j-A', 'eOAAaPqYHTU', 'kXYiU_JCYtU', '2Vv-BfVoq4g'],
+            ha: ['hausa_video_id1', 'hausa_video_id2', 'hausa_video_id3', 'hausa_video_id4']
+        };
+
+        function onYouTubeIframeAPIReady() {
+            initializePlayers('en');
+        }
+
+        function initializePlayers(language) {
+            players.forEach(player => player.destroy());
+            players = videoIds[language].map((videoId, index) => new YT.Player(`player${index + 1}`, {
+                height: '360',
+                width: '640',
+                videoId: videoId,
+                events: { 'onReady': onPlayerReady }
+            }));
+        }
+
+        function onPlayerReady(event) {
+            console.log("Player is ready.");
+        }
+
+        function playVideo(index) {
+            players[index].playVideo();
+        }
+
+        function pauseVideo(index) {
+            players[index].pauseVideo();
+        }
+
+        function stopVideo(index) {
+            players[index].stopVideo();
+        }
+
+        function setLanguage(language) {
+            document.querySelectorAll('.lang').forEach(element => {
+                element.style.display = 'none';
+            });
+            document.querySelectorAll(`.lang[lang="${language}"]`).forEach(element => {
+                element.style.display = 'block';
+            });
+            initializePlayers(language);
+        }
+      
+    </script>
+</head>
+<body>
+    <header>
+        <i>About Our Development Team</i>
+        <h1>BEBEJI PLAZA</h1>
+        <i>Web Application</i>
+        <nav>
+            <ul>
+                <li><a style="color:blue;" href="index.html" onclick="setLanguage('en')"><i class="fas fa-home" style="color:blue"></i> Home</a></li>
+                <li><a style="color:blue;"href="#" onclick="setLanguage('en')"><i class="fas fa-globe" style="color:blue;"></i> English</a></li>
+                <p><center><li><a style="color:blue;"href="#" onclick="setLanguage('ha')"><i class="fas fa-language" style="color:blue;"></i style="color:blue;"> Hausa</a></li></center></p>
+            </ul>
+            
+           
+            <ol style="color:blue;">Open🔝</o>
+        </nav>
+    </header>
+    <main>
+        <section id="intro" class="lang" lang="en">
+            <h1 class="Hello">Team Development: BEBEJI PLAZA Web Application</h1>
+            <p class="style">As we at students of computer science, we have designed this application to support young entrepreneurs in the field of buying and selling phones in Bebeji plaza Gusau.  We have conducted extensive research on how we can improve the telephone business, and how we can help develop small businesses in our state of Zamfara.</p>
+            <p class="style">Our mission:</p>
+            <p class="style"> **Business Improvement:** We aim to help buyers and sellers facilitate their transactions through the use of technology.
+  **Supporting Small Businesses:** Our application will help small businesses grow by providing them with a wide market online.
+ **Easier Transactions:** We designed the application to streamline transactions, reduce disputes, and ensure business integrity.</p>
+
+ <p class="style">We expect that this technology will bring a positive change to youth businesses in Zamfara state, helping to develop the economy and improve the lives of the people.
+</p>
+        </section>
+        <section id="intro-ha" class="lang" lang="ha">
+            <h1 class="Hello">Kungiyar Da Suka Kera BEBEJI PLAZA Web App</h1>
+            <p class="style">A matsayinmu na daliban kimiyyar na'ura mai kwakwalwa, mun tsara wannan aikace-aikacen don tallafawa matasa 'yan kasuwa a fannin saye da sayar da wayoyi a babban kasuwar waya Bebeji plaza Gusau. Mun gudanar da bincike mai zurfi kan yadda za mu inganta kasuwancin wayoyi, da kuma yadda za mu taimaka wajen bunkasa kananan sana'o'i a jihar mu ta Zamfara.
+</p>
+            <p class="style">Manufarmu:</p>
+            <p class="style"> **Inganta Kasuwanci:** Muna da nufin taimaka wa masu saye da masu siyarwa wajen saukaka ma'amalarsu ta hanyar amfani da fasaha.
+. **Tallafawa Kananan Kasuwanci:** Aikace-aikacen mu zai taimaka wa kananan kasuwanci su bunkasa ta hanyar samar musu da kasuwa mai fadi a online.
+. **Saukaka Ma'amala:** Mun tsara aikace-aikacen domin daidaita ma'amaloli, rage takaddama, da tabbatar da sahihancin kasuwanci.</p>
+
+<p class="style">Muna sa ran wannan fasaha za ta kawo sauyi mai kyau ga kasuwancin matasa a jihar Zamfara, tare da taimakawa wajen bunkasa tattalin arziƙi da inganta rayuwar al'umma.</p>
+        </section>
+        <section id="leader1">
+            <h2></h2>
+            <img src="a1.png" alt="Leader 1's Image"><center class="has">Haruna lawali</center>
+            <p id="leader1-story" class="lang" lang="en"> The Interview with Haruna Lawali, the Team Leader Developing This web app.</p>
+            <p id="leader1-story-ha" class="lang" lang="ha">Hira da Haruna Lawali, Shugaban Kungiyar Bunkasa Wannan Manhaja.</p>
+            <div class="video-container" style="background: #ffdd57;">
+                <div id="player1"></div>
+            </div>
+            <div class="controls">
+                <button onclick="playVideo(0)">Play</button>
+                <button onclick="pauseVideo(0)">Pause</button>
+                <button onclick="stopVideo(0)">Stop</button>
+            </div>
+        </section>
+        <section id="leader2">
+            
+            <img src="a1.png" alt="Leader 2's Image"><center class="has">Surajo Habibu Ibrahim</center>
+            <p id="leader2-story" class="lang" lang="en">The Interview with Surajo Habibu Ibrahim, member of the Developing This web app.</p>
+            <p id="leader2-story-ha" class="lang" lang="ha">Hira da Surajo Habibu Ibrahim, member na Kungiyar Bunkasa Wannan Manhaja.</p>
+<div class="video-container" style="background: #57ff5d;">
+    <div id="player2-ha"></div>
+</div>
+<div class="controls">
+    <button onclick="playVideo(1)">Play</button>
+    <button onclick="pauseVideo(1)">Pause</button>
+    <button onclick="stopVideo(1)">Stop</button>
+</div>
+</section>
+<section id="leader3">
+    
+    <img src="a1.png" alt="Leader 3's Image"><center class="has">Kamilu Surajo (<i style="color:red;">Kaduna</i>)</center>
+    <p id="leader3-story" class="lang" lang="en">The Interview with Kamilu Surajo Kaduna, the Team member Developing This web app.</p>
+    <p id="leader3-story-ha" class="lang" lang="ha">Hira da Abubakar Bello, member Kungiyar Bunkasa Wannan Manhaja.</p>
+    <div class="video-container" style="background: #ff5757;">
+        <div id="player3"></div>
+    </div>
+    <div class="controls">
+        <button onclick="playVideo(2)">Play</button>
+        <button onclick="pauseVideo(2)">Pause</button>
+        <button onclick="stopVideo(2)">Stop</button>
+    </div>
+</section>
+<section id="leader4">
+    
+    <img src="a1.png" alt="Leader 4's Image"><center class="has">Abubakar Bello</center>
+    <p id="leader4-story" class="lang" lang="en">The Interview with Harisu Ahmad, the Team members Developing This web app.</p>
+    <p id="leader4-story-ha" class="lang" lang="ha">Hira da Harisu Ahmad, member Kungiyar Bunkasa Wannan Manhaja.</p>
+    <div class="video-container" style="background: #575dff;">
+        <div id="player4-ha"></div>
+    </div>
+    <div class="controls">
+        <button onclick="playVideo(3)">Play</button>
+        <button onclick="pauseVideo(3)">Pause</button>
+        <button onclick="stopVideo(3)">Stop</button>
+    </div>
+</section>
+<section id="about-expanded">
+    <p id="about-expanded-text" class="lang" lang="en">Our Website Application Features</p>
+    <p id="about-expanded-text-ha" class="lang" lang="ha">Abubuwan Aikace-aikacen Gidan Yanar Gizon Mu</p>
+    <p class="style lang" lang="en">1. <strong>Product Review and Comparison:</strong> Users can search for phones based on color, price, and storage location, ensuring they get the best deals in different stores.</p>
+    <p class="style lang" lang="ha">1. <strong>Bincike da Kwatancen Samfura:</strong> Masu amfani za su iya nemo wayoyi bisa launi, farashi, da wurin ajiya, tabbatar da samun mafi kyawun ciniki a cikin shaguna daban-daban.</p>
+    <p class="style lang" lang="en">2. <strong>Store Details:</strong> Buyers can easily find stores, compare prices, and make decisions about where to buy new or used phones.</p>
+    <p class="style lang" lang="ha">2. <strong>Bayanin Store:</strong> Masu saye na iya samun sauƙin gano shagunan, kwatanta farashi, da yanke shawara game da inda za su sayi sabbin wayoyi ko amfani da su.</p>
+    <p class="style lang" lang="en">3. <strong>Encouraging Women Who Want to Buy or Sell:</strong> Women, who are shy to sell or buy phones on their own in the market, can interact with the shopkeepers in online chat, make purchases, and plan delivery wisely.</p>
+    <p class="style lang" lang="ha">3. <strong>Karfafa Mata Masu Son Saye Ko Sayarwa:</strong> Mata, waɗanda suke Jin kunyar sayarwa ko siyan wayoyi da kansu, a kasuwa, za su iya hulɗa da masu shagunan a chat a kan layi, Kuma su yin sayayya, da kuma tsara bayarwa cikin hikima.</p>
+    <p class="style lang" lang="en">4. <strong>Editing and Support:</strong> Users looking for phone repair or technical advice can follow and contact phone engineers directly through the platform shop or engineer.</p>
+    <p class="style lang" lang="ha">4. <strong>Gyara da Tallafawa:</strong> Masu amfani da ke neman gyaran waya ko shawarwarin fasaha na iya bi da tuntuɓar injiniyoyin waya kai tsaye ta hanyar dandamali shagon ko wanan injiniya.</p>
+    <p class="style lang" lang="en">5. <strong>Business Improvement:</strong> Store owners can advertise their new phone products and sales on their home page, and each ad will be posted on a page that can be visited by a large audience.</p>
+    <p class="style lang" lang="ha">5. <strong>Inganta Kasuwanci:</strong> Masu shagunan na iya tallata sabbin samfurans wayoyin su da tallace-tallace akan shafin su na gida, Kuma kowane tallar zai bayana ha shafi da kowane zai Iya ziyarta kuma ɗimbin masu sauraro su gani.</p>
+    <p class="style lang" lang="en">Using BEBEJI PLAZA web app:</p>
+    <p class="style lang" lang="ha">Amfani da BEBEJI PLAZA web app:</p>
+    <p class="style lang" lang="en"><strong>Verified Accounts:</strong> Business owners, including phone sellers, laptop sellers, and engineers, can create custom accounts to increase trust and security.</p>
+    <p class="style lang" lang="ha"><strong>Tabbatattun Accounts:</strong> Masu kasuwanci, gami da masu siyar da waya, masu siyar da kwamfutar tafi-da-gidanka, da injiniyoyi, na iya ƙirƙirar ingantattun asusu don haɓaka amana da tsaro.</p>
+    <p class="style lang" lang="en"><strong>Account Settings:</strong> Merchants can set up their store information for free, giving them a digital presence to expand their customer base.</p>
+    <p class="style lang" lang="ha"><strong>Saitin Asusu:</strong> 'Yan kasuwa za su iya saita bayanan kantin sayar da su kyauta, suna ba su damar zama na dijital don faɗaɗa tushen abokin ciniki.</p>
+    <p class="style lang" lang="en"><strong>Integration of Machine Learning:</strong> We've put together a machine learning (ML) framework that helps business owners improve their operations and solve problems. This system is based on the integration and choice of users, it increases the productivity of the business by:</p>
+    <p class="style lang" lang="ha"><strong>Haɗin Koyan Injin:</strong> Mun haɗa tsarin koyan inji (ML) wanda ke taimaka wa masu kasuwanci haɓaka ayyukansu da magance matsaloli. Wannan tsarin ya samo asali ne bisa haɗin kai da zaɓin masu amfani, yana haɓaka haɓakar kasuwanci ta hanyar:</p>
+    <ul class="style lang" lang="en">
+        <li>Following up on business marketing activities.</li>
+        <li>Providing points for customer feedback and preferences.</li>
+        <li>Providing marketing tools to increase visibility on social media.</li>
+    </ul>
+    <ul class="style lang" lang="ha">
+        <li>Bin diddigin ayyukan tallan kasuwanci.</li>
+        <li>Bayar da maki don ra'ayoyin abokin ciniki da abubuwan so.</li>
+        <li>Bayar da kayan aikin talla don ƙara gani akan kafofin watsa labarun.</li>
+    </ul>
+    <p class="style lang" lang="en"><strong>Join Us To Build A Better Zamfara:</strong> We invite all the rich and wealthy to use this free opportunity to develop their businesses and contribute to the development of Zamfara state. By embracing technology, we can build a prosperous, integrated, and modern Zamfara State.</p>
+    <p class="style lang" lang="ha"><strong>Ku Kasance Tare Da Mu Domin Gina Ingantacciyar Zamfara:</strong> Muna gayyatar duk masu hannu da shuni da su yi amfani da wannan dama ta kyauta domin bunkasa sana’o’insu da kuma bayar da gudunmuwarsu wajen ci gaban jihar Zamfara. Ta hanyar rungumar fasaha, za mu iya gina Jihar Zamfara mai bunƙasa, haɗin kai, kuma ta zamani.</p>
+    <p class="style lang" lang="en">Join Us To Build A Better Zamfara:</p>
+<p class="style lang" lang="ha">Ku Kasance Tare Da Mu Domin Gina Ingantacciyar Zamfara:</p>
+<p class="style lang" lang="en">We invite all the rich and wealthy to use this free opportunity to develop their businesses and contribute to the development of Zamfara state. By embracing technology, we can build a prosperous, integrated, and modern Zamfara State.</p>
+<p class="style lang" lang="ha">Muna gayyatar duk masu hannu da shuni da su yi amfani da wannan dama ta kyauta domin bunkasa sana’o’insu da kuma bayar da gudunmuwarsu wajen ci gaban jihar Zamfara. Ta hanyar rungumar fasaha, za mu iya gina Jihar Zamfara mai bunƙasa, haɗin kai, kuma ta zamani.</p>
+</section>
+
+<section id="about-social">
+    <h2 class="style lang" lang="en">Contact Us</h2>
+    <h2 class="style lang" lang="ha">Ku Biyo Mu</h2>
+    <p class="style lang" lang="en">Stay connected with us via email or phone for updates, information, or any questions you may have.:</p>
+    <p class="style lang" lang="ha">Kasance tare da mu ta imel ko waya don sabuntawa, bayanai, ko kowace tambaya da kuke da ita.:</p>
+    <ul class="style lang" lang="en">
+        <li><a href="#">harunalawali5522@gmail.com</a></li><i>Haruna lawali </i>
+        <li><a href="#">08166836059</a></li>
+        <li><a href="#">surajohabibuibrahim01@gmail.com</a></li><i>Surajo Habibu Ibrahim</i>
+        <li><a href="#">07068818760</a></li>
+        <li><a href="#">kamilusurajo76@gmail.com</a></li><i>Kamilu Surajo Kaduna</i>
+        <li><a href="#">09041561307</li>
+        <li><a href="#">harisuahmadgatawa080@gmail.com</a></li><i>Harisu Ahamad</i>
+        <li><a href="#">08106480797</a></li>
+    </ul>
+    <ul class="style lang" lang="ha">
+        <li><a href="harunalawali5522@gmail.com">harunalawali5522@gmail.com</a></li><i>Haruna lawali</i>
+        <li><a href="#">08166836059</a></li>
+        <li><a href="#">surajohabibuibrahim01@gmail.com</a></li><i>Surajo Habibu Ibrahim</i>
+        <li><a href="#">07068818760</a></li>
+        <li><a href="#"> kamilusurajo76@gmail.com</a></li><i>Kamilu Surajo Kaduna</i>
+        <li><a href="#">09041561307</a></li>
+        <li><a href="#"> harisuahmadgatawa080@gmail.com</a></li><i>Abubakar Bello</i>
+        <li><a href="#">08106480797</a></li>
+        
+    </ul>
+</section>
+<img src="gw.png" style="width: 100%;height: 100%;">
+<img src="gw1.png" style="width: 100%;height: 100%;">
+<footer>
+    <p class="style lang" lang="en" style="color:white;">&copy; 2024 BEBEJI PLAZA. WEB APP Design By Haruna, Surajo, Abubakar, Harisu, <i style="color:#71ff6a">HA</i><I style="color:green;">sh</i> FELLOW, TEAM.</p>
+    <p class="style lang" lang="ha"
+    Style="color:white;">&copy; 2024 BEBEJI PLAZA. WEB App, Design By Haruna, Surajo, Abubakar, Harisu, <i style="color:#71ff6a">HA</i><I style="color:green;">sh</i> FELLOW, TEAM.</p>
+</footer>
+
+<script>
+    function playVideo(playerId) {
+        var player = document.getElementById('player' + (playerId + 1));
+        // Assuming player is a video element or has a play method
+        player.play();
+    }
+
+    function pauseVideo(playerId) {
+        var player = document.getElementById('player' + (playerId + 1));
+        // Assuming player is a video element or has a pause method
+        player.pause();
+    }
+
+    function stopVideo(playerId) {
+        var player = document.getElementById('player' + (playerId + 1));
+        // Assuming player is a video element or has a stop method
+        player.stop();
+    }
+</script>
+</body>
+</html>

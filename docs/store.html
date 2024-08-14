@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+         background-image:url("b2.png");   
+            color: #333;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 30px 10px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+       Font-size:8px;    
+            background-color: blue;
+            padding: 20px 2px;
+      
+        }
+
+        nav a {
+            color: white;
+            padding: 1px 18px;
+            text-decoration: none;
+            text-transform: uppercase;
+            margin: 0 5px;
+         font-weight: bold;       
+        }
+
+        nav a:hover {
+            background-color: #003d80;
+        }
+
+        #display-product,
+        #phone-number-display,
+        #display-business-story,
+        #craft-product {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid none;
+            background:none;
+            border-radius: 8px;
+     font-weight: bold;      
+        }
+
+        .product-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .product {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+            background:none;
+            border: 1px solid #ddd;
+            padding: 1px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+       font-weight: bold;    
+        }
+
+        .product img {
+            max-width: 100%;
+            height: outo;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .product p {
+            margin: 5px 0;
+        }
+
+        .product button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .product button:hover {
+            background-color: #c9302c;
+        }
+
+        footer {
+        
+        background: #2600ff;    
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        #my-shop,
+        #delete-container {
+            display: none;
+            padding: 0px;
+            background-color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        #my-shop.active,
+        #delete-container.active {
+            display: block;
+        }
+
+        #my-shop .back,
+        #delete-container .back {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        form input,
+        form textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        form button:disabled {
+            background-color: #ccc;
+        }
+
+        #notification-add-craft {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff9800;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #notification-add-craft i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+       <footer>
+        <p>BEBEJI PLAZA</p>
+    </footer>
+    
+     
+         <h1>My Store</h1>
+    </header>
+    <nav>
+        <div>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="my-shop-link"><i class="fas fa-store"></i> My Shop</a>
+        </div>
+        <div>
+            <a href="#" id="delete-link"><i class="fas fa-trash-alt"></i> Delete</a>
+            <span id="notification-add-craft"><i class="fas fa-shopping-basket"></i>0</span>
+        </div>
+    </nav>
+<div id="display-business-story"></div>
+    <div id="display-product" class="product-carousel"></div>
+    <div id="phone-number-display"></div>
+    <div id="craft-product"></div>
+
+    <footer>
+        <p>BEBEJI PLAZA</p>
+    </footer>
+
+  <div id="my-shop">
+        <a href="#" class="back">Back</a>
+         <form id="product-form">
+          
+            <textarea id="product-description" placeholder="Write about your product..." required></textarea>
+            <input type="number" id="product-price" placeholder="Price in NGN" required>
+            <input type="file" id="product-image" accept="image/*" required>
+            <button type="submit" disabled>Submit</button>
+        </form>
+
+        <form id="phone-number-form">
+            <input type="text" id="phone-number1" placeholder="Phone number 1" required>
+            <input type="text" id="phone-number2" placeholder="Phone number 2" required>
+            <button type="submit" id="submit-phone">Save Phone Numbers</button>
+        </form>
+
+       <form id="business-story-form">
+         <textarea id="business-story" placeholder="Write your business story (max 100 words)" required></textarea>
+            <button type="submit" id="submit-story">Save Story</button>  
+        </form> 
+
+        <a href="#" class="back">Back</a>
+    </div>
+
+    <div id="delete-container">
+        <a href="#" class="back">Back</a>
+        <div id="delete-products"></div>
+    </div>
+
+    <script>
+        const myShopLink = document.getElementById('my-shop-link');
+        const deleteLink = document.getElementById('delete-link');
+        const myShop = document.getElementById('my-shop');
+        const deleteContainer = document.getElementById('delete-container');
+        const backLinks = document.querySelectorAll('.back');
+        const productForm = document.getElementById('product-form');
+        const productDescription = document.getElementById('product-description');
+        const productPrice = document.getElementById('product-price');
+        const productImage = document.getElementById('product-image');
+        const displayProduct = document.getElementById('display-product');
+        const deleteProducts = document.getElementById('delete-products');
+        const craftProduct = document.getElementById('craft-product');
+        const phoneNumberForm = document.getElementById('phone-number-form');
+        const phoneNumber1 = document.getElementById('phone-number1');
+        const phoneNumber2 = document.getElementById('phone-number2');
+        const phoneNumberDisplay = document.getElementById('phone-number-display');
+        const businessStoryForm = document.getElementById('business-story-form');
+        const businessStory = document.getElementById('business-story');
+        const businessStoryDisplay = document.getElementById('display-business-story');
+        const notificationAddCraft = document.getElementById('notification-add-craft');
+        let craftCount = 0;
+
+        myShopLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            myShop.classList.add('active');
+        });
+
+        deleteLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            deleteContainer.classList.add('active');
+            loadDeleteMenu();
+        });
+
+        backLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                myShop.classList.remove('active');
+                deleteContainer.classList.remove('active');
+            });
+        });
+
+        productForm.addEventListener('input', () => {
+            productForm.querySelector('button').disabled = !(productDescription.value && productPrice.value && productImage.files.length);
+        });
+
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const reader = new FileReader();
+            reader.onload = () => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+                const priceInNaira = productPrice.value;
+                              productDiv.innerHTML = `
+                    <img src="${reader.result}" alt="Product Image">
+                    <p>${productDescription.value}</p>
+                    <p>Price: ₦${priceInNaira}</p>
+                                        <button onclick="addCraft(this)"><i class="fas fa-plus"></i> Add to Craft</button>
+                `;
+                displayProduct.appendChild(productDiv);
+                productForm.reset();
+                productForm.querySelector('button').disabled = true;
+            };
+            reader.readAsDataURL(productImage.files[0]);
+        });
+
+        phoneNumberForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            phoneNumberDisplay.innerHTML = `
+                <p>Contact: ${phoneNumber1.value}, ${phoneNumber2.value}</p>
+            `;
+            phoneNumberForm.reset();
+        });
+
+        businessStoryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            businessStoryDisplay.innerHTML = `
+                <p>${businessStory.value}</p>
+            `;
+            businessStoryForm.reset();
+        });
+
+        function deleteProduct(button) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                button.parentElement.remove();
+                loadDeleteMenu();
+            }
+        }
+
+        function addCraft(button) {
+            const productClone = button.parentElement.cloneNode(true);
+            productClone.querySelectorAll('button').forEach(btn => btn.remove());
+            craftProduct.appendChild(productClone);
+            craftCount++;
+            notificationAddCraft.innerHTML = `<i class="fas fa-shopping-basket"></i> ${craftCount}`;
+        }
+
+        function loadDeleteMenu() {
+            deleteProducts.innerHTML = '';
+            const products = document.querySelectorAll('#display-product .product');
+            products.forEach(product => {
+                const productClone = product.cloneNode(true);
+                productClone.querySelectorAll('button').forEach(btn => btn.remove());
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Delete`;
+                deleteButton.onclick = () => {
+                    product.remove();
+                    productClone.remove();
+                    loadDeleteMenu();
+                };
+                productClone.appendChild(deleteButton);
+                deleteProducts.appendChild(productClone);
+            });
+        };
+        // Assume isOwner is a variable that determines if the user is the owner or not
+        const isOwner = true;  // Replace with actual authentication logic
+
+        // Hide or disable functionalities based on ownership
+        if (!isOwner) {
+            document.getElementById('my-shop-link').style.display = 'none';
+            document.getElementById('delete-link').style.display = 'none';            
+            };
+      // Example of sending product data to the backend
+productForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append('username', 'user1'); // Use actual username
+  formData.append('description', productDescription.value);
+  formData.append('price', productPrice.value);
+  formData.append('productImage', productImage.files[0]);
+
+  fetch('/addProduct', {
+    method: 'POST',
+    body: formData
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        alert(data.message);
+      }
+    })
+    .catch(err => console.error(err));
+});
+     
+    </script>    
+</body>
+</html>
+ 

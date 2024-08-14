@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            color: #000;
+            font-size: 16px;
+        }
+        .hidden {
+            display: none;
+        }
+        section {
+            background-color: none;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        section h2 {
+            text-align: center;
+            display: flex;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            margin-color: #f82bff;
+            color: #3115ff;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 17px;
+            border: 2px solid #fffc15;
+            border-radius: 1px;
+        }
+        .post {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0px;
+            color: green;
+            margin: 20px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .post img {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            background: white;
+            padding: 2px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            border: 2px solid #fffc15;
+            width: 250px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .post-text {
+            font-weight: bold;
+            color: #2b2eff8d;
+            font-size: 10px;
+        }
+        .basabo {
+            background-color: #8098ff97;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .basabo2 {
+            background-color: #ff2bf18d;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .basabo3 {
+            background-color: #40f5ff8d;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .all {
+            text-align: center;
+            color: #af40ffdd;
+            font-weight: bold;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-dark text-blue text-center py-3">
+        <nav class="d-flex justify-content-center">
+            <a href="index.html" id="home" class="text-blue mx-3"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="leadership" class="text-blue mx-3"><i class="fas fa-users"></i> Leadership</a>
+            <a href="#" id="delete-post" class="text-blue mx-3"><i class="fas fa-trash"></i> Delete</a>
+        </nav>
+        <p class="all">
+            This page is about Bebeji Plaza Leaders, Markets, and their Rules.
+        </p>
+    </header>
+    <div class="container mt-4" id="main-content">
+        <section>
+            <h2>Bebeji plaza Market Leaders.</h2>
+            <div id="display-post"></div>
+        </section>
+        <section class="basabo">
+            <h2>Bebeji plaza market rules.</h2>
+            <div id="display-market-policy"></div>
+        </section>
+        <section class="basabo2">
+            <h2>Buyer and Seller Rules.</h2>
+            <div id="display-Bayer"></div>
+        </section>
+        <section class="basabo3">
+            <h2>Bebeji plaza leader contact number.</h2>
+            <div id="contact-policy"></div>
+        </section>
+    </div>
+    <div class="container hidden mt-4" id="leadership-container">
+        <h2>Leadership Section</h2>
+        <div class="form-group">
+            <input type="text" id="leader-name" class="form-control" placeholder="Leader Name">
+        </div>
+        <div class="form-group">
+            <textarea id="leader-introduction" class="form-control" placeholder="Introduction"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="file" id="leader-image" class="form-control-file">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-dark" onclick="submitLeader()">Submit</button>
+        </div>
+        <div class="form-group">
+            <textarea id="market-policy-seller" class="form-control" placeholder="Market Policy for Sellers"></textarea>
+            <button class="btn btn-dark mt-2" onclick="submitMarketPolicySeller()">Submit</button>
+        </div>
+        <div class="form-group">
+            <textarea id="market-policy-buyer" class="form-control" placeholder="Market Policy for Buyers"></textarea>
+            <button class="btn btn-dark mt-2" onclick="submitMarketPolicyBuyer()">Submit</button>
+        </div>
+        <div class="form-group">
+            <input type="text" id="contact-info" class="form-control" placeholder="Contact Information">
+            <button class="btn btn-dark mt-2" onclick="submitContactInfo()">Submit</button>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-secondary" id="back-to-main">Back</button>
+        </div>
+    </div>
+    <div class="container hidden mt-4" id="delete-container">
+        <h2>Delete Post Section</h2>
+        <div id="post-list"></div>
+        <div class="form-group">
+            <button class="btn btn-secondary" id="back-to-mainp">Back</button>
+        </div>
+    </div>
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        &copy; This is page by Bebeji plaza buyer and seller rules. 
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = '6';
+
+            // Duba password don bude full page
+            document.getElementById('leadership').addEventListener('click', function(e) {
+                e.preventDefault();
+                const inputPassword = prompt('Please enter the password to access Leadership:');
+                if (inputPassword === password) {
+                    document.getElementById('leadership-container').classList.remove('hidden');
+                    document.getElementById('main-content').classList.add('hidden');
+                } else {
+                    alert('Incorrect password. Access denied.');
+                }
+            });
+
+            document.getElementById('delete-post').addEventListener('click', function(e) {
+                e.preventDefault();
+                const inputPassword = prompt('Please enter the password to access Delete:');
+                if (inputPassword === password) {
+                    document.getElementById('delete-container').classList.remove('hidden');
+                    document.getElementById('main-content').classList.add('hidden');
+                    showAllPostsForDeletion();
+                } else {
+                    alert('Incorrect password. Access denied.');
+                }
+            });
+
+            document.getElementById('back-to-main').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('leadership-container').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+            });
+
+            document.getElementById('back-to-mainp').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('delete-container').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+            });
+
+            // Submit functions don leadership
+            window.submitLeader = function() {
+                        const name = document.getElementById('leader-name').value;
+        const introduction = document.getElementById('leader-introduction').value;
+        const image = document.getElementById('leader-image').files[0];
+
+        if (name && introduction && image) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const leaderData = {
+                    name: name,
+                    introduction: introduction,
+                    image: e.target.result
+                };
+                savePostToLocalStorage('leaderPosts', leaderData);
+                displayLeader(leaderData);
+                clearLeaderForm();
+            };
+            reader.readAsDataURL(image);
+        } else {
+            alert('Please fill all fields and select an image.');
+        }
+    };
+
+    window.submitMarketPolicySeller = function() {
+        const policy = document.getElementById('market-policy-seller').value;
+        if (policy) {
+            displayMarketPolicySeller(policy);
+            clearPolicyForm('market-policy-seller');
+        } else {
+            alert('Please fill the market policy for sellers.');
+        }
+    };
+
+    window.submitMarketPolicyBuyer = function() {
+        const policy = document.getElementById('market-policy-buyer').value;
+        if (policy) {
+            displayMarketPolicyBuyer(policy);
+            clearPolicyForm('market-policy-buyer');
+        } else {
+            alert('Please fill the market policy for buyers.');
+        }
+    };
+
+    window.submitContactInfo = function() {
+        const contact = document.getElementById('contact-info').value;
+        if (contact) {
+            displayContactInfo(contact);
+            clearPolicyForm('contact-info');
+        } else {
+            alert('Please fill the contact information.');
+        }
+    };
+
+    function displayLeader(data) {
+        const postContainer = document.createElement('div');
+        postContainer.classList.add('post');
+
+        const img = document.createElement('img');
+        img.src = data.image;
+        img.alt = data.name;
+
+        const nameElement = document.createElement('div');
+        nameElement.classList.add('post-text');
+        nameElement.textContent = data.name;
+
+        const introElement = document.createElement('div');
+        introElement.classList.add('post-text');
+        introElement.textContent = data.introduction;
+
+        postContainer.appendChild(img);
+        postContainer.appendChild(nameElement);
+        postContainer.appendChild(introElement);
+
+        document.getElementById('display-post').appendChild(postContainer);
+        savePostToLocalStorage('leaderPosts');
+    }
+
+    function displayMarketPolicySeller(policy) {
+        const policyContainer = document.createElement('div');
+        policyContainer.classList.add('post-text');
+        policyContainer.textContent = policy;
+        document.getElementById('display-market-policy').appendChild(policyContainer);
+        savePostToLocalStorage('marketPolicySeller');
+    }
+
+    function displayMarketPolicyBuyer(policy) {
+        const policyContainer = document.createElement('div');
+        policyContainer.classList.add('post-text');
+        policyContainer.textContent = policy;
+        document.getElementById('display-Bayer').appendChild(policyContainer);
+        savePostToLocalStorage('marketPolicyBuyer');
+    }
+
+    function displayContactInfo(contact) {
+        const contactContainer = document.createElement('div');
+        contactContainer.classList.add('post-text');
+        contactContainer.textContent = contact;
+        document.getElementById('contact-policy').appendChild(contactContainer);
+        savePostToLocalStorage('contactInfo');
+    }
+
+    function showAllPostsForDeletion() {
+        const postList = document.getElementById('post-list');
+        postList.innerHTML = '';
+
+        const leaderPosts = document.querySelectorAll('#display-post .post');
+        const marketPolicySellerPosts = document.querySelectorAll('#display-market-policy .post-text');
+        const marketPolicyBuyerPosts = document.querySelectorAll('#display-Bayer .post-text');
+        const contactInfoPosts = document.querySelectorAll('#contact-policy .post-text');
+
+        appendPostsForDeletion(leaderPosts, postList, 'Leader Post');
+        appendPostsForDeletion(marketPolicySellerPosts, postList, 'Market Policy Seller');
+        appendPostsForDeletion(marketPolicyBuyerPosts, postList, 'Market Policy Buyer');
+        appendPostsForDeletion(contactInfoPosts, postList, 'Contact Info');
+    }
+
+    function appendPostsForDeletion(posts, postList, postType) {
+        posts.forEach((post, index) => {
+            const img = post.querySelector('img') ? post.querySelector('img').src : '';
+            const text = post.querySelector('.post-text') ? post.querySelector('.post-text').textContent : post.textContent;
+
+            const postItem = document.createElement('div');
+            postItem.classList.add('post-text');
+            postItem.innerHTML = `
+                ${img ? `<img src="${img}" alt="Post Image" style="width: 100px; height: 60px;">` : ''}
+                <p>${postType} ${index + 1}: ${text}</p>
+                <button class="btn btn-danger ml-2" onclick="deletePost('${postType}', ${index})">Delete</button>
+            `;
+            postList.appendChild(postItem);
+        });
+    }
+
+    window.deletePost = function(postType, index) {
+        let posts;
+        switch(postType) {
+            case 'Leader Post':
+                posts = document.querySelectorAll('#display-post .post');
+                break;
+            case 'Market Policy Seller':
+                posts = document.querySelectorAll('#display-market-policy .post-text');
+                break;
+            case 'Market Policy Buyer':
+                posts = document.querySelectorAll('#display-Bayer .post-text');
+                break;
+            case 'Contact Info':
+                posts = document.querySelectorAll('#contact-policy .post-text');
+                break;
+        }
+        if (posts[index]) {
+            posts[index].remove();
+            savePostToLocalStorage();
+            alert(`${postType} ${index + 1} deleted successfully.`);
+        }
+    };
+
+    function clearLeaderForm() {
+        document.getElementById('leader-name').value = '';
+        document.getElementById('leader-introduction').value = '';
+        document.getElementById('leader-image').value = '';
+    }
+
+    function clearPolicyForm(id) {
+        document.getElementById(id).value = '';
+    }
+
+    function savePostToLocalStorage(key, data) {
+        let posts = localStorage.getItem(key);
+        if (posts) {
+            posts = JSON.parse(posts);
+        } else {
+            posts = [];
+        }
+        posts.push(data);
+        localStorage.setItem(key, JSON.stringify(posts));
+    }
+
+    function loadPostsFromLocalStorage(key) {
+        let posts = localStorage.getItem(key);
+        if (posts) {
+            posts = JSON.parse(posts);
+            posts.forEach(post => {
+                if (key === 'leaderPosts') {
+                    displayLeader(post);
+                } else if (key === 'marketPolicySeller') {
+                    displayMarketPolicySeller(post);
+                } else if (key === 'marketPolicyBuyer') {
+                    displayMarketPolicyBuyer(post);
+                } else if (key === 'contactInfo') {
+                    displayContactInfo(post);
+                }
+            });
+        }
+    }
+
+    loadPostsFromLocalStorage('leaderPosts');
+    loadPostsFromLocalStorage('marketPolicySeller');
+    loadPostsFromLocalStorage('marketPolicyBuyer');
+    loadPostsFromLocalStorage('contactInfo');
+});
+    </script>
+</body>
+</html>

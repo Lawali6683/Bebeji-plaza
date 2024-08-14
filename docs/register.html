@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BEBEJI PLAZA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("b2.png");
+            color: #333;
+        }
+
+        header {
+            background-color: #8098ff17;
+            color: #8098ff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 14px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header nav {
+            display: flex;
+            align-items: center;
+        }
+
+        header nav button {
+            background: none;
+            border: none;
+            color: #420fbacb;
+            font-size: 16px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 9px;
+            transition: background 0.3s ease;
+        }
+
+        header nav button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            padding: 100px 10px 20px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+           
+        form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        form input,
+        form button,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+          text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+            transition: background 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .upload-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .upload-container input[type="file"] {
+            display: none;
+        }
+
+        .upload-container label {
+            cursor: pointer;
+            display: block;
+            border: 2px dashed #007bff;
+            padding: 10px;
+            text-align: center;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-container label:hover {
+            background-color: #f8f9fa;
+        }
+
+        .upload-container img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .upload-icon {
+            font-size: 24px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            width: calc(100% - 40px);
+            display: inline-block;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .fas5 {
+            font-size: 1px; 
+          text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+        }
+
+        .sl {
+            background-color: #5b15ffb7;
+            
+            display: flex;
+            margin: 0;
+            font-weight: bold;
+            color: #a4ff2b;
+         Text-align:center;  
+            font-size: 15px; 
+         text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);  
+            padding: 5px;
+            border-radius: 8px; 
+        }
+    </style>       
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <button onclick="location.href='index.html'"><i class="fas fa-home"></i> Home</button>
+            </nav>
+            <h2 class="fas5">BEBEJI PLAZA phone center</h2>
+            <nav>
+                <button onclick="location.href='login.html'"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="banner"></div>
+    
+    <style>
+        .container78 {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .image-carousel {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            animation: rotate 16s infinite linear;
+            transform-style: preserve-3d;
+        }
+
+        .image-box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .image {
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-box:nth-child(1) {
+            transform: rotateY(0deg) translateZ(150px);
+        }
+
+        .image-box:nth-child(2) {
+            transform: rotateY(90deg) translateZ(150px);
+        }
+
+        .image-box:nth-child(3) {
+            transform: rotateY(180deg) translateZ(150px);
+        }
+
+        .image-box:nth-child(4) {
+            transform: rotateY(270deg) translateZ(150px);
+        }
+
+        /* Animation na juyawa */
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+    <div class="container78">
+        <div class="image-carousel">
+            <div class="image-box">
+                <img src="b1.png" alt="Image 1" class="image">
+            </div>
+            <div class="image-box">
+                <img src="b1.png" alt="Image 2" class="image">
+            </div>
+            <div class="image-box">
+                <img src="b1.png" alt="Image 3" class="image">
+            </div>
+            <div class="image-box">
+                <img src="b1.png" alt="Image 4" class="image">
+            </div>
+        </div>
+    </div>
+
+            <h2 class="sl">Welcome to BEBEJI PLAZA Business Shop</h2>
+            <form id="registerForm">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" placeholder="Haruna Lawali" required>
+
+                <label for="shopNumber">Shop Number:</label>
+                <input type="number" id="shopNumber" name="shopNumber" min="1" max="20007" placeholder="1" required>
+
+                <label for="businessName">Business Name:</label>
+                <input type="text" id="businessName" name="businessName" placeholder="Haruna comication center" required>
+
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="08166836059" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="example35@gmail.com" required>
+
+<label for="gender">Gender:</label>
+<select id="gender" name="gender" required>
+    <option value="Select">Select</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+    <option value="other">Other</option>
+</select>
+
+<label for="age">Age:</label>
+<input type="number" id="age" name="age" placeholder="18" required>
+
+<label for="homeAddress">Home Address:</label>
+<input type="text" id="homeAddress" name="homeAddress" placeholder="Samuru Gusau" required>
+
+<label for="idCardNumber">ID Number:</label>
+<input type="text" id="idCardNumber" name="idCardNumber" pattern="^5.*$" placeholder="5/1" required>
+
+<label for="password">Create Password:</label>
+<div class="password-container">
+    <input type="password" id="password" name="password" placeholder="hetm@654" required>
+    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('password')"></i>
+</div>
+
+<label for="confirmPassword">Confirm Password:</label>
+<div class="password-container">
+    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="hetm@654" required>
+    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('confirmPassword')"></i>
+</div>
+
+<label for="shopImage">Upload Your Shop Image:</label>
+<div class="upload-container">
+    <label for="shopImage">
+        <i class="fas fa-camera upload-icon"></i> Choose or take a photo
+    </label>
+    <input type="file" id="shopImage" name="shopImage" accept="image/*" required onchange="previewImage(event, 'shopImagePreview')">
+    <img id="shopImagePreview" src="" alt="">
+</div>
+
+<label for="faceImage">Upload Your Face Image:</label>
+<div class="upload-container">
+    <label for="faceImage">
+        <i class="fas fa-camera upload-icon"></i> Choose or take a photo
+    </label>
+    <input type="file" id="faceImage" name="faceImage" accept="image/*" required onchange="previewImage(event, 'faceImagePreview')">
+    <img id="faceImagePreview" src="" alt="">
+</div>
+
+<label for="idCardImage">Upload Your ID Card Image:</label>
+<div class="upload-container">
+    <label for="idCardImage">
+        <i class="fas fa-camera upload-icon"></i> Choose or take a photo
+    </label>
+    <input type="file" id="idCardImage" name="idCardImage" accept="image/*" required onchange="previewImage(event, 'idCardImagePreview')">
+    <img id="idCardImagePreview" src="" alt="">
+</div>
+
+<button type="submit">Submit</button>
+</form>
+</div>
+</main>
+
+<script>
+// Preview image when uploaded
+function previewImage(event, previewId) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById(previewId);
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+// Toggle password visibility
+function togglePasswordVisibility(id) {
+    const input = document.getElementById(id);
+    const icon = input.nextElementSibling;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// Form submission handling
+document.getElementById('registerForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const idCardNumber = document.getElementById('idCardNumber').value;
+    const email = document.getElementById('email').value;
+    const fullName = document.getElementById('fullName').value;
+    const shopNumber = document.getElementById('shopNumber').value;
+    const businessName = document.getElementById('businessName').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const gender = document.getElementById('gender').value;
+    const age = document.getElementById('age').value;
+    const homeAddress = document.getElementById('homeAddress').value;
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    // Check if ID number starts with '5'
+    if (!/^5/.test(idCardNumber)) {
+        alert('ID ya kamata ya fara da 5');
+        return;
+    }
+
+    // Validate ID number on server
+    const idResponse = await fetch('/validate-id', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idCardNumber })
+    });
+
+    const idResult = await idResponse.json();
+
+    if (!idResult.success) {
+        alert('Wannan ID an riga an yi amfani da shi.');
+        return;
+    }
+
+    // Submit registration form data
+    const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            fullName,
+            shopNumber,
+            businessName,
+            phoneNumber,
+            email,
+            gender,
+            age,
+            homeAddress,
+            idCardNumber,
+            password
+        })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert('Registration successful! Please verify your OTP.');
+        location.href = 'verify-otp.html';
+    } else {
+        alert('Registration failed: ' + result.message);
+    }
+
+    // Validate shop number and ID card number combination
+    const idCheckResponse = await fetch('/validate-id', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ shopNumber, idCardNumber })
+    });
+
+    const idData = await idCheckResponse.json();
+
+    if (!idData.valid) {
+        alert('This ID card number is not correct.');
+        return;
+    }
+
+    // Check if email, phone number, or shop number is already in use
+    const validateResponse = await fetch('/validate-registration', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, phoneNumber, shopNumber })
+    });
+
+    const validateData = await validateResponse.json();
+
+    if (validateData.emailExists) {
+        alert('This email is already in use.');
+        return;
+    }
+
+    if (validateData.phoneNumberExists) {
+        alert('This phone number is already in use.');
+        return;
+    }
+
+    if (validateData.shopNumberExists) {
+        alert('This shop number is already in use.');
+        return;
+    }
+
+    // Check if ID number matches shop number format
+    const expectedIdFormat = `5/${shopNumber}`;
+    if (idCardNumber !== expectedIdFormat) {
+        alert('This ID card number does not match the shop number.');
+        return;
+    }
+
+    // If all validations pass, submit the form
+    this.submit();
+});
+</script>
+</body>
+</html>

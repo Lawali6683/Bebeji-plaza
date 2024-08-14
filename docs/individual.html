@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Register</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+        }
+        header {
+            background-color: #90ff2b;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 1rem;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        nav ul li a img {
+            margin-right: 0.5rem;
+        }
+        .banner {
+            text-align: center;
+            padding: 2rem 0;
+            background: url('b1.png') no-repeat center center/cover;
+            color: white;
+            text-shadow: 0px 2px 1px red;
+        }
+        .banner h1 {
+            margin: 0;
+        }
+        .form-section {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-section form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-section label {
+            margin: 0.5rem 0 0.2rem;
+        }
+        .form-section input, 
+        .form-section select, 
+        .form-section button {
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .form-section button {
+            background-color: #1523ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .form-section button:hover {
+            background-color: #555;
+        }
+        #certificate-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        #certificate {
+            margin-bottom: 1rem;
+        }
+        #certificateAlert {
+            margin-top: 1rem;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="fas fa-home" style="color:#512bff;"> Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="banner">
+            <h1>Welcome to the individual register your device phone or laptop</h1>
+            <p>Zamu aje ma bayanen ka cikin aminci domin dawo da wayar ka ko laptop cikin sauki</p>
+        </section>
+        <section class="form-section">
+            <form id="registrationForm">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" placeholder="Haruna Lawali" required>
+                
+                <label for="age">Age:</label>
+                <input type="number" id="age" placeholder="18" required>
+                
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" placeholder="08166836059" required>
+                
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" placeholder="example@gmail.com" required>
+                
+                <label for="deviceName">Device Name:</label>
+                <input type="text" id="deviceName" placeholder="Device Name" required>
+                
+                <label for="deviceIpAddress">Device IP Address:</label>
+                <input type="text" id="deviceIpAddress" placeholder="192.168.1.1" required>
+                
+                <label for="state">State:</label>
+                <input type="text" id="state" placeholder="Zamfara state" required>
+                
+                <label for="lg">L/G:</label>
+                <input type="text" id="lg" placeholder="Gusau" required>
+                
+                <label for="homeAddress">Home Address:</label>
+                <input type="text" id="homeAddress" placeholder="Samuru Gusau" required>
+                
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+    <section id="certificate-section" style="display: none;">
+        <div id="certificate">
+            <!-- Certificate content will be generated here -->
+        </div>
+        <button id="downloadCertificate">Download Certificate</button>
+        <p id="certificateAlert">We have sent your certificate to your email address.</p>
+    </section>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("YOUR_USER_ID");
+        })();
+        
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const deviceName = document.getElementById('deviceName').value;
+            const deviceIpAddress = document.getElementById('deviceIpAddress').value;
+            const state = document.getElementById('state').value;
+            const lg = document.getElementById('lg').value;
+            const homeAddress = document.getElementById('homeAddress').value;
+            
+            const certificateNumber = Math.floor(Math.random() * 1000000);
+            const currentDate = new Date().toLocaleString();
+            
+            const certificateData = `
+                <h2 style="color:green">BEBEJI PLAZA, phone center</h2>
+                <p>Sabon Gari Gusau Zamfara</p>    
+                <h3>Device Registration Slip</h3>        
+                <p><strong>Full Name:</strong> ${fullName}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+                <p><strong>Gender:</strong> ${gender}</p>
+                <p><strong>State:</strong> ${state}</p>
+                <p><strong>L/G:</strong> ${lg}</p>
+                <p><strong>Home Address:</strong> ${homeAddress}</p>
+                <p><strong>Device Name:</strong> ${deviceName}</p>
+                <p><strong>Device IP Address:</strong> ${deviceIpAddress}</p>
+                <p><strong>Date & Time:</strong> ${currentDate}</p>
+                <p><strong>Certificate Number:</strong> ${certificateNumber}</p>
+                <p>Wannan slip zai taimaka ma ku idan wayar ku ko laptop ta Bata mu Gane inda take Kuma mu dawo da maku da ita, idan kun shigar da korafi ga hukuma.</p>
+            `;
+            
+            document.getElementById('certificate').innerHTML = certificateData;
+            document.getElementById('certificate-section').style.display = 'block';
+            
+            const certificateBlob = new Blob([certificateData], {type: 'text/html'});
+            const certificateUrl = URL.createObjectURL(certificateBlob);
+            
+            document.getElementById('downloadCertificate').addEventListener('click', function() {
+                const a = document.createElement('a');
+                a.href = certificateUrl;
+                a.download = 'Certificate.html';
+                a.click();
+            });
+            
+            alert('We have sent your certificate to your email address.');
+            
+            // Send email with certificate
+            emailjs.send("Haruna66", "template_mw7tydr", {
+                to_name: fullName,
+                to_email: email,
+                message: `Hello ${fullName} from owner Bebeji Plaza, this is your copy device certificate`,
+                subject: "Your Device Registration Certificate",
+                certificate_html: certificateData
+            })
+            .then(function(response) {
+                console.log("SUCCESS!", response.status, response.text);
+                alert('Email has been sent successfully.');
+            }, function(error) {
+                console.log("FAILED...", error);
+                alert('Failed to send email. Please try again.');
+            });
+            
+            // Store certificate data in local storage
+            localStorage.setItem('certificateData', certificateData);
+        });
+    </script>
+</body>
+</html>

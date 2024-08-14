@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebeji Database</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        header {
+            background-color: #4267b2;
+            padding: 1rem;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        #search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        #search-container input {
+            width: 50%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 0.5rem;
+        }
+
+        #search-container button {
+            padding: 0.5rem 1rem;
+            background-color: #4267b2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #search-container button:hover {
+            background-color: #365899;
+        }
+
+        #display-certificate-data {
+            background-color: white;
+            text-align: left;
+            font-size: 1.2rem;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate-container {
+            margin-bottom: 2rem;
+        }
+
+        .certificate-container p {
+            margin: 0.5rem 0;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="database.html">Database</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="search-container">
+            <input type="text" id="search-input" placeholder="Search by email, username, shop number, or phone number">
+            <button id="search-button">Search</button>
+        </section>
+        <section id="display-certificate-data">
+            <!-- Certificate data will be displayed here -->
+        </section>
+    </main>
+    
+    <script>
+        // Function to load all certificates from localStorage
+        function loadCertificates() {
+            const certificates = JSON.parse(localStorage.getItem('certificates')) || [];
+            return certificates;
+        }
+
+        // Function to save a certificate to localStorage
+        function saveCertificate(certificate) {
+            const certificates = loadCertificates();
+            certificates.push(certificate);
+            
+            try {
+                localStorage.setItem('certificates', JSON.stringify(certificates));
+            } catch (e) {
+                if (e.name === 'QuotaExceededError') {
+                    console.log('LocalStorage full, sending data to server.');
+                    sendToServer(certificates);
+                    localStorage.clear(); // Clear localStorage after sending to server
+                    localStorage.setItem('certificates', JSON.stringify([certificate])); // Save the new certificate
+                }
+            }
+        }
+
+        // Function to search certificates
+        function searchCertificate(query) {
+            const certificates = loadCertificates();
+            return certificates.filter(cert => {
+                return cert.sellerInfo.fullName.toLowerCase().includes(query) ||
+                    cert.sellerInfo.email.toLowerCase().includes(query) ||
+                    cert.sellerInfo.shopNumber.toLowerCase().includes(query) ||
+                    cert.sellerInfo.phone.toLowerCase().includes(query) ||
+                    cert.buyerDetails.fullName.toLowerCase().includes(query) ||
+                    cert.buyerDetails.email.toLowerCase().includes(query) ||
+                    cert.buyerDetails.phone.toLowerCase().includes(query) ||
+                    cert.buyerDetails.address.toLowerCase().includes(query) ||
+                    cert.buyerDetails.diverseName.toLowerCase().includes(query) ||
+                    cert.buyerDetails.diverseIp.toLowerCase().includes(query);
+            });
+        }
+
+        // Function to send data to server
+        function sendToServer(data) {
+            fetch('/saveCertificates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Data sent to server:', result);
+            })
+            .catch(error => {
+                console.error('Error sending data to server:', error);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load and display all certificate data on page load
+            const displayContainer = document.getElementById('display-certificate-data');
+            const certificates = loadCertificates();
+            if (certificates.length > 0) {
+                displayContainer.innerHTML = certificates.map(cert => `
+                    <div class="certificate-container">
+                        <p><strong>Seller Name:</strong> ${cert.sellerInfo.fullName}</p>
+                        <p><strong>Shop Number:</strong> ${cert.sellerInfo.shopNumber}</p>
+                        <p><strong>Business Name:</strong> ${cert.sellerInfo.businessName}</p>
+                        <p><strong>Email:</strong> ${cert.sellerInfo.email}</p>
+                        <p><strong>Phone:</strong> ${cert.sellerInfo.phone}</p>
+                        <p><strong>Customer Name:</strong> ${cert.buyerDetails.fullName}</p>
+                        <p><strong>Gender:</strong> ${cert.buyerDetails.gender}</p>
+                        <p><strong>Customer Email:</strong> ${cert.buyerDetails.email}</p>
+                        <p><strong>Customer Phone:</strong> ${cert.buyerDetails.phone}</p>
+                        <p><strong>Address:</strong> ${cert.buyerDetails.address}</p>
+                        <p><strong>Diverse Name:</strong> ${cert.buyerDetails.diverseName}</p>
+                        <p><strong>Diverse IP:</strong> ${cert.buyerDetails.diverseIp}</p>
+                        <p><strong>Date:</strong> ${cert.buyerDetails.date}</p>
+                        <p><strong>Product Price:</strong> ${cert.buyerDetails.productPrice}</p>
+                    </div>
+                    <hr>
+                `).join('');
+            } else {
+                displayContainer.innerHTML = '<p>No certificate data found.</p>';
+            }
+
+            // Handle search button click
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value.toLowerCase();
+                const results = searchCertificate(query);
+                if (results.length > 0) {
+                    displayContainer.innerHTML = results.map(cert => `
+                        <div class="certificate-container">
+                            <p><strong>Seller Name:</strong> ${cert.sellerInfo.fullName}</p>
+                            <p><strong>Shop Number:</strong> ${cert.sellerInfo.shopNumber}</p>
+                            <p><strong>Business Name:</strong> ${cert.sellerInfo.businessName}</p>
+                            <p><strong>Email:</strong> ${cert.sellerInfo.email}</p>
+                            <p><strong>Phone:</strong> ${cert.sellerInfo.phone}</p>
+                            <p><strong>Customer Name:</strong> ${cert.buyerDetails.fullName}</p>
+                            <p><strong>Gender:</strong> ${cert.buyerDetails.gender}</p>
+                            <p><strong>Customer Email:</strong> ${cert.buyerDetails.email}</p>
+                            <p><strong>Customer Phone:</strong> ${cert.buyerDetails.phone}</p>
+                            <p><strong>Address:</strong> ${cert.buyerDetails.address}</p>
+                            <p><strong>Diverse Name:</strong> ${cert.buyerDetails.diverseName}</p>
+                            <p><strong>Diverse IP:</strong> ${cert.buyerDetails.diverseIp}</p>
+                            <p><strong>Date:</strong> ${cert.buyerDetails.date}</p>
+                            <p><strong>Product Price:</strong> ${cert.buyerDetails.productPrice}</p>
+                        </div>
+                        <hr>
+                    `).join('');
+                } else {
+                    displayContainer.innerHTML = '<p>No certificate found for the entered information.</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

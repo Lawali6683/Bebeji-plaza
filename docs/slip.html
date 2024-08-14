@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slip</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {           
+         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            align-items: center;
+         Display:center;
+          font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: url('cer.png'); no-repeat center center fixed;
+            background-size: cover;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+        }
+
+        header {
+        Padding:10px;  background-color: #ff2bf1;
+            color: blue;
+            padding: 10px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: blue;
+            text-decoration: none;
+            
+        }
+
+        .icons {
+            margin-left: auto;
+        }
+
+        .icons i {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #444;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #certificate-container {                             
+      
+    background: url('gm.png')  no-repeat center;              
+                             
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            width: 290px;
+            height: auto;
+            text-align: center;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+          margin: 0;
+            
+        }
+
+        #certificate-container button {
+            background-color: #5b15ff;
+            color: white;
+            padding: 1px 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .menu-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+           
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+             background: url('g.png')  no-repeat center;             
+            padding: 0px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .menu-content img {
+             background: url('gm.png')  no-repeat center;
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+        }
+
+        .menu-content button {
+            background: #556dff;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: white;
+        }
+
+        .fas1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+           color: blue;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .fas2 {
+            font-size: 0.1rem;
+            font-weight: bold;
+            line-height: 1.0;
+            color: blue;
+        }
+
+        .fas3 {
+            font-size: 0.1rem;
+            font-weight: bold;
+              line-height: 1.0;        
+            Color:blue;
+        }
+
+        .fas70 {
+            font-size: 0.1rem;
+            line-height: 1.0;
+            letter-spacing: 0.5px;
+            color: blue;
+        }
+
+        .fas5 {
+                         
+            Font-size:10px;
+            color: blue;
+            border-radius: 10px
+            border: 1px solid #ccc
+            font-size: 5.1rem;
+            line-height: 1.1;
+            letter-spacing: 0.2px;
+            
+        }
+
+        .fas6 {
+            font-size: 0.1rem;
+            line-height: 1.0;
+            letter-spacing: 0.0px;
+        color: #005eff;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);   
+        }
+
+        .fas7 {
+            font-size: 0.1rem;
+            line-height: 1.0;
+            letter-spacing: 0.0px;
+            color: #86ff6a;
+        }
+
+        .fas8 {
+            font-size: 0.1rem;
+            line-height: 1.0;
+            letter-spacing: 0.5px;
+            color: #ff15d2;
+        }
+
+        .fas9 {
+            font-size: 0.1rem;
+            line-height: 1.0;
+            letter-spacing: 0;
+            color: #4615ff;
+        }       
+      .style1{        
+         justify-content: center;
+            align-items: center;
+            height: 10vh;
+       }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" class="fas fa-home">Home</a></li>
+                <li><a href="#" class="fas fa-user" id="generate-certificate">Certificate</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <p class="style1">        
+    <style>
+        bod{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            
+        }
+                     
+        .container4 {
+      Panding:19px;
+            background: #090b12;
+            border-radius: 15px;
+            box-shadow: 0 9px 12px rgba(0, 0, 0, 0.15);
+            max-width: 100%;
+            width: 100%;
+            padding: 30px;
+      justify-content: center;            
+            
+       align-items: center;     
+       text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+         
+        }
+        .menu {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        .menu button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            margin-left: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .menu button:hover {
+            background: #0056b3;
+        }
+        .content {
+            line-height: 1.1;
+            font-size: 10px;
+            Color:green;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3); 
+        }
+        .title {
+            font-size: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #ff00dc;
+        }
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container4">
+        <div class="menu">
+            <button onclick="setLanguage('en')">English</button>
+            <button onclick="setLanguage('ha')">Hausa</button>
+        </div>
+        <div id="content" class="content">
+            <div class="title">Mun kirkiri wannan certificate domin masu saye da masu sayarwa a kasuwar BEBEJI PLAZA.</div>
+            <p>Wannan kati zai tabbatar da cewa an saye waya ko laptop cikin aminci da gaskiya. Masu saye da masu sayarwa zasu iya anfani da wannan katin.</p>
+            <p>Zamu tura maka copy na certificate din ta email dinka da ka yi register da shi, kuma zai kai ga Mai saye da Mai sayarwa ta email secara. Muna adana bayanan ku cikin aminci. Ku yi kasuwanci cikin gaskiya domin ci gaban kasuwancin ku.</p>
+            <div class="highlight">Sanarwa:</div>
+            <p>Idan wayarku ta bace, kai korafi ofishin 'yan sanda ko hukumar kare hakkin dan Adam ta lambar 08064885296. Haka kuma, zaku iya tuntubarmu ta lambobin 08166836059, 09065465695, ko 08165836905 don taimako wajen gano wayar.</p>
+            <p>Kubi doka domin kasuwancin ku ya samu riba mai yawa da habaka.</p>
+        </div>
+    </div>
+
+    <script>
+        const content = {
+            en: `
+                <div class="title">We created this certificate for buyers and sellers at BEBEJI PLAZA market.</div>
+                <p>This card ensures that a phone or laptop is bought safely and securely. Both buyers and sellers can use this card.</p>
+                <p>We will send you a copy of the certificate to the email you registered with, and it will reach both the buyer and the seller via email as well. We keep your data secure. Trade honestly to boost your business.</p>
+                <div class="highlight">Notice:</div>
+                <p>If your phone is lost, report to the police station or the human rights commission at the number 08064885296. Additionally, you can contact us at 08166836059, 09065465695, or 08165836905 for assistance in finding the phone.</p>
+                <p>Follow the law to ensure your business grows profitably and expansively.</p>
+            `,
+            ha: `
+                <div class="title">Mun kirkiri wannan certificate domin masu saye da masu sayarwa a kasuwar BEBEJI PLAZA.</div>
+                <p>Wannan kati zai tabbatar da cewa an saye waya ko laptop cikin aminci da gaskiya. Masu saye da masu sayarwa zasu iya anfani da wannan katin.</p>
+                <p>Zamu tura maka copy na certificate din ta email dinka da ka yi register da shi, kuma zai kai ga Mai saye da Mai sayarwa ta email secara. Muna adana bayanan ku cikin aminci. Ku yi kasuwanci cikin gaskiya domin ci gaban kasuwancin ku.</p>
+                <div class="highlight">Sanarwa:</div>
+                <p>Idan wayarku ta bace, kai korafi ofishin 'yan sanda ko hukumar kare hakkin dan Adam ta lambar 08064885296. Haka kuma, zaku iya tuntubarmu ta lambobin 08166836059, 09065465695, ko 08165836905 don taimako wajen gano wayar.</p>
+                <p>Kubi doka domin kasuwancin ku ya samu riba mai yawa da habaka.</p>
+            `
+        };
+
+        function setLanguage(lang) {
+            document.getElementById('content').innerHTML = content[lang];
+        }
+    </script>
+
+
+    </p>
+
+    <main>
+        <section id="seller-info">
+            <h2>Seller Information</h2>
+            <div id="seller-details"></div>
+        </section>
+        <script>
+      
+        
+                                                   </script>
+
+        <section id="buyer-form">
+            <h2>Buyer Information</h2>
+            <form id="buyer-details-form">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName"placeholder="Haruna Lawali" required>
+
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" placeholder="examples46@gmail.com" required>
+
+                <label for="phone">Telephone Number:</label>
+                <input type="tel" id="phone" name="phone"placeholder ="08166836059" required>
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" placeholder="Samuru Gusau Zamfara" required></textarea>
+
+                <label for="diverseName">Diverse Name:</label>
+                <input type="text" id="diverseName" name="diverseName" placeholder="HUAWEI Y5 prime 2018" required>
+
+                <label for="diverseIp">Diverse IP Address:</label>
+                <input type="text" id="diverseIp" name="diverseIp" placeholder="192.168.1.1" required>
+
+                <label for="productPrice">Product Price:</label>
+                <input type="text" id="productPrice" name="productPrice" placeholder="e.g., N30" required>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <section id="certificate-container"></section>
+    </main>
+
+    <div class="menu-container" id="certificate-menu">
+        <div class="menu-content">
+            <h></h>
+            <img id="certificate-image" src="cert-placeholder.png" alt="Certificate Image">
+            <button id="print-certificate">Print</button>
+            <button id="download-certificate">Download Image</button>
+            <button id="back-to-main">Back</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+    // Get seller information from localStorage
+    const fullName = localStorage.getItem('fullName');
+    const businessName = localStorage.getItem('businessName');
+    const phoneNumber = localStorage.getItem('phoneNumber');
+    const email = localStorage.getItem('email');
+    const shopNumber = localStorage.getItem('shopNumber');
+    
+    if (fullName && businessName && phoneNumber && email && shopNumber) {
+        const sellerInfo = {
+            fullName,
+            shopNumber,
+            businessName,
+            email,
+            phone: phoneNumber
+        };
+
+        // Display seller information
+        const sellerDetailsContainer = document.getElementById('seller-details');
+        const sellerDetails = `
+            <p>Full Name: ${sellerInfo.fullName}</p>
+            <p>Shop Number: ${sellerInfo.shopNumber}</p>
+            <p>Business Name: ${sellerInfo.businessName}</p>
+            <p>Email Address: ${sellerInfo.email}</p>
+            <p>Telephone Number: ${sellerInfo.phone}</p>
+        `;
+        sellerDetailsContainer.innerHTML = sellerDetails;
+
+        // Handle form submission
+        const buyerForm = document.getElementById('buyer-details-form');
+        buyerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const buyerDetails = Object.fromEntries(formData.entries());
+            buyerDetails.date = new Date().toLocaleString();
+
+            // Clear form inputs
+            buyerForm.reset();
+
+            // Generate certificate
+            generateCertificate(sellerInfo, buyerDetails);
+        });
+
+        // Generate certificate
+        let certificateNumber = 1;
+        const generateCertificate = (sellerInfo, buyerDetails) => {
+            const certificateContainer = document.getElementById('certificate-container');
+            const certificate = `
+                <div id="certificate-content">
+                    <h2 class="fas1">BEBEJI PLAZA</h2>
+                    <p class="fas2">Phone center.</p>            
+                    <p class="fas3">Sabon Gari Tankin Ruwa Gusau Zamfara state. </p>
+                    
+                    <h3 class="fas">Shopping Certificate</h3>
+                    <div class="fas6">
+                        <h4 class="fas5">Seller Information</h4>
+                        <p>Full Name: ${sellerInfo.fullName}</p>
+                        <p>Shop Number: ${sellerInfo.shopNumber}</p>
+                        <p>Business Name: ${sellerInfo.businessName}</p>
+                        <p>Email Address: ${sellerInfo.email}</p>
+                        <p>Phone Number: ${sellerInfo.phone}</p>
+                    </div>
+                    <div class="fas6">
+                        <h4 class="fas5">Customer Information</h4>
+                        <p>Full Name: ${buyerDetails.fullName}</p>
+                        <p>Gender: ${buyerDetails.gender}</p>
+                        <p>Email Address: ${buyerDetails.email}</p>
+                        <p>Phone: ${buyerDetails.phone}</p>
+                        <p>Address: ${buyerDetails.address}</p>
+                    </div>
+                    <div class="fas8">
+                        <h4 class="fas5">Business Shopping</h4>
+                        <p>Diverse Name: ${buyerDetails.diverseName}</p>
+                        <p>Diverse IP Address: ${buyerDetails.diverseIp}</p>
+                        <p>Date: ${buyerDetails.date}</p>
+                        <p>Business Price: ${buyerDetails.productPrice}</p>
+                    </div>
+                    <p class="fas9">Wannan katin sheda zai taimaka muku idan wayarku ta bace. Da farko, ku tabbatar kun kai korafi ofishin ‘yan sanda mafi kusa ko hukumar kare hakkin dan Adam ta wannan lambar: 08064885296. Bayan kun shigar da korafi, zaku iya tuntubar mu ta wadannan lambobi: 08166836059, 09065465695, ko 08165836905. Za mu taimaka muku gano inda wayarku take da dawo da ita cikin sauri, ko da an goge mata bayanai.</p>
+                    <p style="color:green;">Certificate Number: ${certificateNumber}</p>
+                </div>
+            `;
+            certificateContainer.innerHTML = certificate;
+            certificateNumber++;
+
+            // Convert the certificate to an image using html2canvas
+            html2canvas(document.getElementById('certificate-content')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const certificateImage = document.getElementById('certificate-image');
+                certificateImage.src = imgData;
+
+                // Show the certificate menu
+                document.getElementById('certificate-menu').style.display = 'flex';
+
+                // Download image functionality
+                document.getElementById('download-certificate').addEventListener('click', () => {
+                    const link = document.createElement('a');
+                    link.href = imgData;
+                    link.download = 'certificate.png';
+                    link.click();
+                    alert('Download image successfully');
+                });
+
+                // Print functionality
+                document.getElementById('print-certificate').addEventListener('click', () => {
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write('<html><head><title>Print Certificate</title></head><body>');
+                    printWindow.document.write('<img src="' + imgData + '">');
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
+
+                // Email functionality
+                const sendEmail = (recipient, subject, body) => {
+                    Email.send({
+                        Host: "smtp.yourisp.com",
+                        Username: "bebejiplaza05@gmail.com",
+                        Password: "vaxj dwpl dpst eccs",
+                        To: recipient,
+                        From: "bebejiplaza05@gmail.com",
+                        Subject: "Bebeji plaza phone center, shopping certificate",
+                        Body: "this certificate is copy device certificate you can report to the certificate or your email, or phone, and your full name",
+                    }).then(
+                        message => console.log("Mail sent successfully to " + recipient)
+                    );
+                };
+
+                const emailBody = `
+                    <h4>Seller Information</h4>
+                    <p>Full Name: ${sellerInfo.fullName}</p>
+                    <p>Shop Number: ${sellerInfo.shopNumber}</p>
+                    <p>Business Name: ${sellerInfo.businessName}</p>
+                    <p>Email Address: ${sellerInfo.email}</p>
+                    <p>Phone Number: ${sellerInfo.phone}</p>
+                    <h4>Customer Information</h4>
+                    <p>Full Name: ${buyerDetails.fullName}</p>
+                    <p>Gender: ${buyerDetails.gender}</p>
+                    <p>Email Address: ${buyerDetails.email}</p>
+                    <p>Phone: ${buyerDetails.phone}</p>
+                    <p>Address: ${buyerDetails.address}</p>
+                    <h4>Business Shopping</h4>
+                    <p>Diverse Name: ${buyerDetails.diverseName}</p>
+                    <p>Diverse IP Address: ${buyerDetails.diverseIp}</p>
+                    <p>Date: ${buyerDetails.date}</p>
+                    <p>Business Price: ${buyerDetails.productPrice}</p>
+                `;
+
+                // Send emails to seller, buyer, and a predefined email
+                sendEmail(sellerInfo.email, 'Business Certificate', emailBody);
+                sendEmail(buyerDetails.email, 'Business Certificate', emailBody);
+                sendEmail('harunalawali5522@gmail.com', 'Business Certificate', emailBody);
+            });
+        };
+
+        // Show certificate menu
+        document.getElementById('generate-certificate').addEventListener('click', () => {
+            document.getElementById('certificate-menu').style.display = 'flex';
+        });
+
+        // Back to main page
+        document.getElementById('back-to-main').addEventListener('click', () => {
+            document.getElementById('certificate-menu').style.display = 'none';
+        });
+  
+// Send certificate copy to server
+    const sendCertificateToServer = (sellerInfo, buyerDetails) => {
+    localStorage.setItem('certificateData', JSON.stringify({ sellerInfo, buyerDetails }));
+        fetch('Bebeji_databases.html', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sellerInfo, buyerDetails })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Certificate sent to server successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error sending certificate to server:', error);
+        });
+    };
+}
+});
+         
+    </script>     
+</body>
+</html>
