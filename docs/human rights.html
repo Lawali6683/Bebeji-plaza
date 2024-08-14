@@ -228,9 +228,26 @@
         <i class="fas fa-phone-alt"></i>
         <p>Contact Now (Kira Yanzu)</p>
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    const password = 'lawali66';
+
+    // Duba password don bude full page
+    document.getElementById('secure-menu').addEventListener('click', function(e) {
+        const inputPassword = prompt('Please enter the password to access secure-menu');
+        
+        if (inputPassword === password) {
+            // Idan password ya dace, a bude link din
+            window.location.href = this.href;
+        } else {
+            e.preventDefault(); // Hana budewa idan password ba dai dai bane
+            alert('Incorrect password. Access denied.');
+        }
+    });
+});
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {                   
             const languageSwitch = document.getElementById('language-switch');
             const languageSwitchEn = document.getElementById('language-switch-en');
             const aboutText = document.getElementById('about-text');
