@@ -318,6 +318,6 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT} with 3000 posts`);
 });
