@@ -98,15 +98,16 @@ app.post('/register', (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   const newUser = new User({
-    email,
-    password: hashedPassword,
-    shopNumber,
-    phoneNumber,
-    businessName,
-    fullName,
-    verified: false,
-    otp
-  });
+        email,
+        password: hashedPassword,
+        shopNumber,
+        phoneNumber,
+        businessName,
+        fullName,
+        verified: false,
+        otp,
+        idNumber // Save the ID number
+      });
 
   newUser.save()
     .then(user => {
@@ -118,6 +119,21 @@ app.post('/register', (req, res) => {
       res.json({ success: true, message: 'Registration successful. Check your email for your OTP verify email code.' });
     })
     .catch(error => res.status(500).json({ success: false, message: 'Error during registration.' }));
+});
+
+// Validate ID route
+app.post('/validate-id', (req, res) => {
+  const { idNumber } = req.body;
+
+  User.findOne({ idNumber })
+    .then(user => {
+      if (user) {
+        return res.json({ success: false, message: 'Wannan ID ɗin an riga an yi amfani da shi.' });
+      } else {
+        return res.json({ success: true, message: 'ID ɗin yana nan cikin kwanciyar hankali, ana iya amfani da shi.' });
+      }
+    })
+    .catch(error => res.status(500).json({ success: false, message: 'An samu matsala wurin duba ID ɗin.' }));
 });
 
 // OTP verification route
