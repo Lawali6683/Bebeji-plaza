@@ -252,6 +252,31 @@ const deleteOldPosts = () => {
     .catch(err => console.log('Error deleting old posts:', err));
 };
 
+// Create an array to store products
+const products = [];
+  
+// Route to add a product
+app.post('/addProduct', upload.single('productImage'), (req, res) => {
+  const { username, description, price } = req.body;
+  const productImage = req.file ? req.file.path : null;
+
+  const product = {
+    fullName: username,
+    description: description,
+    price: price,
+    productImage: productImage
+  };
+
+  products.push(product);
+
+  res.json({ message: 'Product added successfully!', product: product });
+});
+
+// Route to get all products (optional)
+app.get('/getProducts', (req, res) => {
+  res.json(products);
+});
+
 // Schedule the deletion job to run daily
 schedule.scheduleJob('0 0 * * *', deleteOldPosts);
 
@@ -266,7 +291,7 @@ const sendFridayNotifications = () => {
           text: `Assalamu alaikum, ${user.fullName}, A yau da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
           attachments: [{
             filename: 'icon.png',
-            path: path.join(__dirname, 'docs', 'icon.png'),
+            path: path.join(__dirname, 'docs', '/styled-icon.png'),
             cid: 'icon' // same cid value as in the html img src
           }]
         });
@@ -298,10 +323,13 @@ const sendPostNotifications = () => {
 'Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!`,
                 attachments: [{
                   filename: 'icon.png',
-                  path: path.join(__dirname, 'docs', 'icon.png'),
+                  path: path.join(__dirname, 'docs', '/styled-icon.png'),
                   cid: 'ipIcon'
                 }],
-                html: `<p>Barka ${user.fullName},</p><p>Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!</p><img src="cid:ipIcon" />`
+                html:`
+            <p>${text}</p>
+            <img src="cid:icon" style="width: 30px; height: 30px; border-radius: 50%;" alt="icon">
+        <p>Barka ${user.fullName},</p><p>Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!</p><img src="cid:ipIcon" />`
               });
             }
           });
@@ -316,10 +344,24 @@ schedule.scheduleJob('0 10,18 * * *', sendPostNotifications);
 // Real-time communication for new posts
 io.on('connection', (socket) => {
   console.log('A user connected');
-
-  socket.on('disconnect', () => {
+ socket.on('disconnect', () => {
     console.log('User disconnected');
   });
+});
+
+// Hanyar da za ta karɓi bayanan IP
+app.post('/storeData', async (req, res) => {
+    const { ip } = req.body;
+
+    try {
+        // Adana bayanan mai amfani
+        const newUser = new User({ ip });
+        await newUser.save();
+        res.status(201).json({ message: 'An adana bayanai cikin nasara' });
+    } catch (error) {
+        console.error('Kuskure wajen adana bayanai:', error);
+        res.status(500).json({ message: 'Kuskure wajen adana bayanai' });
+    }
 });
 
 // Route to serve the homepage
@@ -333,7 +375,245 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
+// Route na bincike
+app.post('/search', async (req, res) => {
+    const query = req.body.query;
+    try {
+        // Neman users da posts masu alaka da tambayar da aka shigar
+        const users = await User.find({ shopNumber, phoneNumber, businessName, fullName: { $regex: query, $options: 'i' } });
+        const posts = await Post.find({ title: { $regex: query, $options: 'i' } });
+
+        // Hada sakamakon bincike daga users da posts
+        const results = [
+            ...users.map(user => ({
+                title: user.fullName,
+                content: `Profile: ${user.profile}`,
+            })),
+            ...posts.map(post => ({
+                title: post.title,
+                content: post.content,
+            })),
+        ];
+
+        res.json({ results });
+    } catch (err) {
+        console.error('Error searching:', err);
+        res.status(500).json({ message: 'Error searching database.' });
+    }
+});
+
+// Route don karɓar certificate
+app.post('/api/certificates', (req, res) => {
+    const { sellerInfo, buyerDetails } = req.body;
+
+    // Ajiye certificate a cikin fayil
+    const certificateData = {
+        sellerInfo,
+        buyerDetails,
+        date: new Date()
+    };
+
+    const certificatePath = `./certificates/${Date.now()}_certificate.json`;
+
+    fs.writeFile(certificatePath, JSON.stringify(certificateData, null, 2), (err) => {
+        if (err) {
+            console.error('Error saving certificate:', err);
+            res.status(500).json({ message: 'Error saving certificate' });
+            return;
+        }
+        res.json({ message: 'Certificate saved successfully', certificatePath });
+    });
+});
+
+// Route don nuna certificates
+app.get('/api/certificates', (req, res) => {
+    fs.readdir('./certificates', (err, files) => {
+        if (err) {
+            console.error('Error reading certificates:', err);
+            res.status(500).json({ message: 'Error reading certificates' });
+            return;
+        }
+
+        const certificates = files.map(file => {
+            return {
+                fileName: file,
+                filePath: `/certificates/${file}`
+            };
+        });
+
+        res.json(certificates);
+    });
+});
+
+// Ajiye certificate
+app.post('/api/certificates-individual', (req, res) => {
+    const {
+        fullName, email, phoneNumber, gender, state, lg, homeAddress, deviceName, deviceIpAddress, certificateNumber, certificateData
+    } = req.body;
+
+    // Ajiye certificate a cikin file
+    const fileName = `Certificate-${certificateNumber}.html`;
+    const filePath = path.join(__dirname, 'certificates', fileName);
+
+    fs.writeFile(filePath, certificateData, (err) => {
+        if (err) {
+            console.error('Failed to save certificate:', err);
+            return res.status(500).json({ success: false, message: 'Failed to save certificate.' });
+        }
+
+        // Aika certificate da hoton icon.png ta email
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Your Device Registration Certificate',
+            html:`
+            <p>${text}</p>
+            <img src="cid:icon" style="width: 30px; height: 30px; border-radius: 50%;" alt="icon">        
+                <p>Dear ${fullName},</p>
+                <p>Attached is your device registration certificate with the following details:</p>
+                <ul>
+                    <li><strong>Certificate Number:</strong> ${certificateNumber}</li>
+                    <li><strong>Device Name:</strong> ${deviceName}</li>
+                    <li><strong>Device IP Address:</strong> ${deviceIpAddress}</li>
+                    <li><strong>Date:</strong> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</li>
+                </ul>
+                <p>Please keep this certificate safe.</p>
+                <p>Best regards,</p>
+                <p>Bebeji Plaza Team</p>
+            `,
+            attachments: [
+                {
+                    filename: fileName,
+                    path: filePath
+                },
+                {
+                    filename: 'icon.png',
+                    path: path.join(__dirname, '/docs/icon.png'),
+                    cid: 'icon@bebejiplaza'
+                }
+            ]
+        };
+        
+ // Prepare mail options for Bebeji Plaza (admin)
+    const mailOptionsAdmin = {
+        from: process.env.EMAIL_USER,
+        to: 'bebejiplaza05@gmail.com',
+        subject: `New Certificate Issued to ${fullName}`,
+        html: `
+            <p>${text}</p>
+            <img src="cid:icon" style="width: 30px; height: 30px; border-radius: 50%;" alt="icon">
+        
+            <p>Dear Bebeji Plaza Team,</p>
+            <p>A new device registration certificate has been issued with the following details:</p>
+            <ul>
+                <li><strong>Full Name:</strong> ${fullName}</li>
+                <li><strong>Email:</strong> ${email}</li>
+                <li><strong>Certificate Number:</strong> ${certificateNumber}</li>
+                <li><strong>Device Name:</strong> ${deviceName}</li>
+                <li><strong>Device IP Address:</strong> ${deviceIpAddress}</li>
+                <li><strong>Date:</strong> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</li>
+            </ul>
+            <p>Best regards,</p>
+            <p>System Notification</p>
+        `,
+        attachments: [
+            {
+                filename: 'certificate.pdf',
+                path: path.join(__dirname, 'path_to_certificate.pdf') // Replace with actual path to the certificate file
+            },
+            {
+                filename: 'icon.png',
+                path: path.join(__dirname, '/docs/icon.png'),
+                cid: 'icon@bebejiplaza'
+            }
+        ]
+    };
+
+    // Send email to user
+    transporter.sendMail(mailOptionsUser, (error, info) => {
+        if (error) {
+            console.error('Failed to send email to user:', error);
+            return res.status(500).json({ success: false, message: 'Failed to send email to user.' });
+        }
+
+        console.log('Email sent to user:', info.response);
+
+        // Send email to Bebeji Plaza admin
+        transporter.sendMail(mailOptionsAdmin, (error, info) => {
+            if (error) {
+                console.error('Failed to send email to admin:', error);
+                return res.status(500).json({ success: false, message: 'Failed to send email to admin.' });
+            }
+
+            console.log('Email sent to admin:', info.response);
+            res.status(200).json({ success: true, message: 'Certificate saved and emails sent successfully.' });
+        });
+    });
+});
+
+// Serve certificates
+app.get('/api/certificates-individual', (req, res) => {
+    const certificatesDir = path.join(__dirname, 'certificates');
+
+    fs.readdir(certificatesDir, (err, files) => {
+        if (err) {
+            console.error('Failed to read certificates directory:', err);
+            return res.status(500).json({ success: false, message: 'Failed to read certificates directory.' });
+        }
+
+        const certificates = files.map(file => ({
+            fileName: file,
+            filePath: `/certificates/${file}`
+        }));
+
+        res.json(certificates);
+    });
+});
+
+//report
+app.post('/saveTrackingReport', async (req, res) => {
+    const reportData = req.body;
+    reportData.timestamp = new Date().toLocaleString();  // Add timestamp
+
+    // Aika bayanai zuwa wani API ko ka kula da su yadda ake bukata
+    try {
+        const response = await axios.post('/report-details', reportData);
+        res.status(200).json({ message: 'Your Report send secsefully.' });
+    } catch (error) {
+        console.error('Error sending reports:', error);
+        res.status(500).json({ message: 'Error sending reports.' });
+    }
+});
+
+app.post('/saveEnsureReport', async (req, res) => {
+    const ensureData = req.body;
+    ensureData.timestamp = new Date().toLocaleString();  // Add timestamp
+
+    // Aika bayanai zuwa wani API ko ka kula da su yadda ake bukata
+    try {
+        const response = await axios.post('/report-details', ensureData);
+        res.status(200).json({ message: 'An aika rahoton nasara.' });
+    } catch (error) {
+        console.error('Kuskure wajen aika rahoto:', error);
+        res.status(500).json({ message: 'Kuskure wajen aika rahoton.' });
+    }
+});
+
+app.post('/deleteReport', (req, res) => {
+    const { reportType } = req.body;
+     res.status(200).json({ message: 'Rahoton ya samu an goge shi da nasara.' });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT} with 3000 posts`);
+});
 });
