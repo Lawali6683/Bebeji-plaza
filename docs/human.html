@@ -105,92 +105,76 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {              
-            const phoneTrackingSection = document.getElementById('phoneTrackingSection');
-            const reportsCivilSection = document.getElementById('reportsCivilSection');
+    const reportDetailsContainer = document.getElementById('report-details');
 
-            const trackingReport = JSON.parse(localStorage.getItem('trackingReport'));
-            const ensureReport = JSON.parse(localStorage.getItem('ensureReport'));
+    const trackingReport = JSON.parse(localStorage.getItem('trackingReport'));
+    const ensureReport = JSON.parse(localStorage.getItem('ensureReport'));
 
-            if (trackingReport) {
-                document.getElementById('report-details').innerHTML = `
-                    <h2>Device Report</h2>
-                    <p>Full Name: ${trackingReport.fullName}</p>
-                    <p>Phone Number: ${trackingReport.phoneNumber}</p>
-                    <p>Email Address: ${trackingReport.emailAddress}</p>
-                    <p>Address: ${trackingReport.address}</p>
-                    <p>Gender: ${trackingReport.gender}</p>
-                    <p>Purchase Option: ${trackingReport.purchaseOption}</p>
-                    <p>Additional Info: ${trackingReport.additionalInfo}</p>
-                    <button class="delete-btn" onclick="deleteReport('trackingReport')">Delete Report</button>
-                `;
-                // Send data to server.js
-                fetch('/saveTrackingReport', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(trackingReport)
-                }).then(response => {
-                    if (response.ok) {
-                        // Notification for user
-                        new Notification('Device Report Sent', {
-                            body: 'Your device report has been successfully sent to the Human rights.',
-                        });
-                    }
-                });
-            }
+    if (trackingReport) {
+        displayReport('Device Report', trackingReport, 'trackingReport', '/saveTrackingReport');
+    }
 
-            if (ensureReport) {
-                document.getElementById('report-details').innerHTML = `
-                    <h2>Problem Report</h2>
-                    <p>Full Name: ${ensureReport.fullName}</p>
-                    <p>Phone Number: ${ensureReport.phoneNumber}</p>
-                    <p>Email Address: ${ensureReport.emailAddress}</p>
-                    <p>Home Address: ${ensureReport.homeAddress}</p>
-                    <p>Incident Location: ${ensureReport.incidentLocation}</p>
-                    <p>Report Details: ${ensureReport.reportDetails}</p>
-                    <button class="delete-btn" onclick="deleteReport('ensureReport')">Delete Report</button>
-                `;
-                // Send data to server.js
-                fetch('/saveEnsureReport', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(ensureReport)
-                }).then(response => {
-                    if (response.ok) {
-                        // Notification for user
-                        new Notification('Problem Report Sent', {
-                            body: 'Your problem report has been successfully sent to the Human rights.',
-                        });
-                    }
-                });
+    if (ensureReport) {
+        displayReport('Problem Report', ensureReport, 'ensureReport', '/saveEnsureReport');
+    }
+});
+
+function displayReport(reportTitle, reportData, reportType, apiEndpoint) {
+    const reportDetailsContainer = document.getElementById('report-details');
+
+    const reportHtml = `
+        <h2>${reportTitle}</h2>
+        ${Object.keys(reportData).map(key => `<p>${formatLabel(key)}: ${reportData[key]}</p>`).join('')}
+        <p>Date and Time: ${new Date().toLocaleString()}</p>
+        <button class="delete-btn" onclick="deleteReport('${reportType}')">Delete Report</button>
+    `;
+    
+    reportDetailsContainer.innerHTML = reportHtml;
+
+    // Turo data zuwa server
+    fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    }).then(response => {
+        if (response.ok) {
+            new Notification(`${reportTitle} Sent`, {
+                body: `Your ${reportTitle.toLowerCase()} has been successfully sent to the Human rights.`,
+            });
+        }
+    }).catch(error => {
+        console.error('Error sending report:', error);
+    });
+}
+
+function deleteReport(reportType) {
+    const confirmation = confirm("Are you sure you want to delete this report?");
+    if (confirmation) {
+        localStorage.removeItem(reportType);
+        document.getElementById('report-details').innerHTML = '';
+
+        // Tura request zuwa server domin goge report
+        fetch('/deleteReport', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reportType })
+        }).then(response => {
+            if (response.ok) {
+                alert('Report deleted successfully');
+            } else {
+                alert('Error deleting report');
             }
         });
+    }
+}
 
-        function deleteReport(reportType) {
-            const confirmation = confirm("Are you sure you want to delete this report?");
-            if (confirmation) {
-                localStorage.removeItem(reportType);
-                document.getElementById('report-details').innerHTML = '';
-
-                // Send delete request to server
-                fetch('/deleteReport', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ reportType })
-                }).then(response => {
-                    if (response.ok) {
-                        alert('Report deleted successfully');
-                    } else {
-                        alert('Error deleting report');
-                    }
-                });
-            }
-        }
+function formatLabel(label) {
+    return label.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+}
     </script>
 </body>
 </html>
