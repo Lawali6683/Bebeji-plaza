@@ -10,14 +10,14 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #e9ecef;
+            background-color: #3b00ff;
             color: #0c0e17;
             text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
             box-sizing: border-box;
         }
 
         header {
-                background: linear-gradient(750deg, green, white, green);
+                Background-color:#000000;
             color: #1c00ba;
             text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
             
@@ -188,16 +188,22 @@ gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
         }
 
         .container2 {
-            background-image: url("b2.png");
+            Background-color:#000000;
             background-size: cover;
-            padding: 40px;
-            border-radius: 5px;
+            padding: 30px;
+            border-radius: 10px
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             margin: 0 auto;
-            max-width: 500px;
+            max-width: 400px;
         }
-
+.icon{
+Text-align:center;
+Display:center;
+    width: 50%;
+    height: 40%;
+    Border-radius:50%;
+}
         label {
             display: block;
             margin-top: 10px;
@@ -293,9 +299,16 @@ gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
       .ry{
           Display:center;
           Border-radius:10px;
+          border: 1px solid #ff15e7;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);   
           
       }
+     .icon2{
+         width: 50px;
+         height: 50px;
+         Border-radius:50%;
+         border: 1px solid #ff15e7;
+     }
     </style>
 </head>
 <body>
@@ -303,11 +316,7 @@ gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
         <div class="container">
             <nav>
                 <button onclick="location.href='index.html'"><i style="color:blue;"class="fas fa-home"></i style="color:blue;"> Home</button>
-            </nav>
-            <h1 class="gup"><i style ="color:red;">BEBEJI</1> <i style="color:white;">PLAZA</i></h1>
-                      
-            <nav>
-                <button onclick="location.href='register.html'"><i style="color:blue;"class="fas fa-sign-in-alt"></i style="color:blue;"> Register</button>
+                            <button onclick="location.href='register.html'"><i style="color:blue;"class="fas fa-sign-in-alt"></i style="color:blue;"> Register</button><img class="icon2" src="icon.png" alt="">
             </nav>
         </div>
     </header>
@@ -323,7 +332,10 @@ gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
     </div>
 
     <div class="content container2">
-        <h style="color:green;"><strong>Login Your Business Shop Account</strong></h>
+        <div>
+        <img class="icon" src="icon.png" alt="">
+        </div>
+        <h style="color:green;"><strong>Login Account</strong></h>
         <form id="loginForm" action="javascript:void(0);" method="POST">
             <label style="color:black"for="email">Email address</label>
             <input type="email" id="email" name="email" placeholder="examples45@gmail.com" required>
