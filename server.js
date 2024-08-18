@@ -612,6 +612,10 @@ app.post('/deleteReport', (req, res) => {
      res.status(200).json({ message: 'Rahoton ya samu an goge shi da nasara.' });
 });
 
+app.get('/', (req, res) => {
+    res.send('Server is running');
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT} with 3000 posts`);
