@@ -13,13 +13,24 @@
             padding: 0;
          background-image:url("b2.png");   
             color: #333;
+         text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);  
         }
 
         header {
-            background-color: #007bff;
-            color: white;
-            padding: 30px 10px;
             text-align: center;
+            padding: 20px;
+            background-color: #0b0b15;
+        }
+
+        #businessName {
+            font-size: 1.5em; 
+            margin-bottom: 10px; 
+            color: white;
+        }
+
+        #fullName {
+            font-size: 0.9em; 
+            color: #58b61e; 
         }
 
         nav {
@@ -108,7 +119,7 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
+            position: fixe
             width: 100%;
             bottom: 0;
         }
@@ -182,17 +193,20 @@
         #notification-add-craft i {
             margin-right: 5px;
         }
+       .icon{
+           width: 70px;
+           height: 70px;
+           Border-radius: 50%;
+           Border:1px solid #ff15e7;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);   
+       }
     </style>
 </head>
-
 <body>
-    <header>
-       <footer>
-        <p>BEBEJI PLAZA</p>
-    </footer>
-    
-     
-         <h1>My Store</h1>
+    <header>      
+    <img class="icon" src="icon.png" alt="">
+    <div id="businessName">Welcome to Business Name Shop</div>
+        <div id="fullName"> User Name</div>
     </header>
     <nav>
         <div>
@@ -241,7 +255,30 @@
         <a href="#" class="back">Back</a>
         <div id="delete-products"></div>
     </div>
+<script>
+        // Load user profile details
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
 
+            fetch(`/profile?userId=${userId}`)
+                .then(response => response.json())
+                .then(user => {
+                    if (user) {
+                        document.getElementById('businessName').textContent = `Welcome to ${user.businessName} Shop`;
+                        document.getElementById('fullName').textContent = user.fullName;
+                    } else {
+                        document.getElementById('businessName').textContent = "Welcome to Bebeji Plaza Shop";
+                        document.getElementById('fullName').textContent = " User Name";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('businessName').textContent = "Welcome to Bebeji Plaza Shop";
+                    document.getElementById('fullName').textContent = "User Name";
+                });
+        });
+    </script>
     <script>
         const myShopLink = document.getElementById('my-shop-link');
         const deleteLink = document.getElementById('delete-link');
@@ -368,7 +405,12 @@
 productForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const formData = new FormData();
-  formData.append('username', 'user1'); // Use actual username
+  const productDescription = document.querySelector('#description');
+  const productPrice = document.querySelector('#price');
+  const productImage = document.querySelector('#productImage');    
+  var userName = document.getElementById('fullName').value;
+formData.append('fullName', userName);
+
   formData.append('description', productDescription.value);
   formData.append('price', productPrice.value);
   formData.append('productImage', productImage.files[0]);
@@ -389,4 +431,3 @@ productForm.addEventListener('submit', (e) => {
     </script>    
 </body>
 </html>
- 
