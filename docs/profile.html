@@ -130,7 +130,7 @@
             Font-size:16px;
             Font-weight:bold;
             color: ;
-            background-image: url(".png");
+            background-image: url(".png")
             margin-bottom: 20px;
         }
 
@@ -367,27 +367,36 @@
         // Your logic to show chat notification goes here    
 }
     // Load user profile details
+document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
 
     fetch(`/profile?userId=${userId}`)
-    .then(response => response.json())
-    .then(user => {
-        document.getElementById('business-name').textContent = user.businessName;
-        document.getElementById('name-p').textContent = user.fullName;
-        document.getElementById('shop-n').textContent = user.shopNumber;
+        .then(response => response.json())
+        .then(user => {
+            if (user) {
+                document.getElementById('business-name').textContent = user.businessName || 'No business name';
+                document.getElementById('name-p').textContent = user.fullName || 'No full name';
+                document.getElementById('shop-n').textContent = user.shopNumber || 'No shop number';
 
-        if (user.shopImage) {
-            document.getElementById('shop-image').style.backgroundImage = `url(${user.shopImage})`;
-        }
+                if (user.shopImage) {
+                    document.getElementById('shop-image').style.backgroundImage = `url(${user.shopImage})`;
+                } else {
+                    document.getElementById('shop-image').style.backgroundImage = 'url(defaultShopImage.png)';
+                }
 
-        if (user.faceImage) {
-            document.getElementById('face-image').style.backgroundImage = `url(${user.faceImage})`;
-        }
-    }) 
-       .catch(error => console.error('Error:', error));
-});
-   
+                if (user.faceImage) {
+                    document.getElementById('face-image').style.backgroundImage = `url(${user.faceImage})`;
+                } else {
+                    document.getElementById('face-image').style.backgroundImage = 'url(defaultFaceImage.png)';
+                }
+            } else {
+                console.error('User not found');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});        
+                                                      
 // Display additional options if the user is the owner
 const isOwner = true;  // Replace with actual authentication logic
 
@@ -397,7 +406,7 @@ if (isOwner) {
     document.getElementById('story-business-menu').style.display = 'block';
     document.getElementById('shopping-result-menu').style.display = 'block';
 }
-
+});
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
     <style>
