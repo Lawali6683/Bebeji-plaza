@@ -158,79 +158,89 @@
     </section>
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        (function() {
-            emailjs.init("YOUR_USER_ID");
-        })();
-        
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const fullName = document.getElementById('fullName').value;
-            const age = document.getElementById('age').value;
-            const gender = document.getElementById('gender').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const email = document.getElementById('email').value;
-            const deviceName = document.getElementById('deviceName').value;
-            const deviceIpAddress = document.getElementById('deviceIpAddress').value;
-            const state = document.getElementById('state').value;
-            const lg = document.getElementById('lg').value;
-            const homeAddress = document.getElementById('homeAddress').value;
-            
-            const certificateNumber = Math.floor(Math.random() * 1000000);
-            const currentDate = new Date().toLocaleString();
-            
-            const certificateData = `
-                <h2 style="color:green">BEBEJI PLAZA, phone center</h2>
-                <p>Sabon Gari Gusau Zamfara</p>    
-                <h3>Device Registration Slip</h3>        
-                <p><strong>Full Name:</strong> ${fullName}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-                <p><strong>Gender:</strong> ${gender}</p>
-                <p><strong>State:</strong> ${state}</p>
-                <p><strong>L/G:</strong> ${lg}</p>
-                <p><strong>Home Address:</strong> ${homeAddress}</p>
-                <p><strong>Device Name:</strong> ${deviceName}</p>
-                <p><strong>Device IP Address:</strong> ${deviceIpAddress}</p>
-                <p><strong>Date & Time:</strong> ${currentDate}</p>
-                <p><strong>Certificate Number:</strong> ${certificateNumber}</p>
-                <p>Wannan slip zai taimaka ma ku idan wayar ku ko laptop ta Bata mu Gane inda take Kuma mu dawo da maku da ita, idan kun shigar da korafi ga hukuma.</p>
-            `;
-            
-            document.getElementById('certificate').innerHTML = certificateData;
-            document.getElementById('certificate-section').style.display = 'block';
-            
-            const certificateBlob = new Blob([certificateData], {type: 'text/html'});
-            const certificateUrl = URL.createObjectURL(certificateBlob);
-            
-            document.getElementById('downloadCertificate').addEventListener('click', function() {
-                const a = document.createElement('a');
-                a.href = certificateUrl;
-                a.download = 'Certificate.html';
-                a.click();
-            });
-            
-            alert('We have sent your certificate to your email address.');
-            
-            // Send email with certificate
-            emailjs.send("Haruna66", "template_mw7tydr", {
-                to_name: fullName,
-                to_email: email,
-                message: `Hello ${fullName} from owner Bebeji Plaza, this is your copy device certificate`,
-                subject: "Your Device Registration Certificate",
-                certificate_html: certificateData
-            })
-            .then(function(response) {
-                console.log("SUCCESS!", response.status, response.text);
-                alert('Email has been sent successfully.');
-            }, function(error) {
-                console.log("FAILED...", error);
-                alert('Failed to send email. Please try again.');
-            });
-            
-            // Store certificate data in local storage
-            localStorage.setItem('certificateData', certificateData);
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const fullName = document.getElementById('fullName').value;
+        const age = document.getElementById('age').value;
+        const gender = document.getElementById('gender').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const email = document.getElementById('email').value;
+        const deviceName = document.getElementById('deviceName').value;
+        const deviceIpAddress = document.getElementById('deviceIpAddress').value;
+        const state = document.getElementById('state').value;
+        const lg = document.getElementById('lg').value;
+        const homeAddress = document.getElementById('homeAddress').value;
+
+        const certificateNumber = Math.floor(Math.random() * 1000000);
+        const currentDate = new Date().toLocaleString();
+
+        const certificateData = `
+            <h2 style="color:green">BEBEJI PLAZA, phone center</h2>
+            <p>Sabon Gari Gusau Zamfara</p>    
+            <h3>Device Registration Slip</h3>        
+            <p><strong>Full Name:</strong> ${fullName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+            <p><strong>Gender:</strong> ${gender}</p>
+            <p><strong>State:</strong> ${state}</p>
+            <p><strong>L/G:</strong> ${lg}</p>
+            <p><strong>Home Address:</strong> ${homeAddress}</p>
+            <p><strong>Device Name:</strong> ${deviceName}</p>
+            <p><strong>Device IP Address:</strong> ${deviceIpAddress}</p>
+            <p><strong>Date & Time:</strong> ${currentDate}</p>
+            <p><strong>Certificate Number:</strong> ${certificateNumber}</p>
+            <p>Wannan slip zai taimaka ma ku idan wayar ku ko laptop ta Bata mu Gane inda take Kuma mu dawo da maku da ita, idan kun shigar da korafi ga hukuma.</p>
+        `;
+
+        document.getElementById('certificate').innerHTML = certificateData;
+        document.getElementById('certificate-section').style.display = 'block';
+
+        const certificateBlob = new Blob([certificateData], {type: 'text/html'});
+        const certificateUrl = URL.createObjectURL(certificateBlob);
+
+        document.getElementById('downloadCertificate').addEventListener('click', function() {
+            const a = document.createElement('a');
+            a.href = certificateUrl;
+            a.download = 'Certificate.html';
+            a.click();
         });
-    </script>
+
+        alert('We have sent your certificate to your email address.');
+
+        // Aika bayanan zuwa ga server.js
+        fetch('/api/certificates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                fullName: fullName,
+                email: email,
+                phoneNumber: phoneNumber,
+                gender: gender,
+                state: state,
+                lg: lg,
+                homeAddress: homeAddress,
+                deviceName: deviceName,
+                deviceIpAddress: deviceIpAddress,
+                certificateNumber: certificateNumber,
+                certificateData: certificateData
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Certificate sent and stored successfully.');
+            } else {
+                alert('Failed to send and store certificate.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error occurred. Please try again.');
+        });
+    });
+</script>
 </body>
 </html>
