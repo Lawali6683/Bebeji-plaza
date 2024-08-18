@@ -9,7 +9,7 @@
             position: fixed;
             width: 100%;
             height: 100%;
-     background: url('hr2.png') no-repeat center center / cover;       
+            background: url('hr2.png') no-repeat center center / cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,21 +17,44 @@
             transition: opacity 0.5s ease-out;
         }
 
+        #loading-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+             border: 1px solid #ff15e7;
+            z-index: 2;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         #loading-icon {
-            font-size: 50px;
+            font-size: 80px;
             color: #ff15e7;
             text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            z-index: 1;
+        }
+
+        #loading-text {
+            color: #ffffff;
+            font-size: 20px;
+            margin-top: 120px; /* Adjusted to be below the spinner */
+            text-align: center;
         }
 
         body.loaded #loading-screen {
             opacity: 0;
             pointer-events: none;
         }
-
         .container {
             text-align: center;
-           text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
-            background-image: url('py.png'); 
+           text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);            
             background-size: cover;
             background-position: center;
             padding: 4px;           
@@ -188,7 +211,7 @@
             display: flex;
             justify-content: space-around;
             transition: background 0.3s ease;
-            border: 0px solid #ffffff;    
+               
         }
 
         footer a {
@@ -257,11 +280,14 @@
 </head>
 <body>
     <div id="loading-screen">
-        <i id="loading-icon" class="fas fa-spinner fa-spin"></i>
-        <div style="color: #ffffff; font-size: 20px; margin-top: 10px;"><i style="color:#91ff80"><i style="color;green">Loa</i><i style="color:blue;">ding...</i></i></div>                      
+        <div id="loading-container">
+            <img id="loading-image" src="icon.png" alt="Loading Icon">
+            <i id="loading-icon" class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div id="loading-text">
+            <span style="color:#91ff80;">Loa</span><span style="color:blue;">ding...</span>
+        </div>
     </div>  
-    
-    
    <style>
         bo {
             font-family: Arial, sans-serif;
@@ -328,6 +354,13 @@
             Font-weight:bold;
             text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
       }
+      .icon{
+      width: 25px;
+      height: 25px;
+          Border-radius:50%;          
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);   
+          
+      }
               
     </style>
 </head>
@@ -388,26 +421,24 @@
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
                 const data = await response.json();
-                const userIP = data.ip;
+        const userIP = data.ip;
 
-                // Replace with the actual method to get user's email address
-                const userEmail = 'user@example.com';
-
-                await fetch('/storeData', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: userEmail, ip: userIP })
-                });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+        // Aika IP address zuwa sabar don adanawa
+        await fetch('/storeData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip: userIP })
+        });
+    } catch (error) {
+        console.error('Kuskure:', error);
+    }
+}
     </script>             
     <header>         
         <div class="container">
-            <h class="animated-text">BEBEJI PLAZA</h><i class="ty">Gusau</i><img src="lu.png" style="width: 10px;height: 10px;">
+            <h class="animated-text">BEBEJI PLAZA</h><i class="ty">Gusau</i><img class="icon" src="icon.png">
         </div>
 
         <div class="menu">
@@ -437,6 +468,7 @@
     </header>
    
     <p class="hello">
+        <div id="submitted"></div>
         
     <style>
       By   {
@@ -576,68 +608,66 @@
             const statusViewer = document.getElementById('statusViewer');
             const statusImage = document.getElementById('statusImage');
 
-            // Function to fetch products from store.html
-            const fetchProducts = async () => {
-                try {
-                    const response = await fetch('/store/products');
-                    const products = await response.json();
+            // Function to fetch products from server
+const fetchProducts = async () => {
+    try {
+        const response = await fetch('/getProducts');
+        const products = await response.json();
 
-                    // Randomize product display and ensure each user’s product is unique
-                    const displayedProducts = [];
-                    const uniqueProducts = [];
+        // Randomize product display and ensure each user’s product is unique
+        const displayedProducts = [];
+        const uniqueProducts = [];
 
-                    products.forEach(product => {
-                        if (!displayedProducts.includes(product.owner)) {
-                            displayedProducts.push(product.owner);
-                            uniqueProducts.push(product);
-                        }
-                    });
-
-                    uniqueProducts.forEach((product, index) => {
-                        if (index < 2) { // Show 2 products per user
-                            const productCard = document.createElement('div');
-                            productCard.classList.add('product-card');
-
-                            productCard.innerHTML = `
-                                <div class="product-owner">${product.owner}</div>
-                                <img src="${product.imageUrl}" alt="${product.description}" class="product-image">
-                                <div class="product-info">
-                                    <h3>${product.description}</h3>
-                                    <p class="product-price">₦${product.price}</p>
-                                </div>
-                            `;
-
-                            productCard.addEventListener('click', () => {
-                                statusImage.src = product.imageUrl;
-                                statusViewer.style.display = 'flex';
-                            });
-
-                            const ownerLink = productCard.querySelector('.product-owner');
-                            ownerLink.addEventListener('click', (event) => {
-                                event.stopPropagation();
-                                window.location.href = `/profile/${product.owner}`;
-                            });
-
-                            productFeed.appendChild(productCard);
-                        }
-                    });
-
-                    statusViewer.addEventListener('click', () => {
-                        statusViewer.style.display = 'none';
-                    });
-
-                } catch (error) {
-                    console.error('Error fetching products:', error);
-                }
-            };
-
-            fetchProducts();
+        products.forEach(product => {
+            if (!displayedProducts.includes(product.fullName)) { // An yi amfani da 'fullName' maimakon 'owner'
+                displayedProducts.push(product.fullName);
+                uniqueProducts.push(product);
+            }
         });
 
-    </script>
+        uniqueProducts.forEach((product, index) => {
+            if (index < 2) { // Show 2 products per user
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+
+                productCard.innerHTML = `
+                    <div class="product-owner">${product.fullName}</div>
+                    <img src="${product.productImage}" alt="${product.description}" class="product-image">
+                    <div class="product-info">
+                        <h3>${product.description}</h3>
+                        <p class="product-price">₦${product.price}</p>
+                    </div>
+                `;
+
+                productCard.addEventListener('click', () => {
+                    statusImage.src = product.productImage;
+                    statusViewer.style.display = 'flex';
+                });
+
+                const ownerLink = productCard.querySelector('.product-owner');
+                ownerLink.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    window.location.href = `/profile/${product.fullName}`;
+                });
+
+                productFeed.appendChild(productCard);
+            }
+        });
+
+        statusViewer.addEventListener('click', () => {
+            statusViewer.style.display = 'none';
+        });
+        
+} catch (error) {
+    console.error('Error fetching products:', error);
+    }
+    };
+    });
+        
+   </script>
     <p class="hello2">
         <div id="submitted-posts"></div>
-        
+         
     <footer>
                 <a href="index.html"><i class="fas fa-home icon"></i><span>Home</span></a>
 <a href="bebeji.html"><i class="fas fa-book icon"></i><span><strong>Bebeji Policy</strong></span></a> 
@@ -677,7 +707,7 @@
     }
 
     function displayResults(results) {
-        const container = document.getElementById('submitted-posts');
+        const container = document.getElementById('submitted');
         container.innerHTML = ''; // Share sakamakon da aka gani a baya
 
         results.forEach(result => {
@@ -713,7 +743,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 checkNetwork();
-            }, 1000); // 1 second delay to simulate loading time
+            }, 2000); // 1 second delay to simulate loading time
         });
 
         function checkNetwork() {
@@ -735,7 +765,8 @@
             const loadingIcon = document.getElementById('loading-icon');
             loadingIcon.classList.remove('fa-spin');
             loadingIcon.classList.add('fa-exclamation-triangle');
-            loadingScreen.querySelector('div').textContent = 'Network error, please try again later.';
+            loadingScreen.querySelector('#loading-text').textContent = 'Network error.';
+            document.getElementById('loading-image').style.display = 'none'; // Hide the image when there's a network error
         }
     </script>
     <script></script> 
