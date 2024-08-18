@@ -6,7 +6,7 @@
     <title>Bebeji Database</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        body {
+       body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -102,37 +102,28 @@
             <button id="search-button">Search</button>
         </section>
         <section id="display-certificate-data">
-            <!-- Certificate data will be displayed here -->
+            <!-- Anan ne bayanan takardun za a nuna su -->
         </section>
     </main>
-    
     <script>
-        // Function to load all certificates from localStorage
+        // Aikin loda dukkan takardun shaida daga server
         function loadCertificates() {
-            const certificates = JSON.parse(localStorage.getItem('certificates')) || [];
-            return certificates;
+            return Promise.all([
+                fetch('/api/certificates').then(response => response.json()).catch(error => {
+                    console.error('Error fetching certificates:', error);
+                    return [];
+                }),
+                fetch('/api/certificates-individual').then(response => response.json()).catch(error => {
+                    console.error('Error fetching individual certificates:', error);
+                    return [];
+                })
+            ]).then(([certificates, individualCertificates]) => {
+                return certificates.concat(individualCertificates); // Haɗa bayanai daga APIs biyu
+            });
         }
 
-        // Function to save a certificate to localStorage
-        function saveCertificate(certificate) {
-            const certificates = loadCertificates();
-            certificates.push(certificate);
-            
-            try {
-                localStorage.setItem('certificates', JSON.stringify(certificates));
-            } catch (e) {
-                if (e.name === 'QuotaExceededError') {
-                    console.log('LocalStorage full, sending data to server.');
-                    sendToServer(certificates);
-                    localStorage.clear(); // Clear localStorage after sending to server
-                    localStorage.setItem('certificates', JSON.stringify([certificate])); // Save the new certificate
-                }
-            }
-        }
-
-        // Function to search certificates
-        function searchCertificate(query) {
-            const certificates = loadCertificates();
+        // Aikin bincika takardun shaida
+        function searchCertificate(query, certificates) {
             return certificates.filter(cert => {
                 return cert.sellerInfo.fullName.toLowerCase().includes(query) ||
                     cert.sellerInfo.email.toLowerCase().includes(query) ||
@@ -147,58 +138,13 @@
             });
         }
 
-        // Function to send data to server
-        function sendToServer(data) {
-            fetch('/saveCertificates', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Data sent to server:', result);
-            })
-            .catch(error => {
-                console.error('Error sending data to server:', error);
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            // Load and display all certificate data on page load
             const displayContainer = document.getElementById('display-certificate-data');
-            const certificates = loadCertificates();
-            if (certificates.length > 0) {
-                displayContainer.innerHTML = certificates.map(cert => `
-                    <div class="certificate-container">
-                        <p><strong>Seller Name:</strong> ${cert.sellerInfo.fullName}</p>
-                        <p><strong>Shop Number:</strong> ${cert.sellerInfo.shopNumber}</p>
-                        <p><strong>Business Name:</strong> ${cert.sellerInfo.businessName}</p>
-                        <p><strong>Email:</strong> ${cert.sellerInfo.email}</p>
-                        <p><strong>Phone:</strong> ${cert.sellerInfo.phone}</p>
-                        <p><strong>Customer Name:</strong> ${cert.buyerDetails.fullName}</p>
-                        <p><strong>Gender:</strong> ${cert.buyerDetails.gender}</p>
-                        <p><strong>Customer Email:</strong> ${cert.buyerDetails.email}</p>
-                        <p><strong>Customer Phone:</strong> ${cert.buyerDetails.phone}</p>
-                        <p><strong>Address:</strong> ${cert.buyerDetails.address}</p>
-                        <p><strong>Diverse Name:</strong> ${cert.buyerDetails.diverseName}</p>
-                        <p><strong>Diverse IP:</strong> ${cert.buyerDetails.diverseIp}</p>
-                        <p><strong>Date:</strong> ${cert.buyerDetails.date}</p>
-                        <p><strong>Product Price:</strong> ${cert.buyerDetails.productPrice}</p>
-                    </div>
-                    <hr>
-                `).join('');
-            } else {
-                displayContainer.innerHTML = '<p>No certificate data found.</p>';
-            }
 
-            // Handle search button click
-            document.getElementById('search-button').addEventListener('click', () => {
-                const query = document.getElementById('search-input').value.toLowerCase();
-                const results = searchCertificate(query);
-                if (results.length > 0) {
-                    displayContainer.innerHTML = results.map(cert => `
+            // Loda dukkan bayanan takardun shaida a lokacin da shafin ya bude
+            loadCertificates().then(certificates => {
+                displayContainer.innerHTML = certificates.length > 0 
+                    ? certificates.map(cert => `
                         <div class="certificate-container">
                             <p><strong>Seller Name:</strong> ${cert.sellerInfo.fullName}</p>
                             <p><strong>Shop Number:</strong> ${cert.sellerInfo.shopNumber}</p>
@@ -216,10 +162,38 @@
                             <p><strong>Product Price:</strong> ${cert.buyerDetails.productPrice}</p>
                         </div>
                         <hr>
-                    `).join('');
-                } else {
-                    displayContainer.innerHTML = '<p>No certificate found for the entered information.</p>';
-                }
+                    `).join('') 
+                    : '<p>No certificate data found.</p>'; // Idan babu bayanai
+            });
+
+            // Sarrafa maɓallin bincike lokacin da aka danna
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value.toLowerCase();
+
+                loadCertificates().then(certificates => {
+                    const results = searchCertificate(query, certificates);
+                    displayContainer.innerHTML = results.length > 0 
+                        ? results.map(cert => `
+                            <div class="certificate-container">
+                                <p><strong>Seller Name:</strong> ${cert.sellerInfo.fullName}</p>
+                                <p><strong>Shop Number:</strong> ${cert.sellerInfo.shopNumber}</p>
+                                <p><strong>Business Name:</strong> ${cert.sellerInfo.businessName}</p>
+                                <p><strong>Email:</strong> ${cert.sellerInfo.email}</p>
+                                <p><strong>Phone:</strong> ${cert.sellerInfo.phone}</p>
+                                <p><strong>Customer Name:</strong> ${cert.buyerDetails.fullName}</p>
+                                <p><strong>Gender:</strong> ${cert.buyerDetails.gender}</p>
+                                <p><strong>Customer Email:</strong> ${cert.buyerDetails.email}</p>
+                                <p><strong>Customer Phone:</strong> ${cert.buyerDetails.phone}</p>
+                                <p><strong>Address:</strong> ${cert.buyerDetails.address}</p>
+                                <p><strong>Diverse Name:</strong> ${cert.buyerDetails.diverseName}</p>
+                                <p><strong>Diverse IP:</strong> ${cert.buyerDetails.diverseIp}</p>
+                                <p><strong>Date:</strong> ${cert.buyerDetails.date}</p>
+                                <p><strong>Product Price:</strong> ${cert.buyerDetails.productPrice}</p>
+                            </div>
+                            <hr>
+                        `).join('') 
+                        : '<p>No certificate found for the entered information.</p>'; // Idan babu sakamako
+                });
             });
         });
     </script>
