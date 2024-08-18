@@ -223,79 +223,111 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const languageSwitch = document.getElementById('language-switch');
-        const languageSwitchEn = document.getElementById('language-switch-en');
-        const introText = document.getElementById('intro-text');
-        const deviceTrackingBtn = document.getElementById('device-tracking-btn');
-        const reportEnsureBtn = document.getElementById('report-ensure-btn');
-        const deviceTrackingForm = document.getElementById('device-tracking-form');
-        const reportEnsureForm = document.getElementById('report-ensure-form');
-        const trackingForm = document.getElementById('tracking-form');
-        const ensureForm = document.getElementById('ensure-form');
-        const purchaseOption = document.getElementById('purchase-option');
-        const additionalInfoContainer = document.getElementById('additional-info-container');
+    const languageSwitch = document.getElementById('language-switch');
+    const languageSwitchEn = document.getElementById('language-switch-en');
+    const introText = document.getElementById('intro-text');
+    const deviceTrackingBtn = document.getElementById('device-tracking-btn');
+    const reportEnsureBtn = document.getElementById('report-ensure-btn');
+    const deviceTrackingForm = document.getElementById('device-tracking-form');
+    const reportEnsureForm = document.getElementById('report-ensure-form');
+    const trackingForm = document.getElementById('tracking-form');
+    const ensureForm = document.getElementById('ensure-form');
+    const purchaseOption = document.getElementById('purchase-option');
+    const additionalInfoContainer = document.getElementById('additional-info-container');
 
-        languageSwitch.addEventListener('click', () => {
-            introText.innerText = "Barka da zuwa Kungiyar Kare Hakkin Dan Adam ta Duniya. Muna nan don jin koke-koken ku da kuma tabbatar da hakkinku. Muna da jami'anmu ko'ina a Najeriya, suna tabbatar da kare hakkin dan adam. Kuna iya yin korafi yanzu, kuma za mu duba shi kuma mu aika da kwararrun jami'anmu don taimaka muku. Za mu iya bin diddigin masu laifi a cikin Najeriya mu dawo da kayanku, sannan mu gurfanar da masu laifin. Doka ta hana daukar doka a hannunku. Ku ba da rahoton koke-koken ku yanzu.";
-            languageSwitchEn.style.display = 'inline';
-            languageSwitch.style.display = 'none';
-        });
-
-        languageSwitchEn.addEventListener('click', () => {
-            introText.innerText = "You are welcome to International Human Rights. We are here to hear your complaints and secure your rights. We have our officers everywhere in Nigeria, ensuring the protection of human rights. You can now file your complaint, and we will look into it and send our expert officers to assist you. We can track offenders within Nigeria and recover your belongings, then prosecute the offenders. The law prohibits taking the law into your hands. Report your complaint to us now.";
-            languageSwitch.style.display = 'inline';
-            languageSwitchEn.style.display = 'none';
-        });
-
-        deviceTrackingBtn.addEventListener('click', () => {
-            deviceTrackingForm.style.display = 'block';
-            reportEnsureForm.style.display = 'none';
-        });
-
-        reportEnsureBtn.addEventListener('click', () => {
-            reportEnsureForm.style.display = 'block';
-            deviceTrackingForm.style.display = 'none';
-        });
-
-        purchaseOption.addEventListener('change', () => {
-            if (purchaseOption.value !== "phone-ip") {
-                additionalInfoContainer.style.display = 'block';
-            } else {
-                additionalInfoContainer.style.display = 'none';
-            }
-        });
-
-        trackingForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const reportData = {
-                fullName: trackingForm['full-name'].value,
-                phoneNumber: trackingForm['phone-number'].value,
-                emailAddress: trackingForm['email-address'].value,
-                address: trackingForm['address'].value,
-                gender: trackingForm['gender'].value,
-                purchaseOption: trackingForm['purchase-option'].value,
-                additionalInfo: trackingForm['additional-info'].value || 'N/A'
-            };
-
-            localStorage.setItem('trackingReport', JSON.stringify(reportData));
-            window.location.href = 'human.html';
-        });
-
-        ensureForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const ensureData = {
-                fullName: ensureForm['ensure-full-name'].value,
-                phoneNumber: ensureForm['ensure-phone-number'].value,
-                emailAddress: ensureForm['ensure-email-address'].value,
-                homeAddress: ensureForm['home-address'].value,
-                incidentLocation: ensureForm['incident-location'].value,
-                reportDetails: ensureForm['report-details'].value
-            };
-
-            localStorage.setItem('ensureReport', JSON.stringify(ensureData));
-            window.location.href = 'human.html';
-        });
+    languageSwitch.addEventListener('click', () => {
+        introText.innerText = "Barka da zuwa Kungiyar Kare Hakkin Dan Adam ta Duniya. Muna nan don jin koke-koken ku da kuma tabbatar da hakkinku. Muna da jami'anmu ko'ina a Najeriya, suna tabbatar da kare hakkin dan adam. Kuna iya yin korafi yanzu, kuma za mu duba shi kuma mu aika da kwararrun jami'anmu don taimaka muku. Za mu iya bin diddigin masu laifi a cikin Najeriya mu dawo da kayanku, sannan mu gurfanar da masu laifin. Doka ta hana daukar doka a hannunku. Ku ba da rahoton koke-koken ku yanzu.";
+        languageSwitchEn.style.display = 'inline';
+        languageSwitch.style.display = 'none';
     });
+
+    languageSwitchEn.addEventListener('click', () => {
+        introText.innerText = "You are welcome to International Human Rights. We are here to hear your complaints and secure your rights. We have our officers everywhere in Nigeria, ensuring the protection of human rights. You can now file your complaint, and we will look into it and send our expert officers to assist you. We can track offenders within Nigeria and recover your belongings, then prosecute the offenders. The law prohibits taking the law into your hands. Report your complaint to us now.";
+        languageSwitch.style.display = 'inline';
+        languageSwitchEn.style.display = 'none';
+    });
+
+    deviceTrackingBtn.addEventListener('click', () => {
+        deviceTrackingForm.style.display = 'block';
+        reportEnsureForm.style.display = 'none';
+    });
+
+    reportEnsureBtn.addEventListener('click', () => {
+        reportEnsureForm.style.display = 'block';
+        deviceTrackingForm.style.display = 'none';
+    });
+
+    purchaseOption.addEventListener('change', () => {
+        if (purchaseOption.value !== "phone-ip") {
+            additionalInfoContainer.style.display = 'block';
+        } else {
+            additionalInfoContainer.style.display = 'none';
+        }
+    });
+
+    trackingForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const reportData = {
+            fullName: trackingForm['full-name'].value,
+            phoneNumber: trackingForm['phone-number'].value,
+            emailAddress: trackingForm['email-address'].value,
+            address: trackingForm['address'].value,
+            gender: trackingForm['gender'].value,
+            purchaseOption: trackingForm['purchase-option'].value,
+            additionalInfo: trackingForm['additional-info'].value || 'N/A'
+        };
+
+        try {
+            const response = await fetch('/submit-tracking-report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reportData)
+            });
+
+            if (response.ok) {
+                alert('Korafin ku ya yi nasara. Mun karbi korafin ku kuma za mu tuntube ku nan bada jimawa ba. Ku jira.');
+            } else {
+                alert('An samu kuskure wajen tura korafin.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An samu kuskure yayin turawa korafin.');
+        }
+    });
+
+    ensureForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const ensureData = {
+            fullName: ensureForm['ensure-full-name'].value,
+            phoneNumber: ensureForm['ensure-phone-number'].value,
+            emailAddress: ensureForm['ensure-email-address'].value,
+            homeAddress: ensureForm['home-address'].value,
+            incidentLocation: ensureForm['incident-location'].value,
+            reportDetails: ensureForm['report-details'].value
+        };
+
+        try {
+            const response = await fetch('/submit-ensure-report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ensureData)
+            });
+
+            if (response.ok) {
+                alert('Korafin ku ya yi nasara. Mun karbi korafinku kuma za mu tuntube ku nan bada jimawa ba. Ku jira.');
+            } else {
+                alert('An samu kuskure wajen tura korafin.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An samu kuskure yayin turawa korafin.');
+        }
+    });
+});
 </script>
 </body>
 </html>
