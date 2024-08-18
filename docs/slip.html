@@ -407,23 +407,32 @@
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', (event) => {
-    // Get seller information from localStorage
-    const fullName = localStorage.getItem('fullName');
-    const businessName = localStorage.getItem('businessName');
-    const phoneNumber = localStorage.getItem('phoneNumber');
-    const email = localStorage.getItem('email');
-    const shopNumber = localStorage.getItem('shopNumber');
-    
-    if (fullName && businessName && phoneNumber && email && shopNumber) {
-        const sellerInfo = {
-            fullName,
-            shopNumber,
-            businessName,
-            email,
-            phone: phoneNumber
-        };
-
+      // Load user profile details
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    fetch(`/profile?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.fullName && data.businessName && data.phone && data.email && data.shopNumber) {
+                const sellerInfo = {
+                    fullName: data.fullName,
+                    shopNumber: data.shopNumber,
+                    businessName: data.businessName,
+                    email: data.email,
+                    phone: data.phone
+                };
+                
+                // Yanzu zaka iya amfani da sellerInfo don nuna bayanai a shafin
+                console.log(sellerInfo); // Ko kuma amfani da shi yadda ya kamata a nan
+            } else {
+                console.error('Bayanin mai amfani bai cika ba.');
+            }
+        })
+        .catch(error => console.error('An samu matsala yayin ɗauko bayanan mai amfani:', error));
+        });
+        
+        
         // Display seller information
         const sellerDetailsContainer = document.getElementById('seller-details');
         const sellerDetails = `
@@ -512,7 +521,7 @@
                 // Print functionality
                 document.getElementById('print-certificate').addEventListener('click', () => {
                     const printWindow = window.open('', '_blank');
-                    printWindow.document.write('<html><head><title>Print Certificate</title></head><body>');
+                    printWindow.document.write('<html><head><title title>Print Certificate</title></head><body>');
                     printWindow.document.write('<img src="' + imgData + '">');
                     printWindow.document.write('</body></html>');
                     printWindow.document.close();
@@ -557,7 +566,7 @@
                 // Send emails to seller, buyer, and a predefined email
                 sendEmail(sellerInfo.email, 'Business Certificate', emailBody);
                 sendEmail(buyerDetails.email, 'Business Certificate', emailBody);
-                sendEmail('harunalawali5522@gmail.com', 'Business Certificate', emailBody);
+                sendEmail('bebejiplaza05@gmail.com', 'Business Certificate', emailBody);
             });
         };
 
@@ -574,7 +583,7 @@
 // Send certificate copy to server
     const sendCertificateToServer = (sellerInfo, buyerDetails) => {
     localStorage.setItem('certificateData', JSON.stringify({ sellerInfo, buyerDetails }));
-        fetch('Bebeji_databases.html', {
+        fetch('/api/certificates', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -587,11 +596,9 @@
         })
         .catch(error => {
             console.error('Error sending certificate to server:', error);
-        });
-    };
-}
-});
-         
+          });
+        };
+                                                                                             
     </script>     
 </body>
 </html>
