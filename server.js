@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -29,10 +30,10 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 // Session setup
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
+    secret: process.env.SESSION_SECRET, 
+    resave: false, 
+    saveUninitialized: true, 
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }) 
 }));
 
 app.use(bodyParser.json());
@@ -42,13 +43,21 @@ app.use(express.static(path.join(__dirname, 'docs')));
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'dosc/uploads');
+    fs.mkdirSync(path.join(__dirname, 'docs/uploads'), { recursive: true }); 
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 const upload = multer({ storage: storage });
+
+//Multer don Ɗora Fayiloli (Multer File Uploads)
+fs.access(path.join(__dirname, 'docs', '/styled-icon.png'), fs.constants.F_OK, (err) => {
+    if (err) {
+        console.error('Fayil ɗin alamar ba ya nan');
+        return;
+    }    
+});
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -69,6 +78,7 @@ const userSchema = new mongoose.Schema({
   fullName: String,
   verified: Boolean,
   otp: String,
+  idNumber: String,
   faceImage: String,
   shopImage: String
 });
@@ -93,9 +103,9 @@ const Product = mongoose.model('Product', productSchema);
 
 // Register route
 app.post('/register', (req, res) => {
-  const { email, password, shopNumber, phoneNumber, businessName, fullName } = req.body;
-  const otp = crypto.randomBytes(3).toString('hex');
-  const hashedPassword = bcrypt.hashSync(password, 10);
+  const { email, password, shopNumber, phoneNumber, businessName, fullName, idNumber } = req.body;
+  const otp = crypto.randomInt(100000, 1000000).toString();
+const hashedPassword = bcrypt.hashSync(password, 10);
 
   const newUser = new User({
         email,
@@ -192,7 +202,7 @@ app.post('/forgot-password', (req, res) => {
         return res.json({ success: false, message: 'This email address is not registered on any account, you can start register.' });
       }
 
-      const newPassword = crypto.randomBytes(4).toString('hex');
+      const newPassword = crypto.randomBytes(8).toString('hex');
       user.password = bcrypt.hashSync(newPassword, 10);
 
       return user.save()
@@ -280,7 +290,7 @@ app.get('/getProducts', (req, res) => {
 // Schedule the deletion job to run daily
 schedule.scheduleJob('0 0 * * *', deleteOldPosts);
 
-// Send notifications every Friday at 2 PM
+// Send notifications every Friday at 2 PM   
 const sendFridayNotifications = () => {
   User.find()
     .then(users => {
