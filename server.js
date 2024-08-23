@@ -15,6 +15,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const webpush = require('web-push');
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -24,16 +25,24 @@ const io = socketIo(server);
 const PORT = process.env.PORT || 3000;
 
 // MongoDB setup
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true,
+  serverApi: {
+    version: '1',  
+    strict: true,  
+    deprecationErrors: true  
+  }
+})
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.log('MongoDB connection error:', err));
 
 // Session setup
 app.use(session({
     secret: process.env.SESSION_SECRET, 
     resave: false, 
     saveUninitialized: true, 
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }) 
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }) 
 }));
 
 app.use(bodyParser.json());
@@ -52,7 +61,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //Multer don Ɗora Fayiloli (Multer File Uploads)
-fs.access(path.join(__dirname, 'docs', '/styled-icon.png'), fs.constants.F_OK, (err) => {
+fs.access(path.join(__dirname, 'docs', '/icon.png'), fs.constants.F_OK, (err) => {
     if (err) {
         console.error('Fayil ɗin alamar ba ya nan');
         return;
@@ -301,7 +310,7 @@ const sendFridayNotifications = () => {
           text: `Assalamu alaikum, ${user.fullName}, A yau da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
           attachments: [{
             filename: 'icon.png',
-            path: path.join(__dirname, 'docs', '/styled-icon.png'),
+            path: path.join(__dirname, 'docs', '/icon.png'),
             cid: 'icon' // same cid value as in the html img src
           }]
         });
@@ -333,7 +342,7 @@ const sendPostNotifications = () => {
 'Masu ziyartar shafin ku suna matukar son ganin sabbin kayayyaki masu kyau. Don haka, yana da muhimmanci ku sabunta shafin ku akai-akai da kayan zamani da masu kyau. Wannan zai taimaka wajen jan hankalin masu siya da kuma kara yawan kwastomomi. Koyaushe ku kasance a sahun gaba wajen gabatar da sabbin abubuwa!`,
                 attachments: [{
                   filename: 'icon.png',
-                  path: path.join(__dirname, 'docs', '/styled-icon.png'),
+                  path: path.join(__dirname, 'docs', '/icon.png'),
                   cid: 'ipIcon'
                 }],
                 html:`
@@ -454,140 +463,7 @@ app.get('/api/certificates', (req, res) => {
         res.json(certificates);
     });
 });
-
-// Ajiye certificate
-app.post('/api/certificates-individual', (req, res) => {
-    const {
-        fullName, email, phoneNumber, gender, state, lg, homeAddress, deviceName, deviceIpAddress, certificateNumber, certificateData
-    } = req.body;
-
-    // Ajiye certificate a cikin file
-    const fileName = `Certificate-${certificateNumber}.html`;
-    const filePath = path.join(__dirname, 'certificates', fileName);
-
-    fs.writeFile(filePath, certificateData, (err) => {
-        if (err) {
-            console.error('Failed to save certificate:', err);
-            return res.status(500).json({ success: false, message: 'Failed to save certificate.' });
-        }
-
-        // Aika certificate da hoton icon.png ta email
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Your Device Registration Certificate',
-            html:`
-            <p>${text}</p>
-            <img src="cid:icon" style="width: 30px; height: 30px; border-radius: 50%;" alt="icon">        
-                <p>Dear ${fullName},</p>
-                <p>Attached is your device registration certificate with the following details:</p>
-                <ul>
-                    <li><strong>Certificate Number:</strong> ${certificateNumber}</li>
-                    <li><strong>Device Name:</strong> ${deviceName}</li>
-                    <li><strong>Device IP Address:</strong> ${deviceIpAddress}</li>
-                    <li><strong>Date:</strong> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</li>
-                </ul>
-                <p>Please keep this certificate safe.</p>
-                <p>Best regards,</p>
-                <p>Bebeji Plaza Team</p>
-            `,
-            attachments: [
-                {
-                    filename: fileName,
-                    path: filePath
-                },
-                {
-                    filename: 'icon.png',
-                    path: path.join(__dirname, '/docs/icon.png'),
-                    cid: 'icon@bebejiplaza'
-                }
-            ]
-        };
-        
- // Prepare mail options for Bebeji Plaza (admin)
-    const mailOptionsAdmin = {
-        from: process.env.EMAIL_USER,
-        to: 'bebejiplaza05@gmail.com',
-        subject: `New Certificate Issued to ${fullName}`,
-        html: `
-            <p>${text}</p>
-            <img src="cid:icon" style="width: 30px; height: 30px; border-radius: 50%;" alt="icon">
-        
-            <p>Dear Bebeji Plaza Team,</p>
-            <p>A new device registration certificate has been issued with the following details:</p>
-            <ul>
-                <li><strong>Full Name:</strong> ${fullName}</li>
-                <li><strong>Email:</strong> ${email}</li>
-                <li><strong>Certificate Number:</strong> ${certificateNumber}</li>
-                <li><strong>Device Name:</strong> ${deviceName}</li>
-                <li><strong>Device IP Address:</strong> ${deviceIpAddress}</li>
-                <li><strong>Date:</strong> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</li>
-            </ul>
-            <p>Best regards,</p>
-            <p>System Notification</p>
-        `,
-        attachments: [
-            {
-                filename: 'certificate.pdf',
-                path: path.join(__dirname, 'path_to_certificate.pdf') // Replace with actual path to the certificate file
-            },
-            {
-                filename: 'icon.png',
-                path: path.join(__dirname, '/docs/icon.png'),
-                cid: 'icon@bebejiplaza'
-            }
-        ]
-    };
-
-    // Send email to user
-    transporter.sendMail(mailOptionsUser, (error, info) => {
-        if (error) {
-            console.error('Failed to send email to user:', error);
-            return res.status(500).json({ success: false, message: 'Failed to send email to user.' });
-        }
-
-        console.log('Email sent to user:', info.response);
-
-        // Send email to Bebeji Plaza admin
-        transporter.sendMail(mailOptionsAdmin, (error, info) => {
-            if (error) {
-                console.error('Failed to send email to admin:', error);
-                return res.status(500).json({ success: false, message: 'Failed to send email to admin.' });
-            }
-
-            console.log('Email sent to admin:', info.response);
-            res.status(200).json({ success: true, message: 'Certificate saved and emails sent successfully.' });
-        });
-    });
-});
-
-// Serve certificates
-app.get('/api/certificates-individual', (req, res) => {
-    const certificatesDir = path.join(__dirname, 'certificates');
-
-    fs.readdir(certificatesDir, (err, files) => {
-        if (err) {
-            console.error('Failed to read certificates directory:', err);
-            return res.status(500).json({ success: false, message: 'Failed to read certificates directory.' });
-        }
-
-        const certificates = files.map(file => ({
-            fileName: file,
-            filePath: `/certificates/${file}`
-        }));
-
-        res.json(certificates);
-    });
-});
-
+   
 //report
 app.post('/saveTrackingReport', async (req, res) => {
     const reportData = req.body;
@@ -629,5 +505,4 @@ app.get('/', (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT} with 3000 posts`);
-});
 });
