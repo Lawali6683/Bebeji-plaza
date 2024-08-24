@@ -24,9 +24,11 @@ const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
 
+const dbURI = process.env.MONGODB_URI || 'your-mongodb-uri-here';
+
 // MongoDB setup
-mongoose.connect(process.env.MONGODB_URI, { 
-  useNewUrlParser: true, 
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: {
     version: '1',  
@@ -52,21 +54,15 @@ app.use(express.static(path.join(__dirname, 'docs')));
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    fs.mkdirSync(path.join(__dirname, 'docs/uploads'), { recursive: true }); 
+    const uploadPath = path.join(__dirname, 'docs/uploads');
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath); 
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 const upload = multer({ storage: storage });
-
-//Multer don Ɗora Fayiloli (Multer File Uploads)
-fs.access(path.join(__dirname, 'docs', '/icon.png'), fs.constants.F_OK, (err) => {
-    if (err) {
-        console.error('Fayil ɗin alamar ba ya nan');
-        return;
-    }    
-});
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -132,7 +128,7 @@ const hashedPassword = bcrypt.hashSync(password, 10);
     .then(user => {
       transporter.sendMail({
         to: email,
-        subject: 'OTP Verification',
+        subject: 'Email Verification',
         text: `Hello ${fullName} from Bebeji Plaza phone center. This is your OTP verify email code: ${otp}`
       });
       res.json({ success: true, message: 'Registration successful. Check your email for your OTP verify email code.' });
@@ -193,10 +189,10 @@ app.post('/login', (req, res) => {
 
       const passwordMatch = bcrypt.compareSync(password, user.password);
       if (!passwordMatch) {
-        return res.json({ success: false, message: 'The password you entered is not correct.' });
+        return res.json({ success: false, message: 'The password you enter is not correct.' });
       }
 
-      res.json({ success: true, message: 'Successfully logged in your account.' });
+      res.json({ success: true, message: 'Successfully login  your account.' });
     })
     .catch(error => res.status(500).json({ success: false, message: 'Error during login.' }));
 });
@@ -300,24 +296,24 @@ app.get('/getProducts', (req, res) => {
 schedule.scheduleJob('0 0 * * *', deleteOldPosts);
 
 // Send notifications every Friday at 2 PM   
-const sendFridayNotifications = () => {
-  User.find()
-    .then(users => {
-      users.forEach(user => {
-        transporter.sendMail({
-          to: user.email,
-          subject: 'Happy Juma\'a!',
-          text: `Assalamu alaikum, ${user.fullName}, A yau da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
-          attachments: [{
-            filename: 'icon.png',
-            path: path.join(__dirname, 'docs', '/icon.png'),
-            cid: 'icon' // same cid value as in the html img src
-          }]
-        });
-      });
-    })
+const iconPath = path.join(__dirname, 'docs', '/icon.png');
+fs.access(iconPath, fs.constants.F_OK, (err) => {
+  if (!err) {
+    transporter.sendMail({
+      to: user.email,
+      subject: 'Happy Juma\'a!',
+      text: `Assalamu alaikum, ${user.fullName}, Barka da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana da matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
+      attachments: [{
+        filename: 'icon.png',
+        path: iconPath,
+        cid: 'icon'
+      }]
+    });
+  } else {
+    console.error('Fayil ɗin alamar ba ya nan don haka ba za a iya tura shi ba.');
+  };
+  }) 
     .catch(error => console.log('Error sending Friday notifications:', error));
-};
 
 // Schedule the Friday notification job
 schedule.scheduleJob('0 14 * * 5', sendFridayNotifications);
