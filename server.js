@@ -11,6 +11,7 @@ const path = require('path');
 const schedule = require('node-schedule');
 const http = require('http');
 const socketIo = require('socket.io');
+const cron = require('node-cron');
 const fs = require('fs');
 const dotenv = require('dotenv');
 const webpush = require('web-push');
@@ -295,28 +296,42 @@ app.get('/getProducts', (req, res) => {
 // Schedule the deletion job to run daily
 schedule.scheduleJob('0 0 * * *', deleteOldPosts);
 
-// Send notifications every Friday at 2 PM   
-const iconPath = path.join(__dirname, 'docs', '/icon.png');
-fs.access(iconPath, fs.constants.F_OK, (err) => {
-  if (!err) {
-    transporter.sendMail({
-      to: user.email,
-      subject: 'Happy Juma\'a!',
-      text: `Assalamu alaikum, ${user.fullName}, Barka da rana mai albarka ta Juma'a, muna fatan kuna cikin koshin lafiya da farin ciki. Kasuwancin ku yana da matukar muhimmanci a gare mu a Bebeji Plaza, kuma muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa kowace rana. Kada ku bari wannan damar ta wuce ku; ku dora sababbin kayayyakin ku domin cimma babbar nasara!. Muna godiya da kasancewa tare da mu, daga Bebeji Plaza - Cibiyar Kasuwancin ku.`,
-      attachments: [{
-        filename: 'icon.png',
-        path: iconPath,
-        cid: 'icon'
-      }]
-    });
-  } else {
-    console.error('Fayil ɗin alamar ba ya nan don haka ba za a iya tura shi ba.');
-  };
-  }) 
-    .catch(error => console.log('Error sending Friday notifications:', error));
+// Send notifications every Friday at 2 PM     
+const iconPath = path.join(__dirname, 'docs/to/icon.png'); 
 
-// Schedule the Friday notification job
-schedule.scheduleJob('0 14 * * 5', sendFridayNotifications);
+cron.schedule('0 9 * * 5', async () => {
+    try {        
+        const users = await User.find({});
+                        fs.access(iconPath, fs.constants.F_OK, (err) => {
+            if (!err) {
+                                 users.forEach((user) => {
+                    transporter.sendMail({
+                        to: user.email,
+                        subject: "Happy Juma'a! Da ga Bebeji plaza",
+                        text: "Muna muku fatan alheri da albarka a wannan ranar Juma'a. Muna farin cikin ganin yadda masu ziyartar shafin ku ke karuwa ",
+                        attachments: [
+                            {
+                                filename: 'icon.png',
+                                path: iconPath,
+                                cid: 'icon@uniqueid'
+                            }
+                        ]
+                    }, (error, info) => {
+                        if (error) {
+                            console.error('An samu matsala wajen aika email ga:', user.email, error);
+                        } else {
+                            console.log('An aika email ga:', user.email);
+                        }
+                    });
+                });
+            } else {
+                console.error('Fayil ɗin alamar ba ya nan don haka ba za a iya tura shi ba.');
+            }
+        });
+    } catch (err) {
+        console.error('An samu matsala wajen nemo users daga database:', err);
+    }
+});
 
 // Send notifications for popular posts twice a day
 const sendPostNotifications = () => {
