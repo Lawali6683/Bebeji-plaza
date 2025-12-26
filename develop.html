@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard na Developer | Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+       
+        :root {
+            --primary-color: #003366; 
+            --secondary-color: #CC0000; 
+            --bg-color: #f4f7f6; 
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+     
+        .header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 20px 30px;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header h1 i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        
+        .main-container {
+            flex-grow: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-grid {
+            display: grid;         
+            grid-template-columns: 1fr; 
+            gap: 25px;
+            width: 100%;
+            max-width: 900px; 
+            margin-top: 30px;
+        }
+
+     
+        .menu-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            text-decoration: none; 
+            color: var(--text-color);
+            border-left: 5px solid var(--secondary-color); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            background-color: #f0f0f5; 
+            border-left-color: var(--primary-color);
+        }
+
+        .menu-card .icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .menu-card:hover .icon {
+            color: var(--secondary-color);
+        }
+
+        .menu-card h2 {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .menu-card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+       
+        .footer {
+            margin-top: auto;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #999;
+            border-top: 1px solid #ddd;
+        }
+
+        
+        @media (min-width: 600px) {
+            .menu-grid {
+               
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .header {
+                padding: 20px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><i class="fas fa-code"></i> Developer Dashboard</h1>
+        <p>Gudanar da Ayyukan Shagon Bebeji Plaza</p>
+    </div>
+
+    <div class="main-container">
+        <h2>Zaɓi Aikin da Kake Son Yi</h2>
+
+        <div class="menu-grid">
+            
+            <a href="ads.html" class="menu-card">
+                <i class="fas fa-bullhorn icon"></i>
+                <h2>Advicement Post (Ads)</h2>
+                <p>Don ƙirƙira, gyara, ko sanya tallace-tallace a shafin.</p>
+                <i class="fas fa-arrow-right" style="margin-top: 15px; color: var(--secondary-color);"></i>
+            </a>
+
+            <a href="clearData.html" class="menu-card">
+                <i class="fas fa-broom icon"></i>
+                <h2>Clear Long Data</h2>
+                <p>Don share ko sarrafa tsofaffin bayanai masu nauyi daga Database.</p>
+                <i class="fas fa-arrow-right" style="margin-top: 15px; color: var(--secondary-color);"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        © Bebeji Plaza | Developer Haruna Lawali Access Only
+    </div>
+
+</body>
+</html>

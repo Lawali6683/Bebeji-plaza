@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBEJI PLAZA - Forgot Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --gradient-start: rgba(255, 0, 170, 0.6); 
+            --gradient-end: transparent;
+        }
+        
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(76, 114, 214, 0.0);
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+        
+        .card-container {
+            position: relative;
+            background-color: var(--secondary-bg);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            overflow: hidden;
+            border: 1px solid var(--accent-blue);
+            z-index: 10;
+            opacity: 1; 
+            transition: opacity 0.8s ease-in-out;
+        }
+        
+      
+
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%; 
+            height: 150%;
+            background: conic-gradient(
+                from 0deg,
+                var(--gradient-end), 
+                var(--gradient-start) 45%, 
+                var(--gradient-end) 50%,
+                var(--gradient-end) 95%
+            );
+            z-index: -1;
+            animation: rotate-shine 15s linear infinite;
+            transform-origin: center;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+        
+        @keyframes rotate-shine {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        header {
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(76, 114, 214, 0.4);
+            border-radius: 10px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--accent-green);
+            font-weight: 800;
+        }
+        
+        header p {
+            font-size: 1.0em;
+            color: var(--text-primary);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            color: var(--accent-blue);
+            border-bottom: 2px solid rgba(76, 114, 214, 0.4);
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+        }
+        
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(76, 114, 214, 0.5);
+            border-radius: 10px;
+            background: rgba(76, 114, 214, 0.1);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(232, 232, 255, 0.5);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 153, 0.1);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+        
+        .submit-btn {
+            background: var(--accent-green);
+            color: var(--primary-bg);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 800;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.4);
+        }
+        
+        .submit-btn:hover {
+            background: #00CC7A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 153, 0.6);
+        }
+        
+        .submit-btn:disabled {
+            background: rgba(76, 114, 214, 0.5);
+            color: rgba(232, 232, 255, 0.7);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        .login-prompt {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .login-prompt a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .login-prompt a:hover {
+            color: var(--accent-green);
+            text-decoration: underline;
+        }
+        
+        #notificationContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .notification {
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            animation: slideInRight 0.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 350px;
+            border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+        
+        .notification.success {
+            border-left: 5px solid var(--accent-green);
+        }
+        
+        .notification.error {
+            border-left: 5px solid var(--danger-red);
+        }
+        
+        .notification.info {
+            border-left: 5px solid var(--accent-blue);
+        }
+        
+        .notification .icon {
+            font-size: 1.5em;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+       
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+            background-size: 400% 400%;
+            animation: gradientMove 7s ease infinite;
+            z-index: 999999;
+            color: #00eaff;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+            visibility: hidden; 
+            opacity: 0;           
+        }
+        #preloader.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .pulse {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid #00eaff;
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            opacity: 0.5;
+        }
+        
+        @keyframes pulseAnim {
+            0% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.6); opacity: 0.4; }
+        }
+        
+        .logo-wrapper {
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+            animation: floatLogo 3s infinite ease-in-out; 
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+        }
+        
+        @keyframes floatLogo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .orbit {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px dashed #00eaff;
+            animation: spin 5s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: #00eaff;
+            letter-spacing: 2px;
+            animation: fadeText 2s infinite;
+        }
+        
+        @keyframes fadeText {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+       
+        
+        @media (max-width: 600px) {
+            .card-container {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+            .form-section h2 {
+                font-size: 1.5em;
+            }
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+            #notificationContainer {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader" class="hidden"> <div class="loader-container">
+            <div class="orbit"></div>
+            <div class="pulse"></div>
+            <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <header>
+            <img src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI PLAZA Logo" class="logo">
+            <h1>BEBEJI PLAZA</h1>
+            <p>Enter your registered email address to reset your password.</p>
+        </header>
+        <form id="forgotForm">
+            <div class="form-section">
+                <h2>Reset Your Password</h2>
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email address" required autocomplete="email">
+                </div>
+                
+                <button type="submit" class="submit-btn" id="sendResetLinkBtn">Send Reset Link</button>
+                <p class="login-prompt">Remember your password? <a href="login.html">Login here</a></p>
+            </div>
+        </form>
+    </div>
+    <div id="notificationContainer"></div>
+    
+    <script type="module">
+        import { app } from './firebase.js';
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+        
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const dbRef = ref(database);
+
+        function togglePreloader(show, text = "Loading...") {
+            const preloader = document.getElementById('preloader');
+            const loadingText = preloader.querySelector('.loading-text');
+            const cardContainer = document.querySelector('.card-container');
+            
+            if (show) {
+                loadingText.textContent = text;
+                preloader.classList.remove('hidden');
+                preloader.classList.add('visible');
+                cardContainer.style.opacity = '0';
+                cardContainer.style.pointerEvents = 'none'; 
+            } else {
+                preloader.classList.remove('visible');
+                preloader.classList.add('hidden');
+                cardContainer.style.opacity = '1';
+                cardContainer.style.pointerEvents = 'auto'; 
+            }
+        }
+
+        function showNotification(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.classList.add('notification', type);
+            
+            let icon = '';
+            if (type === 'success') icon = '<i class="fas fa-check-circle icon"></i>';
+            else if (type === 'error') icon = '<i class="fas fa-times-circle icon"></i>';
+            else icon = '<i class="fas fa-info-circle icon"></i>';
+
+            notification.innerHTML = `
+                ${icon}
+                <span class="message">${message}</span>
+                <button class="close-btn">&times;</button>
+            `;
+            container.appendChild(notification);
+            
+            notification.querySelector('.close-btn').addEventListener('click', () => {
+                notification.style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => notification.remove(), 500);
+            });
+            
+            if (duration) {
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.5s forwards';
+                    setTimeout(() => notification.remove(), 500);
+                }, duration);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const forgotForm = document.getElementById('forgotForm');
+            const emailInput = document.getElementById('email');
+            const sendResetLinkBtn = document.getElementById('sendResetLinkBtn');
+                      
+            document.querySelector('.card-container').style.opacity = '1';
+
+            let submitting = false; 
+            
+            forgotForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                
+                if (submitting) return; 
+                
+                const email = emailInput.value.trim();
+
+                if (!email) {
+                    showNotification('Please enter your email address.', 'error');
+                    return;
+                }
+
+                submitting = true;
+                sendResetLinkBtn.disabled = true;
+                sendResetLinkBtn.textContent = "Sending..."; 
+                
+               
+                togglePreloader(true, "Sending Reset Link...");
+                
+                try {
+                 
+                    const usersSnapshot = await get(child(dbRef, `users`));
+                    let emailExistsInDB = false;
+                    
+                    if (usersSnapshot.exists()) {
+                        usersSnapshot.forEach((childSnapshot) => {
+                            const userData = childSnapshot.val();
+                            if (userData.email === email) {
+                                emailExistsInDB = true;
+                                return true;
+                            }
+                        });
+                    }
+
+                    if (!emailExistsInDB) {
+                        showNotification("This email address is not registered with BEBEJI PLAZA. Please check your email or register.", 'error', 8000);
+                        return;
+                    }
+
+                    await sendPasswordResetEmail(auth, email);
+
+                    showNotification(
+                        "A password reset link has been sent to your email address. <br><b>Please check your inbox now</b>.<br>If you don't see the email within 2 minutes, check your 'Spam' or 'Junk' folder.",
+                        'success',
+                        10000 
+                    );
+                    
+                    emailInput.value = '';
+                } catch (error) {
+                    let errorMessage = "An unknown error occurred. Please try again.";
+
+                    if (error.code === 'auth/invalid-email') {
+                        errorMessage = "The email address is not valid.";
+                    } else if (error.code === 'auth/user-not-found') {
+                        errorMessage = "No user found with this email address.";
+                    } else if (error.code === 'auth/network-request-failed') {
+                        errorMessage = "Network error. Please check your internet connection and try again.";
+                    } else if (error.message && error.message.includes('auth/invalid-api-key')) {
+                         errorMessage = "Configuration Error: The Firebase API Key is invalid. Please contact support.";
+                    }
+                    
+                    showNotification(`${errorMessage} <br> <small>If the problem persists, please contact administration.</small>`, 'error', 8000);
+                } finally {
+                    submitting = false;
+                    sendResetLinkBtn.disabled = false;
+                    sendResetLinkBtn.textContent = "Send Reset Link";
+                 
+                    togglePreloader(false); 
+                }
+            });
+        });
+    </script>
+</body>
+</html>

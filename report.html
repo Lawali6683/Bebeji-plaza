@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebeji Plaza Report Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+         :root {
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff88;
+            --dark-deep: #050a18;
+            --glass-white: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-deep);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 40%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        
+
+       
+
+        #report-container {
+            width: 95%;
+            max-width: 1100px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: var(--accent-green);
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
+        }
+
+        
+        .main-buttons-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background-color: var(--secondary-bg);
+            padding: 10xp 5px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px var(--shadow-color);
+           border: 1px solid #baff80;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-decoration: none;
+            left: 10px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-green);
+        }
+
+        
+        .lost-device-card {
+            border-left: 6px solid red;
+        }
+        .lost-device-card:hover {
+            border-color: var(--danger-red);
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.3);
+         
+        }
+       
+ 
+        .lost-device-card i {
+            color: var(--danger-red);
+            font-size: 3em;
+        }
+        .lost-device-card h2 {
+            color: white;
+            font-size: 1.4em;
+        }
+        
+        .card i { font-size: 2.5em; color: var(--accent-blue); }
+        .card h2 { font-size: 1.2em; color: var(--text-primary); }
+        .card p { font-size: 0.85em; color: #94a3b8; }
+
+        .hidden { display: none !important; }
+ 
+       
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, rgba(255, 255, 255, 0.05), transparent 50%);
+           
+              
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: var(--danger-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5em; }
+            .main-buttons-section { grid-template-columns: 1fr; }
+        }
+        
+        
+        .brand-logo {
+            width: 90px;
+            height: 90px;
+            background: var(--glass-white);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 242, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
+        }
+
+        .brand-logo img {
+            width: 60px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="brand-logo">
+            <img src="https://i.imgur.com/MNooQYo.png" alt="Logo">
+        </div>
+        
+
+    <div id="report-container">
+        <h1><i class="fas fa-shield-alt"></i> Bebeji Plaza Support Center</h1>
+
+        <div class="main-buttons-section">
+            
+            <a href="verify.html" class="card lost-device-card">
+                <i style="color: white;" class="fas fa-search-location"></i>
+                <h2 style="color: white;">LOST DEVICE?</h2>
+                <p>Click here to report your stolen or missing device instantly.</p>
+            </a>
+
+            <div class="card" onclick="showForm('policy')">
+                <i class="fas fa-balance-scale"></i>
+                <h2>Report Policy</h2>
+                <p>Report trade violations or human rights issues.</p>
+            </div>
+
+            <div class="card" onclick="showForm('dev')">
+                <i class="fas fa-code"></i>
+                <h2>Technical Support</h2>
+                <p>Report app bugs or system errors to developers.</p>
+            </div>
+
+        </div>
+
+        <div id="policy-form" class="report-form card hidden" style="cursor: default;">
+            <h2>Policy Contact Channels</h2>
+            <p>Email: bebejiplaza@gmail.com</p>
+            <button class="back-btn" onclick="hideForms()">Back</button>
+        </div>
+
+        <div id="dev-form" class="report-form card hidden" style="cursor: default;">
+            <h2>Development Team Channels</h2>
+            <p>Email: harunalawali5522@gmail.com</p>
+            <button class="back-btn" onclick="hideForms()">Back</button>
+        </div>
+
+    </div>
+
+    <script>
+        function showForm(id) {
+            document.querySelector('.main-buttons-section').classList.add('hidden');
+            document.getElementById(id + '-form').classList.remove('hidden');
+        }
+
+        function hideForms() {
+            document.querySelectorAll('.report-form').forEach(f => f.classList.add('hidden'));
+            document.querySelector('.main-buttons-section').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

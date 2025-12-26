@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBEJI PLAZA - Account Action</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+    
+    <style>
+       
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --neon-blue: #00eaff;
+            --gradient-start: rgba(255, 0, 170, 0.6); 
+            --gradient-end: transparent;
+        }
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(76, 114, 214, 0.0);
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+        .container {
+            position: relative;
+            background-color: var(--secondary-bg);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            width: 100%;
+            max-width: 500px; 
+            text-align: center;
+            overflow: hidden;
+            border: 1px solid var(--accent-blue);
+            z-index: 10;        
+            opacity: 1; 
+            visibility: visible;
+        }
+       
+     
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%; 
+            height: 150%;
+            background: conic-gradient(
+                var(--gradient-end), 
+                var(--gradient-start) 45%, 
+                var(--gradient-end) 50%,
+                var(--gradient-end) 95%
+            );
+            z-index: -1;
+            animation: rotate-shine 15s linear infinite;
+            transform-origin: center;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+        @keyframes rotate-shine {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        header {
+            margin-bottom: 30px;
+        }
+        .logo {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(76, 114, 214, 0.4);
+            border-radius: 50%;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--accent-green);
+            font-weight: 800;
+        }
+        header p {
+            font-size: 1.0em;
+            color: var(--text-primary);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        .form-section {
+            background: rgba(76, 114, 214, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 114, 214, 0.4);
+        }
+        .form-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            border-bottom: 2px solid rgba(76, 114, 214, 0.3);
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(76, 114, 214, 0.5);
+            border-radius: 10px;
+            background: rgba(76, 114, 214, 0.1);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+        .form-group input::placeholder {
+            color: rgba(232, 232, 255, 0.5);
+        }
+        .form-group input:focus {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 153, 0.1);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+        .password-wrapper .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--accent-blue);
+            font-size: 1.1em;
+            transition: color 0.2s;
+        }
+        .password-wrapper .toggle-password:hover {
+            color: var(--accent-green);
+        }
+        .submit-btn {
+            background: var(--accent-green);
+            color: var(--primary-bg);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 800;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.4);
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background: #00CC7A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 153, 0.6);
+        }
+        .submit-btn:disabled {
+            background: rgba(76, 114, 214, 0.5);
+            color: rgba(232, 232, 255, 0.7);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .login-prompt {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .login-prompt a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .login-prompt a:hover {
+            color: var(--accent-green);
+            text-decoration: underline;
+        }
+        #notificationContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .notification {
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            animation: slideInRight 0.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 350px;
+            border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+        .notification.success {
+            border-left: 5px solid var(--accent-green);
+        }
+        .notification.error {
+            border-left: 5px solid var(--danger-red);
+        }
+        .notification.info {
+            border-left: 5px solid var(--accent-blue);
+        }
+        .notification .icon {
+            font-size: 1.5em;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+       
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+            background-size: 400% 400%;
+            animation: gradientMove 7s ease infinite;
+            z-index: 999999;
+            color: var(--neon-blue);
+            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+         
+            visibility: hidden;
+            opacity: 0;
+        }
+        #preloader.active { 
+            opacity: 1;
+            visibility: visible;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .pulse {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--neon-blue);
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            opacity: 0.5;
+        }
+        @keyframes pulseAnim {
+            0% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.6); opacity: 0.4; }
+        }
+        .logo-wrapper {
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+            animation: floatLogo 3s infinite ease-in-out; 
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+        }
+        @keyframes floatLogo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+        .orbit {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px dashed var(--neon-blue);
+            animation: spin 5s linear infinite;
+            opacity: 0.3;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .loading-text {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: var(--neon-blue);
+            letter-spacing: 2px;
+            animation: fadeText 2s infinite;
+        }
+        @keyframes fadeText {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+            .form-section h2 {
+                font-size: 1.5em;
+            }
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+            #notificationContainer {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="orbit"></div>
+            <div class="pulse"></div>
+            <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+            <div class="loading-text">Processing Request...</div>
+        </div>
+    </div>
+    <div class="container" id="mainContainer"> 
+        <header>
+            <img src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI PLAZA Logo" class="logo">
+            <h1>BEBEJI PLAZA</h1>
+            <p>Secure Account Action</p>
+        </header>
+        <div class="form-section" id="mainContentArea">
+            <h2>Verifying Link...</h2>
+            <p>Please wait while we authenticate your request.</p>
+        </div>
+    </div>
+    <div id="notificationContainer"></div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+        import { getAuth, applyActionCode, verifyPasswordResetCode, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+               
+        import { app } from './firebase.js';
+
+        const preloader = document.getElementById('preloader');
+        const mainContainer = document.getElementById('mainContainer');
+        const mainContentArea = document.getElementById('mainContentArea'); 
+        
+       
+        function showPreloader(message = "Processing Request...") {
+            document.querySelector('.loading-text').textContent = message;
+            preloader.classList.add('active');
+        }
+
+        function hidePreloader() {
+            preloader.classList.remove('active');
+        }
+
+        function showNotification(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.classList.add('notification', type);
+            
+            let icon = '';
+            if (type === 'success') icon = '<i class="fas fa-check-circle icon"></i>';
+            else if (type === 'error') icon = '<i class="fas fa-times-circle icon"></i>';
+            else icon = '<i class="fas fa-info-circle icon"></i>';
+
+            notification.innerHTML = `
+                ${icon}
+                <span class="message">${message}</span>
+                <button class="close-btn">&times;</button>
+            `;
+            container.appendChild(notification);
+            
+            notification.querySelector('.close-btn').addEventListener('click', () => {
+                notification.style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => notification.remove(), 500);
+            });
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.5s forwards';
+                    setTimeout(() => notification.remove(), 500);
+                }, duration);
+            }
+        }
+
+        function togglePasswordVisibility(icon) {
+            const input = icon.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+   
+        function showError(message, redirectPage = 'login.html', redirectDelay = 5000) {
+            hidePreloader();
+
+            mainContentArea.innerHTML = `
+                <h2>Action Error <i class="fas fa-exclamation-triangle" style="color: var(--danger-red);"></i></h2>
+                <p>${message}</p>
+                <p class="login-prompt" style="margin-top: 20px;">
+                    <a href="${redirectPage}">Go to ${redirectPage.includes('forgot') ? 'Forgot Password Page' : 'Login Page'}</a>
+                </p>
+            `;
+            
+            const pageName = redirectPage.includes('forgot') ? 'Forgot Password page' : 'Login page';
+            
+            showNotification(`${message} <br> <small>Redirecting to ${pageName} in ${redirectDelay / 1000} seconds...</small>`, 'error', 0);
+
+            // Redirect bayan ɗan lokaci
+            setTimeout(() => {
+                window.location.href = redirectPage;
+            }, redirectDelay);
+        }
+
+        async function handleVerifyEmail(auth, applyActionCode, oobCode) {
+            try {
+                showPreloader("Verifying your email..."); 
+                await applyActionCode(auth, oobCode);
+                
+               
+                hidePreloader(); 
+                mainContentArea.innerHTML = `
+                    <h2>Verification Successful! <i class="fas fa-check-circle" style="color: var(--accent-green);"></i></h2>
+                    <p>Your email address has been successfully verified. You will be securely redirected to the login page now.</p>
+                `;
+                
+                showNotification("Email Verified! You can now log in.", 'success', 3000);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3200);
+
+            } catch (error) {
+               
+                let errorMessage = 'This verification link is invalid, expired, or has already been used.';
+                if (error.code === 'auth/expired-action-code') {
+                    errorMessage = 'The verification link has expired. Please request a new one.';
+                } else if (error.code === 'auth/invalid-action-code') {
+                    errorMessage = 'The verification link is invalid. Please check your email or request a new one.';
+                }
+                
+                showError(errorMessage, 'register.html'); 
+            }
+        }
+
+        async function handleResetPassword(auth, verifyPasswordResetCode, confirmPasswordReset, oobCode) {
+            let email;
+            try {
+                showPreloader("Checking password reset link..."); 
+
+               
+                email = await verifyPasswordResetCode(auth, oobCode);
+              
+                hidePreloader(); 
+                mainContentArea.innerHTML = `
+                    <h2>Reset Password for: ${email}</h2>
+                    <p>Please enter your new password twice.</p>
+                    <form id="passwordResetForm">
+                        <div class="form-group">
+                            <label for="newPassword"><i class="fas fa-key"></i> New Password:</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="newPassword" placeholder="Enter new password (min. 6 characters)" required>
+                                <i class="fas fa-eye toggle-password"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword"><i class="fas fa-lock"></i> Confirm New Password:</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
+                                <i class="fas fa-eye toggle-password"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn" id="resetPasswordButton">Save New Password</button>
+                    </form>
+                `;
+
+                mainContentArea.querySelectorAll('.toggle-password').forEach(icon => {
+                    icon.addEventListener('click', () => togglePasswordVisibility(icon));
+                });
+
+                document.getElementById("passwordResetForm").addEventListener("submit", async (event) => {
+                    event.preventDefault();
+                    
+                    const newPasswordInput = document.getElementById("newPassword");
+                    const confirmNewPasswordInput = document.getElementById("confirmNewPassword");
+                    const resetPasswordButton = document.getElementById("resetPasswordButton");
+                    
+                    const newPassword = newPasswordInput.value.trim();
+                    const confirmNewPassword = confirmNewPasswordInput.value.trim();
+
+                    if (!newPassword || !confirmNewPassword) {
+                        showNotification("Please fill in both password fields.", 'error');
+                        return;
+                    }
+                    if (newPassword.length < 6) { 
+                        showNotification("Password must be at least 6 characters long.", 'error');
+                        return;
+                    }
+                    if (newPassword !== confirmNewPassword) {
+                        showNotification("Passwords do not match.", 'error');
+                        return;
+                    }
+                    
+                 
+                    resetPasswordButton.disabled = true;
+                    resetPasswordButton.textContent = "Saving...";
+                    showPreloader("Saving new password..."); 
+                    
+                    try {
+                        await confirmPasswordReset(auth, oobCode, newPassword);
+                        
+                       
+                        hidePreloader(); 
+                        mainContentArea.innerHTML = `
+                            <h2>Password Reset Successful! <i class="fas fa-check-circle" style="color: var(--accent-green);"></i></h2>
+                            <p>Your password has been successfully reset. You will be redirected to the login page shortly.</p>
+                        `;
+
+                        showNotification("Password Successfully Reset! Redirecting...", 'success', 3000);
+                        
+                       
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 3200);
+
+                    } catch (e) {
+                       
+                        let errorMessage = "An error occurred while saving your new password. Please try again.";
+                        if (e.code === 'auth/weak-password') {
+                            errorMessage = "The new password is too weak. Please choose a stronger one.";
+                        } else if (e.code === 'auth/expired-action-code' || e.code === 'auth/invalid-action-code') {
+                            errorMessage = "This password reset link is invalid or has expired. Please request a new one.";
+                            showError(errorMessage, 'forgot.html'); 
+                            return; 
+                        } 
+                        
+                        showNotification(`${errorMessage} <br> <small>If the problem persists, please contact administration.</small>`, 'error', 8000);
+                                               
+                        resetPasswordButton.disabled = false;
+                        resetPasswordButton.textContent = "Save New Password";
+                        hidePreloader(); 
+                    }
+                });
+
+            } catch (error) {
+               
+                let errorMessage = 'This password reset link is invalid or has expired. Please request a new link.';
+                if (error.code === 'auth/invalid-action-code') {
+                    errorMessage = 'The password reset link is invalid. Please check your email or request a new one.';
+                }
+                
+                showError(errorMessage, 'forgot.html');
+            }
+        }
+        
+        function handleAccountAction() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const oobCode = urlParams.get('oobCode');
+            const mode = urlParams.get('mode');
+           
+            if (!oobCode || !mode) {                
+                showError('Invalid action link. Missing action code or mode.', 'login.html', 5000);
+                return;
+            }
+
+          
+            const auth = getAuth(app);
+
+            if (mode === 'verifyEmail') {
+                handleVerifyEmail(auth, applyActionCode, oobCode);
+            } else if (mode === 'resetPassword') {
+                handleResetPassword(auth, verifyPasswordResetCode, confirmPasswordReset, oobCode);
+            } else {
+                showError('An error occurred. The requested action is unknown.', 'login.html', 5000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+           
+             handleAccountAction();
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Verification - Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        :root { 
+            --primary: #002244; --accent-blue: #4C72D6; --danger-red: #e74c3c; 
+            --accent-green: #2ecc71; --secondary-bg: #1e1e2f; --text-primary: #e8e8ff;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f9; margin: 0; padding: 15px; }
+        .container { max-width: 600px; margin: 0 auto; }
+
+        /* Notification Container */
+        #notificationContainer {
+            position: fixed; top: 20px; right: 20px; z-index: 10000;
+            display: flex; flex-direction: column; gap: 12px; max-width: 380px; pointer-events: none;
+        }
+        .notification {
+            position: relative; background-color: var(--secondary-bg); color: var(--text-primary);
+            padding: 15px 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; gap: 15px; opacity: 0; transform: translateX(100%);
+            animation: slideInRight 0.5s forwards; pointer-events: all; border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+        .notification.error { border-left: 5px solid var(--danger-red); }
+        .notification.success { border-left: 5px solid var(--accent-green); }
+        @keyframes slideInRight { to { transform: translateX(0); opacity: 1; } }
+
+        /* Search Card */
+        .search-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .search-options { display: flex; gap: 10px; margin-bottom: 20px; }
+        .opt-btn { flex: 1; padding: 10px; border: 2px solid #eee; border-radius: 8px; background: #fff; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s; }
+        .opt-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .input-group { display: flex; gap: 8px; }
+        input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; outline: none; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* Scanner */
+        #scanner-box { display: none; margin-top: 15px; border: 3px solid var(--primary); border-radius: 10px; position: relative; overflow: hidden; }
+        .close-scan { position: absolute; top: 10px; right: 10px; z-index: 10; background: red; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; }
+
+        /* Certificate View */
+        #certView { display: none; margin-top: 25px; }
+        .cert-canvas { background: white; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 5px solid white; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; }
+        
+        /* Scanner Overlay Design */
+.scanner-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 5;
+    pointer-events: none;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Moving Laser Line */
+.laser-line {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
+    box-shadow: 0 0 15px var(--accent-blue);
+    top: 0;
+    animation: scanAnimation 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes scanAnimation {
+    0% { top: 5%; opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 95%; opacity: 0; }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://i.imgur.com/MNooQYo.png" width="80">
+        <h2 style="color: var(--primary); margin: 5px 0;">BEBEJI PLAZA CENTER</h2>
+        <p style="margin: 0; font-size: 14px; color: #666;">DEVICE VERIFICATION PORTAL</p>
+    </div>
+
+    <div class="search-card">
+        <div class="search-options">
+            <button class="opt-btn active" data-type="tracking"><i class="fas fa-barcode"></i> TRACKING ID</button>
+            <button class="opt-btn" data-type="phone"><i class="fas fa-phone"></i> PHONE</button>
+            <button class="opt-btn" data-type="email"><i class="fas fa-envelope"></i> EMAIL</button>
+                        
+           </div>
+       
+        <div class="input-group">
+            <input type="text" id="searchInput" placeholder="Enter Tracking ID (BP-...)">
+            <button class="btn-main" onclick="startGlobalSearch()"><i class="fas fa-search"></i></button>
+        </div>
+        <button class="btn-main" style="width: 100%; margin-top: 10px; background: #222;" onclick="openQR()">
+            <i class="fas fa-qrcode"></i> SCAN CARD QR
+        </button>
+        <div id="loader" class="loader"></div>
+        <div id="scanner-box">
+            <button class="close-scan" onclick="stopQR()">❌</button>
+            <div id="reader"></div>
+        </div>
+    </div>
+
+
+    <div id="certView">
+        <div class="cert-canvas" id="certOutput"></div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button class="btn-main" style="flex:1; background:var(--danger-red);" onclick="postReport('report')"><i class="fas fa-bullhorn"></i> REPORT STOLEN</button>
+            <button id="btnDismiss" class="btn-main" style="flex:1; background:var(--accent-green); display:none;" onclick="postReport('remove')"><i class="fas fa-check-circle"></i> DISMISS REPORT</button>
+        </div>
+    </div>
+</div>
+
+<div id="notificationContainer"></div>
+
+<script type="module">
+    import { app } from './firebase.js'; 
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+    const db = getDatabase(app);
+    let searchMode = 'tracking';
+    let html5QrCode;
+
+    // Switch Search Type
+    document.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            searchMode = btn.dataset.type;
+            const ph = { tracking: "Enter Tracking ID (BP-...)", phone: "Enter Buyer Phone Number", email: "Enter Buyer Email Address" };
+            document.getElementById('searchInput').placeholder = ph[searchMode];
+        });
+    });
+
+    // Main Search Logic (Deep Iteration)
+    window.startGlobalSearch = async () => {
+        const val = document.getElementById('searchInput').value.trim();
+        if(!val) return showNote('error', 'Please enter search value!');
+
+        if(searchMode === 'tracking' && !val.toUpperCase().startsWith('BP-')) {
+            return showNote('error', 'Tracking ID must start with BP-');
+        }
+
+        toggleLoader(true);
+        try {
+            const cardDataRef = ref(db, 'CardData');
+            const snapshot = await get(cardDataRef);
+            
+            if (snapshot.exists()) {
+                let matchFound = null;
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    const target = val.toLowerCase();
+
+                    if (searchMode === 'tracking' && data.postId && data.postId.toLowerCase() === target) matchFound = data;
+                    else if (searchMode === 'phone' && data.buyerPhone && data.buyerPhone === val) matchFound = data;
+                    else if (searchMode === 'email' && data.buyerEmail && data.buyerEmail.toLowerCase() === target) matchFound = data;
+                });
+
+                if (matchFound) {
+                    showNote('success', 'Device Record Found!');
+                    drawCertificate(matchFound);
+                } else {
+                    showNote('error', 'No matching record found!');
+                }
+            } else {
+                showNote('error', 'Database is empty!');
+            }
+        } catch (e) {
+            showNote('error', 'Firebase connection error!');
+        }
+        toggleLoader(false);
+    };
+
+    function drawCertificate(data) {
+        const isStolen = data.isStolen === true;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${data.postId}`;
+        
+        const svg = `
+            <svg viewBox="0 0 800 1150" xmlns="http://www.w3.org/2000/svg" style="background:#fff">
+                <rect width="800" height="1150" fill="none" stroke="${isStolen ? '#e74c3c' : '#002244'}" stroke-width="12"/>
+                <image href="https://i.imgur.com/MNooQYo.png" x="350" y="40" width="100" height="100"/>
+                <text x="400" y="170" text-anchor="middle" font-size="28" font-weight="900" fill="#002244">BEBEJI PLAZA PHONE'S CENTER</text>
+                <text x="400" y="200" text-anchor="middle" font-size="14" fill="#666">Sabon Gari Tankin Ruwa Gusau, Zamfara State</text>
+                
+                ${isStolen ? `
+                    <rect x="0" y="230" width="800" height="50" fill="#e74c3c"/>
+                    <text x="400" y="265" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">⚠ WARNING: THIS DEVICE IS FLAGGED AS STOLEN</text>
+                ` : ''}
+
+                <g transform="translate(60, 320)" font-family="Arial">
+                    <text y="0" font-size="18" fill="#002244" font-weight="bold">BUYER INFORMATION</text>
+                    <line x1="0" y1="10" x2="680" y2="10" stroke="#eee" stroke-width="2"/>
+                    <text y="50" font-size="16">Full Name: <tspan font-weight="bold">${data.buyerName}</tspan></text>
+                    <text y="90" font-size="16">Phone: <tspan font-weight="bold">${data.buyerPhone}</tspan></text>
+                    <text y="130" font-size="16">Email: <tspan font-weight="bold">${data.buyerEmail}</tspan></text>
+
+                    <text y="210" font-size="18" fill="#002244" font-weight="bold">DEVICE INFORMATION</text>
+                    <line x1="0" y1="220" x2="680" y2="220" stroke="#eee" stroke-width="2"/>
+                    <text y="260" font-size="16">Model: <tspan font-weight="bold">${data.deviceName}</tspan></text>
+                    <text y="300" font-size="16">IMEI/Serial: <tspan font-weight="bold">${data.deviceSerial}</tspan></text>
+                    <text y="340" font-size="16">Price: <tspan font-weight="bold" fill="#c00">₦${data.devicePrice.toLocaleString()}</tspan></text>
+                    <text y="380" font-size="16">Date/Time: <tspan font-weight="bold">${data.dateTime}</tspan></text>
+
+                    <text y="460" font-size="18" fill="#002244" font-weight="bold">SELLER & STORE</text>
+                    <line x1="0" y1="470" x2="680" y2="470" stroke="#eee" stroke-width="2"/>
+                    <text y="510" font-size="16">Store Name: <tspan font-weight="bold">${data.businessName}</tspan></text>
+                    <text y="550" font-size="16">Shop No: <tspan font-weight="bold">${data.shopNumber}</tspan></text>
+                </g>
+
+                <image href="${qrUrl}" x="350" y="940" width="100" height="100"/>
+                <text x="400" y="1060" text-anchor="middle" font-size="16" font-weight="bold" fill="#002244">ID: ${data.postId}</text>
+            </svg>
+        `;
+        document.getElementById('certOutput').innerHTML = svg;
+        document.getElementById('certView').style.display = 'block';
+        document.getElementById('btnDismiss').style.display = isStolen ? 'block' : 'none';
+        window.activeId = data.postId;
+    }
+
+    // QR Logic
+    window.openQR = () => {
+        document.getElementById('scanner-box').style.display = 'block';
+        html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+            const id = text.includes('id=') ? text.split('id=')[1] : text;
+            document.getElementById('searchInput').value = id;
+            stopQR();
+            startGlobalSearch();
+        });
+    };
+
+    window.stopQR = () => {
+        if(html5QrCode) html5QrCode.stop();
+        document.getElementById('scanner-box').style.display = 'none';
+    };
+
+    window.showNote = (type, msg) => {
+        const container = document.getElementById('notificationContainer');
+        const note = document.createElement('div');
+        note.className = `notification ${type}`;
+        note.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-circle-xmark'}"></i> ${msg}`;
+        container.appendChild(note);
+        setTimeout(() => note.remove(), 5000);
+    };
+
+    window.postReport = async (act) => {
+        toggleLoader(true);
+        try {
+            const r = await fetch("https://bebejiplaza.pages.dev/api/reportCard", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ apiKey: "@haruna66", postId: window.activeId, action: act })
+            });
+            const d = await r.json();
+            if(d.success) { showNote('success', 'Status updated!'); location.reload(); }
+        } catch (e) { showNote('error', 'API Failure'); }
+        toggleLoader(false);
+    };
+
+    function toggleLoader(s) { document.getElementById('loader').style.display = s ? 'block' : 'none'; }
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBEJI Market Product</title>
+
+    <meta property="og:title" content="Product Details" id="og-title">
+    <meta property="og:description" content="Click to view item details." id="og-description">
+    <meta property="og:image" content="https://bebejiplaza.pages.dev/placeholder.png" id="og-image">
+    <meta property="og:url" content="https://bebejiplaza.pages.dev/" id="og-url">
+    <meta property="og:type" content="product">
+    
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; text-align: center; padding: 20px; background-color: #f0f2f5; color: #333; }
+        .product-info { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #007bff; }
+        .product-info h1 { color: #007bff; font-size: 1.5em; margin-bottom: 10px; }
+        .product-info p { font-size: 1em; line-height: 1.5; margin-bottom: 10px; }
+        .product-info img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
+        .price { font-size: 1.2em; font-weight: bold; color: #28a745; margin-bottom: 15px; }
+        .btn { display: inline-block; padding: 12px 25px; background-color: #25d366; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin-top: 15px; transition: background-color 0.3s; }
+        .btn:hover { background-color: #1eaf53; }
+    </style>
+</head>
+<body>
+    <div class="product-info">
+        <h1>BEBEJI Product Preview</h1>
+        <img id="product-image" src="" alt="Product Image">
+        <p id="product-text">Loading product details...</p>
+        <div class="price" id="product-price"></div>
+        <a id="shop-link" href="#" class="btn">View Shop on BEBEJI Market</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            const imgUrl = params.get('img');
+            const text = params.get('text');
+            const price = params.get('price');
+            const shopUID = params.get('shop');
+         
+            const decodedText = text ? decodeURIComponent(text) : 'Product';
+            const decodedPrice = price ? decodeURIComponent(price) : 'N/A';
+            const finalTitle = decodedText.substring(0, 50) + (decodedText.length > 50 ? '...' : '');
+            document.getElementById('og-title').setAttribute('content', finalTitle);
+            document.getElementById('og-description').setAttribute('content', `Price: ${decodedPrice}. Click to see the item.`);
+            
+            if (imgUrl) {
+                               document.getElementById('og-image').setAttribute('content', decodeURIComponent(imgUrl)); 
+            }
+         
+            document.title = finalTitle;
+            if (imgUrl) {
+                document.getElementById('product-image').src = decodeURIComponent(imgUrl);
+            }
+            document.getElementById('product-text').textContent = decodedText;
+            document.getElementById('product-price').textContent = decodedPrice;
+            
+            if (shopUID) {
+                document.getElementById('shop-link').href = `shop.html?shopuid=${shopUID}`; 
+            }
+        });
+    </script>
+</body>
+</html>

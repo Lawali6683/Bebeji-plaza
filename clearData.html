@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Data Cleanup | Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --border-color: rgba(76, 114, 214, 0.3);
+            --card-radius: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+            flex-direction: column;
+        }
+        
+        .card {
+            background-color: var(--secondary-bg);
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                rgba(255, 0, 170, 0.4) 45%,
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;
+            animation: rotate-shine 15s linear infinite;
+        }
+        
+        @keyframes rotate-shine {
+            to { transform: rotate(360deg); }
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            padding: 30px;
+        }
+
+        #authContainer {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #mainContent {
+            display: none;
+            width: 95%;
+            max-width: 900px;
+            padding: 20px 0;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 30px;
+            background-color: var(--secondary-bg);
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .header-section h1 i {
+            color: var(--danger-red);
+            margin-right: 10px;
+        }
+        
+        .auth-form input, .action-button, .select-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 15px;
+            border: 1px solid rgba(76, 114, 214, 0.5);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .action-button {
+            margin-top: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .cleanup-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .action-card h3 {
+            margin-bottom: 15px;
+            color: var(--accent-green);
+            font-size: 1.5em;
+        }
+        
+        #clearChatBtn {
+            background-color: var(--danger-red);
+            color: var(--text-primary);
+        }
+        #clearChatBtn:hover {
+            background-color: #a93226;
+            transform: translateY(-2px);
+        }
+        
+        #clearPostBtn {
+            background-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+        #clearPostBtn:hover {
+            background-color: #6a8cff;
+            transform: translateY(-2px);
+        }
+        
+        .status-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            min-height: 100px;
+        }
+        
+        .status-box p {
+            font-size: 0.9em;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .progress-indicator {
+            margin-top: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-green);
+            transition: width 0.5s ease-out;
+        }
+        
+        
+        #notificationContainer { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 12px; max-width: 380px; pointer-events: none; }
+        .notification { position: relative; background-color: var(--secondary-bg); color: var(--text-primary); padding: 15px 20px; border-radius: 10px; box-shadow: 0 4px 15px var(--shadow-color); display: flex; align-items: center; gap: 15px; opacity: 0; transform: translateX(100%); animation: slideInRight 0.5s forwards; pointer-events: all; transition: all 0.3s ease; border: 1px solid rgba(76, 114, 214, 0.3); overflow: hidden; }
+        .notification.success { border-left: 5px solid var(--accent-green); box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3); }
+        .notification.error { border-left: 5px solid var(--danger-red); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+        .notification.info { border-left: 5px solid var(--accent-blue); box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3); }
+        .notification .icon { font-size: 1.6em; min-width: 25px; }
+        .notification.success .icon { color: var(--accent-green); }
+        .notification.error .icon { color: var(--danger-red); }
+        .notification.info .icon { color: var(--accent-blue); }
+        .notification .message { flex-grow: 1; text-align: left; line-height: 1.4; font-size: 0.95em; }
+        .notification .close-btn { background: none; border: none; color: rgba(232, 232, 255, 0.7); font-size: 1.5em; cursor: pointer; line-height: 1; transition: color 0.3s ease; padding: 0; }
+        .notification .close-btn:hover { color: var(--danger-red); transform: scale(1.1); }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100%); } }
+        .notification.timed::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background-color: rgba(255, 255, 255, 0.1); }
+        .notification.timed .progress-bar { position: absolute; left: 0; bottom: 0; height: 3px; background-color: currentColor; animation: shrink-width var(--notification-duration) linear forwards; width: 100%; }
+        @keyframes shrink-width { from { width: 100%; } to { width: 0%; } }
+        
+        @media (max-width: 768px) {
+            .cleanup-options {
+                grid-template-columns: 1fr;
+            }
+            .header-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .header-section h1 {
+                font-size: 1.5em;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #notificationContainer { top: 10px; bottom: auto; left: 10px; right: 10px; max-width: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="notificationContainer"></div>
+
+    <div id="authContainer" class="card">
+        <div class="card-content">
+            <form id="loginForm" class="auth-form">
+                <h2><i class="fas fa-user-lock"></i> Admin Login</h2>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="loginSubmitBtn" class="action-button" style="background-color: var(--accent-blue);">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainContent">
+        
+        <div class="header-section">
+            <h1 id="welcomeMessage"><i class="fas fa-eraser"></i> Data Cleanup Panel</h1>
+            <button id="logoutBtn" class="action-button" style="width: auto; padding: 10px 20px; background-color: var(--danger-red);">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
+        <div class="cleanup-options">
+
+            <div class="action-card card">
+                <div class="card-content">
+                    <h3><i class="fas fa-comments-slash"></i> Clear Chat Over 30 Days</h3>
+                    <p>This action will permanently delete all messages (text/images) that are older than **30 days** across all user chats (`ChatMessage`). The chat room data (`ChatRoom`) will remain intact.</p>
+                    <button id="clearChatBtn" class="action-button">
+                        <i class="fas fa-broom"></i> Start Chat Cleanup
+                    </button>
+                    <div class="status-box" id="chatStatusBox">
+                        <p>Status: Ready</p>
+                        <div class="progress-indicator"><div class="progress-bar" id="chatProgressBar"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-card card">
+                <div class="card-content">
+                    <h3><i class="fas fa-trash-alt"></i> Clear User Posts</h3>
+                    <p>Permanently delete entire user posts (`Posting/$uid/$postId`) that exceed the selected age.</p>
+                    
+                    <select id="postCleanupDuration" class="select-input">
+                        <option value="" disabled selected>Select age of posts to delete</option>
+                        <option value="2">2 Months Old</option>
+                        <option value="4">4 Months Old</option>
+                        <option value="6">6 Months Old</option>
+                        <option value="8">8 Months Old</option>
+                        <option value="11">11 Months Old</option>
+                        <option value="12">1 Year Old</option>
+                    </select>
+
+                    <button id="clearPostBtn" class="action-button">
+                        <i class="fas fa-fire"></i> Start Post Cleanup
+                    </button>
+                    <div class="status-box" id="postStatusBox">
+                        <p>Status: Ready</p>
+                        <div class="progress-indicator"><div class="progress-bar" id="postProgressBar"></div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script type="module">
+        
+        import { app } from './firebase.js'; 
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { getDatabase, ref, get, query, remove, orderByChild, endBefore } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const authContainer = document.getElementById('authContainer');
+const mainContent = document.getElementById('mainContent');
+const loginForm = document.getElementById('loginForm');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const logoutBtn = document.getElementById('logoutBtn');
+const welcomeMessage = document.getElementById('welcomeMessage');
+
+const clearChatBtn = document.getElementById('clearChatBtn');
+const clearPostBtn = document.getElementById('clearPostBtn');
+const postCleanupDuration = document.getElementById('postCleanupDuration');
+
+const chatStatusBox = document.getElementById('chatStatusBox');
+const chatProgressBar = document.getElementById('chatProgressBar');
+const postStatusBox = document.getElementById('postStatusBox');
+const postProgressBar = document.getElementById('postProgressBar');
+
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
+const MS_IN_MONTH = 30 * MS_IN_DAY;
+
+function showNotification(message, type = 'info', duration = 5000) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type} timed`;
+
+    let iconClass = (type === 'success') ? 'fa-check-circle' : (type === 'error') ? 'fa-exclamation-triangle' : 'fa-info-circle';
+
+    notification.innerHTML = `
+        <i class="fas ${iconClass} icon"></i>
+        <div class="message">${message}</div>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+        <div class="progress-bar" style="--notification-duration: ${duration}ms;"></div>
+    `;
+
+    container.prepend(notification);
+    notification.querySelector('.close-btn').onclick = () => hideNotification(notification);
+    setTimeout(() => hideNotification(notification), duration);
+}
+
+function hideNotification(notification) {
+    notification.style.animation = 'fadeOut 0.5s forwards';
+    setTimeout(() => notification.remove(), 500);
+}
+
+function updateStatus(element, message, progress = 0) {
+    element.querySelector('p').textContent = `Status: ${message}`;
+    const progressBar = element.parentElement.querySelector('.progress-bar');
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        showMainContent(user);
+    } else {
+        showLoginScreen();
+    }
+});
+
+function showLoginScreen() {
+    authContainer.style.display = 'block';
+    mainContent.style.display = 'none';
+}
+
+async function showMainContent(user) {
+    authContainer.style.display = 'none';
+    mainContent.style.display = 'block';
+
+    try {
+        const userRef = ref(db, `users/${user.uid}/fullName`);
+        const snapshot = await get(userRef);
+        const fullName = snapshot.exists() ? snapshot.val() : 'Admin User';
+        
+        welcomeMessage.innerHTML = `<i class="fas fa-eraser"></i> Welcome Admin, **${fullName}** - Data Cleanup Panel`;
+        
+        showNotification(`Welcome back, ${fullName}!`, 'success', 4000);
+    } catch (error) {
+        showNotification('Error fetching user data.', 'error');
+    }
+}
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const loginBtn = document.getElementById('loginSubmitBtn');
+    loginBtn.textContent = 'Logging in...';
+    loginBtn.disabled = true;
+
+    try {
+        await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+    } catch (error) {
+        const errorMessage = error.message.replace('Firebase: Error (auth/', '').replace(').', '').replace(/-/g, ' ');
+        showNotification(`Login failed: ${errorMessage}`, 'error');
+    } finally {
+        loginBtn.textContent = 'Submit';
+        loginBtn.disabled = false;
+    }
+});
+
+logoutBtn.addEventListener('click', async () => {
+    try {
+        await signOut(auth);
+        showNotification('Successfully logged out.', 'info');
+    } catch (error) {
+        showNotification('Logout failed.', 'error');
+    }
+});
+
+async function clearOldChatMessages() {
+    if (!auth.currentUser) return showNotification('Authentication required to run cleanup.', 'error');
+    
+    clearChatBtn.disabled = true;
+    updateStatus(chatStatusBox, 'Starting chat cleanup...');
+    let totalMessagesDeleted = 0;
+    
+    const cutoffTime = Date.now() - MS_IN_MONTH; 
+
+    try {
+        updateStatus(chatStatusBox, 'Fetching all user IDs...');
+        const usersSnapshot = await get(ref(db, 'users'));
+
+        if (!usersSnapshot.exists()) {
+            updateStatus(chatStatusBox, 'No users found. Cleanup complete.');
+            showNotification('Chat Cleanup finished. No messages to delete.', 'info');
+            return;
+        }
+
+        const userIDs = Object.keys(usersSnapshot.val());
+        let usersProcessed = 0;
+
+        for (const uid of userIDs) {
+            usersProcessed++;
+            updateStatus(chatStatusBox, `Processing user: ${uid} (${usersProcessed}/${userIDs.length})`, (usersProcessed / userIDs.length) * 100);
+
+            const messagesRef = ref(db, `ChatMessage/${uid}`);
+            
+            const oldMessagesQuery = query(
+                messagesRef,
+                orderByChild('messageTime'),
+                endBefore(cutoffTime)
+            );
+
+            const messagesSnapshot = await get(oldMessagesQuery);
+            let deletedCount = 0;
+
+            if (messagesSnapshot.exists()) {
+                for (const [messageId] of Object.entries(messagesSnapshot.val())) {
+                    await remove(ref(db, `ChatMessage/${uid}/${messageId}`));
+                    deletedCount++;
+                }
+            }
+            totalMessagesDeleted += deletedCount;
+            updateStatus(chatStatusBox, `Processed user ${uid}. Deleted ${deletedCount} old messages. Total deleted: ${totalMessagesDeleted}.`);
+        }
+        
+        updateStatus(chatStatusBox, `Cleanup finished! Successfully deleted ${totalMessagesDeleted} messages older than 30 days.`, 100);
+        showNotification(`SUCCESS: Chat Cleanup completed. Total deleted: ${totalMessagesDeleted} messages.`, 'success');
+
+    } catch (error) {
+        console.error("Chat Cleanup Error:", error);
+        updateStatus(chatStatusBox, `ERROR: Cleanup failed! Check console for details.`, 0);
+        showNotification(`Chat Cleanup failed: ${error.message}`, 'error');
+    } finally {
+        clearChatBtn.disabled = false;
+        setTimeout(() => chatProgressBar.style.width = '0%', 3000); 
+    }
+}
+
+async function clearOldUserPosts() {
+    if (!auth.currentUser) return showNotification('Authentication required to run cleanup.', 'error');
+    
+    const durationMonths = parseInt(postCleanupDuration.value);
+    if (isNaN(durationMonths) || durationMonths <= 0) {
+        return showNotification('Please select a valid duration (months) for post cleanup.', 'error');
+    }
+    
+    clearPostBtn.disabled = true;
+    updateStatus(postStatusBox, `Starting post cleanup for posts older than ${durationMonths} months...`);
+    let totalPostsDeleted = 0;
+    
+    const cutoffTime = Date.now() - (durationMonths * MS_IN_MONTH); 
+
+    try {
+        updateStatus(postStatusBox, 'Fetching all user IDs...');
+        const usersSnapshot = await get(ref(db, 'users'));
+
+        if (!usersSnapshot.exists()) {
+             updateStatus(postStatusBox, 'No users found. Cleanup complete.', 100);
+             showNotification('Post Cleanup finished. No users to check.', 'info');
+             return;
+        }
+
+        const userIDs = Object.keys(usersSnapshot.val());
+        let usersProcessed = 0;
+
+        for (const uid of userIDs) {
+            usersProcessed++;
+            updateStatus(postStatusBox, `Processing user: ${uid} (${usersProcessed}/${userIDs.length})`, (usersProcessed / userIDs.length) * 100);
+            
+            const postsRef = ref(db, `Posting/${uid}`);
+            
+            const oldPostsQuery = query(
+                postsRef,
+                orderByChild('postTime'),
+                endBefore(cutoffTime)
+            );
+
+            const postsSnapshot = await get(oldPostsQuery);
+            let deletedCount = 0;
+
+            if (postsSnapshot.exists()) {
+                for (const [postId] of Object.entries(postsSnapshot.val())) {
+                    await remove(ref(db, `Posting/${uid}/${postId}`)); 
+                    deletedCount++;
+                }
+            }
+            totalPostsDeleted += deletedCount;
+            updateStatus(postStatusBox, `Processed user ${uid}. Deleted ${deletedCount} old posts. Total deleted: ${totalPostsDeleted}.`);
+        }
+        
+        updateStatus(postStatusBox, `Cleanup finished! Successfully deleted ${totalPostsDeleted} posts older than ${durationMonths} months.`, 100);
+        showNotification(`SUCCESS: Post Cleanup completed. Total deleted: ${totalPostsDeleted} posts.`, 'success');
+
+    } catch (error) {
+        console.error("Post Cleanup Error:", error);
+        updateStatus(postStatusBox, `ERROR: Cleanup failed! Check console for details.`, 0);
+        showNotification(`Post Cleanup failed: ${error.message}`, 'error');
+    } finally {
+        clearPostBtn.disabled = false;
+        setTimeout(() => postProgressBar.style.width = '0%', 3000); 
+    }
+}
+
+clearChatBtn.addEventListener('click', clearOldChatMessages);
+clearPostBtn.addEventListener('click', clearOldUserPosts);
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Dashboard | Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+      
+        :root {
+            --primary-color: #003366; 
+            --secondary-color: #CC0000; 
+            --tertiary-color: #006600; 
+            --bg-color: #f0f4f8; 
+            --card-bg: #ffffff;
+            --text-color: #2c3e50; 
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --border-radius: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+       
+        .header {
+            background: linear-gradient(90deg, var(--primary-color) 0%, #004d99 100%);
+            color: #fff;
+            padding: 25px 30px;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .header h1 i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 1.2em;
+        }
+
+        .header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+       
+        .main-container {
+            flex-grow: 1;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-grid {
+            display: grid;             
+            grid-template-columns: 1fr; 
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px; 
+            margin-top: 40px;
+        }
+
+        
+        .menu-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            text-decoration: none; 
+            color: var(--text-color);         
+            border-bottom: 4px solid #ccc; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            background-color: #fafafa;
+        }
+        
+       
+        .menu-card:nth-child(1) { border-bottom-color: var(--secondary-color); }
+        .menu-card:nth-child(2) { border-bottom-color: var(--primary-color); }
+        .menu-card:nth-child(3) { border-bottom-color: var(--tertiary-color); }
+
+
+        .menu-card .icon {
+            font-size: 3.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .menu-card:hover .icon {
+            color: var(--secondary-color); 
+        }
+
+        .menu-card h2 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .menu-card p {
+            font-size: 1em;
+            color: #7f8c8d;
+            min-height: 40px;
+        }
+        
+        .action-link {
+            margin-top: 20px;
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            transition: color 0.2s;
+        }
+
+        .action-link:hover {
+            color: var(--secondary-color);
+        }
+
+        
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #95a5a6;
+            border-top: 1px solid #dfe6e9;
+        }
+
+       
+        @media (min-width: 650px) {
+            .menu-grid {
+               
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 649px) and (min-width: 450px) {
+            .menu-grid {
+               
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 449px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .menu-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><i class="fas fa-tools"></i> Developer & Admin Panel</h1>
+        <p>Babban Cibiyar Gudanarwa ta Bebeji Plaza</p>
+    </div>
+
+    <div class="main-container">
+        <h2>Ayyuka na Musamman (Core Functions)</h2>
+
+        <div class="menu-grid">
+            
+            <a href="memberNotice.html" class="menu-card" id="card1">
+                <i class="fas fa-users-cog icon"></i>
+                <h2>Sanarwar Mambobi</h2>
+                <p>Aikawa da sanarwa na musamman ga Mambobin Bebeji Plaza kawai.</p>
+                <span class="action-link">Shiga <i class="fas fa-chevron-right"></i></span>
+            </a>
+
+            <a href="costomerNotice.html" class="menu-card" id="card2">
+                <i class="fas fa-bell icon" style="color: var(--secondary-color);"></i>
+                <h2>Sanarwar Kwastomomi</h2>
+                <p>Aikawa da sanarwa na musamman ga duk Kwastomomin da su ke Ziyatar app din.</p>
+                <span class="action-link">Shiga <i class="fas fa-chevron-right"></i></span>
+            </a>
+
+            <a href="member.html" class="menu-card" id="card3">
+                <i class="fas fa-user-check icon" style="color: var(--tertiary-color);"></i>
+                <h2>Rajistar Mambobi</h2>
+                <p>Tabbatarwa da kuma rijistar sababbin Mambobi na Bebeji Plaza.</p>
+                <span class="action-link">Shiga <i class="fas fa-chevron-right"></i></span>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 Bebeji Plaza | An Tsara Shi don Babban Mai Gudanarwa (Admin)
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebeji Plaza - Business Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff88;
+            --dark-deep: #050a18;
+            --glass-white: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-deep);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 40%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        
+        .brand-logo {
+            width: 90px;
+            height: 90px;
+            background: var(--glass-white);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 242, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
+        }
+
+        .brand-logo img {
+            width: 60px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #8892b0;
+            margin-bottom: 40px;
+        }
+
+        /* Menu System */
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn-portal {
+            position: relative;
+            background: var(--glass-white);
+           border: 1px solid #baff80;
+            padding: 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .btn-portal:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-green);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            transition: 0.3s;
+        }
+
+        .btn-portal:hover .icon-box {
+            background: var(--neon-green);
+            color: var(--dark-deep);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .text-box {
+            text-align: left;
+        }
+
+        .text-box h2 {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .text-box p {
+            font-size: 0.85rem;
+            color: #8892b0;
+        }
+
+        .btn-portal::after {
+            content: '\f105';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            opacity: 0.3;
+            font-size: 1.2rem;
+        }
+
+        .footer-text {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #444;
+            letter-spacing: 1px;
+        }
+
+        
+        @media (max-width: 400px) {
+            h1 { font-size: 1.2rem; }
+            .subtitle { font-size: 0.85rem; }
+            .text-box h2 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="brand-logo">
+            <img src="https://i.imgur.com/MNooQYo.png" alt="Logo">
+        </div>
+        <h1>BEBEJI PLAZA</h1>
+        <p class="subtitle">Official Business Portal</p>
+
+        <div class="menu-stack">
+            
+            <a href="deviceRegister.html" class="btn-portal">
+                <div class="icon-box">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="text-box">
+                    <h2>Sell Device</h2>
+                    <p>Register phone sold to customer</p>
+                </div>
+            </a>
+
+            <a href="buyDevice.html" class="btn-portal">
+                <div class="icon-box">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="text-box">
+                    <h2>Buy Device</h2>
+                    <p>Register phone bought from customer</p>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="footer-text">
+            SYSTEM POWERED BY HARUNA LAWALI<br>
+            &copy; SECURE PORTAL V2.0
+        </div>
+    </div>
+
+</body>
+</html>

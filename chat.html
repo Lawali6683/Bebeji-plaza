@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="ha"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBEJI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+  
+        :root {            
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --dark-bg: #2c3e50;           
+            --text-primary: #E8E8FF;
+            --primary-color: #00eaff; 
+            --secondary-color: #e74c3c; 
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6; 
+            --danger-red: #E74C3C;            
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --header-height: 50px;
+            --notification-duration: 4s;
+        }
+ 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            margin: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-size: 16px;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+          
+            background-image:
+                linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)), 
+                linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%),
+                linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);
+            background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+            background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-attachment: scroll;
+        }
+  
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; 
+            
+        }
+
+        .chat-header {
+            background-color: var(--secondary-bg);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            height: var(--header-height);
+            z-index: 100;
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+
+        .menu-icon {
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+    
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+            background-size: 400% 400%;
+            animation: gradientMove 7s ease infinite;
+            z-index: 999999;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pulse {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color); 
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        @keyframes pulseAnim {
+            0% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.6); opacity: 0.4; }
+        }
+
+        .logo-wrapper {
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+            animation: floatLogo 3s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        .orbit {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px dashed var(--primary-color); 
+            animation: spin 5s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            animation: fadeText 2s infinite;
+        }
+
+        @keyframes fadeText {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+
+      
+        .message-area {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            overflow-y: auto; 
+            flex-grow: 1;
+            gap: 10px;
+            background-color: transparent; 
+          
+        }
+
+        .message-wrapper {
+            margin-bottom: 10px; 
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .message-wrapper.shop { justify-content: flex-start; }
+        .message-wrapper.customer { justify-content: flex-end; }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 0 1px;
+            flex-shrink: 0;
+            
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+
+        .message-wrapper.shop .message-content {
+            background-color: var(--accent-blue);
+            color: #fff;
+            border-top-left-radius: 0;
+        }
+
+        .message-wrapper.customer .message-content {
+            background-color: #2d1b50;
+            color: #fff;
+            
+            border-top-right-radius: 0;
+        }
+
+        .message-images {
+            margin-top: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .message-images img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+       
+        .payload-preview {         
+            background-color: var(--secondary-bg); 
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px var(--shadow-color);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .payload-preview h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        #payloadText {
+            font-size: 0.95em;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .payload-preview-images img {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px;
+            border-radius: 8px;
+            object-fit: contain;
+            cursor: pointer;
+            border: 1px solid var(--dark-bg);
+            margin-top: 5px;
+        }
+
+      
+        #notificationContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        .notification {
+            position: relative;
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideInRight 0.5s forwards;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 114, 214, 0.3);
+            overflow: hidden;
+        }
+        .notification.success {
+            border-left: 5px solid var(--accent-green);
+            box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3);
+        }
+        .notification.error {
+            border-left: 5px solid var(--danger-red);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        .notification.info {
+            border-left: 5px solid var(--accent-blue);
+            box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3);
+        }
+        .notification .icon {
+            font-size: 1.6em;
+            min-width: 25px;
+        }
+        .notification.success .icon {
+            color: var(--accent-green);
+        }
+        .notification.error .icon {
+            color: var(--danger-red);
+        }
+        .notification.info .icon {
+            color: var(--accent-blue);
+        }
+        .notification .message {
+            flex-grow: 1;
+            text-align: left;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+        .notification .close-btn {
+            background: none;
+            border: none;
+            color: rgba(232, 232, 255, 0.7);
+            font-size: 1.5em;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease;
+            padding: 0;
+        }
+        .notification .close-btn:hover {
+            color: var(--danger-red);
+            transform: scale(1.1);
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+        .notification.timed::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .notification.timed .progress-bar {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            background-color: currentColor;
+            animation: shrink-width var(--notification-duration) linear forwards;
+            width: 100%;
+        }
+        @keyframes shrink-width {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        @media (max-width: 600px) {
+            #notificationContainer {
+                top: 10px;
+                bottom: auto;
+                left: 10px;
+                right: 10px;
+                max-width: none;
+            }
+        }
+       
+        .load-more-btn {
+            display: block;
+            width: 90%;
+            max-width: 200px;
+            margin: 10px auto;
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: var(--primary-bg); 
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+        }
+
+        .load-more-btn:hover:not(:disabled) {
+            background-color: #00c7e2; 
+            transform: translateY(-2px);
+        }
+
+        .load-more-btn:disabled {
+            background-color: #7f8c8d; 
+            cursor: not-allowed;
+        }
+
+
+
+
+    
+.chat-footer > div{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+
+#messageInput {
+    flex-grow: 1;      
+    font-size: 16px;
+    line-height: 1.4; 
+    padding: 10px 12px; 
+    border-radius: 20px; 
+    border: 1px solid var(--input-border-color, #4a627a);
+    background-color: var(--input-bg, #243447);
+    color: var(--text-primary, #ffffff);   
+    resize: none; 
+    overflow-y: auto; 
+    min-height: 40px; 
+    max-height: 100px;     
+    margin-right: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+
+#messageInput:focus {  
+    border-color: var(--primary-color, #0099ff);
+    outline: none;
+}
+
+
+.send-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color, #0099ff);
+    color: var(--primary-text-on-color, #ffffff);
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.send-button:disabled {
+    background-color: #7f8c8d;
+    cursor: not-allowed;
+    animation: none;
+}
+
+.send-button.ready {
+    animation: pulseSend 1.5s infinite;
+}
+
+@keyframes pulseSend {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 234, 255, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(0, 234, 255, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 234, 255, 0); }
+}
+
+
+.upload-icon {
+    font-size: 22px; 
+    color: var(--icon-color, #9fb3c8);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    height: 40px; 
+    transition: color 0.2s;
+}
+
+.upload-icon:hover {
+    color: var(--primary-color, #0099ff);
+}
+
+
+#imagePreviewContainer {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    overflow-x: auto;
+    margin-bottom: 8px;
+    max-width: 100%;
+    background-color: var(--preview-bg, rgba(26, 43, 77, 0.2));
+    border-radius: 10px;
+    border: 1px dashed var(--border-color, #33445d);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.preview-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+}
+
+.remove-img-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger-red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+
+
+
+        .chat-footer { background-color: var(--secondary-bg); padding: 10px; display: flex; align-items: flex-end; box-shadow: 0 -2px 5px var(--shadow-color); }
+        
+        #messageInput { flex-grow: 1; padding: 20px; border-radius: 10px; border: 1px solid #4a627a; background-color: #243447; color: var(--text-primary); resize: none; overflow-y: hidden; min-height: 60px; max-height: 150px; margin-right: 10px; box-sizing: border-box; width: 100%; }
+        
+        .send-button { width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-color); color: #1e1e1e; border: none; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background-color 0.2s, transform 0.2s; }
+        .send-button:disabled { background-color: #7f8c8d; cursor: not-allowed; }
+        .send-button.ready { animation: pulseSend 1.5s infinite; }
+        .upload-icon { font-size: 20px; color: #fff; cursor: pointer; padding: 10px; }
+
+      
+        .payload-preview { background-color: #1a2b4d; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid var(--primary-color); }
+    
+
+        .menu-container {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background-color: var(--primary-bg);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            padding: 20px 0; /* An gyara padding */
+            border-left: 1px solid var(--secondary-bg);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .menu-container.open { right: 0; }
+
+        .menu-close {
+            text-align: right;
+            padding: 0 20px 10px 0;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--danger-red);
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--secondary-bg);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .menu-item:hover {
+            background-color: var(--secondary-bg);
+            color: var(--primary-color);
+        }
+
+     
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+       
+        #imageModal .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+
+        #modalImage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-close, .modal-download {
+            position: absolute;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .modal-close {
+            top: 20px;
+            right: 20px;
+            color: var(--danger-red);
+        }
+
+        .modal-download {
+            top: 20px;
+            right: 80px;
+            color: var(--accent-green);
+        }
+
+        .modal-close:hover, .modal-download:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+       
+        .delete-confirm-box {
+            padding: 30px;
+            background: var(--secondary-bg);
+            border-radius: 10px;
+            text-align: center;
+            color: var(--text-primary);
+            max-width: 350px;
+            width: 90%;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--primary-color);
+        }
+
+        #confirmTitle {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        #confirmMessage {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .btn-yes, .btn-no {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-yes {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .btn-no {
+            background-color: #7f8c8d;
+            color: white;
+        }
+
+        .btn-yes:hover { background-color: #c0392b; }
+        .btn-no:hover { background-color: #95a5a6; }
+
+
+
+.message-media-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+    max-width: 100%;
+}
+
+.chat-media-element {  
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    cursor: pointer;
+    object-fit: cover;
+    transition: transform 0.2s;  
+    flex: 1 1 100px; 
+    max-height: 200px;
+}
+
+.payload-image-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #fff;
+}
+
+.image-label {
+    display: block;
+    text-align: center;
+    font-size: 0.75em;
+    color: #555;
+    padding: 3px 0;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); 
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: -20px; 
+    right: -20px; 
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #e74c3c;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    background: #c0392b;
+}
+
+.download-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #2980b9;
+}
+
+
+.chat-messages-area {   
+    position: relative; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; 
+}
+
+#loadMoreBtn {  
+    align-self: center; 
+    margin: 10px 0;
+    padding: 8px 15px;      
+    background-color: #3498db; 
+    color: white;
+    border: none;
+    border-radius: 20px; 
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    flex-shrink: 0; 
+}
+
+#loadMoreBtn:hover {
+    background-color: #2980b9;
+}
+
+#loadMoreBtn:active {
+    transform: scale(0.98);
+}
+
+#loadMoreBtn:disabled {
+    background-color: #95a5a6; 
+    cursor: not-allowed;
+    box-shadow: none;
+}
+    </style>
+</head>
+<body>
+
+    <div id="notificationContainer"></div>
+
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container">
+            <div class="orbit"></div>
+            <div class="pulse"></div>
+            <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <div class="chat-container" style="display: none;">
+
+        <header class="chat-header">
+            <h2 id="chatPartnerName">Welcome to Chat: <span id="shopName">Loading...</span></h2>
+            <div class="menu-icon" id="menuToggle"><i class="fas fa-bars"></i></div>
+        </header>
+
+        <div class="menu-container" id="sideMenu">
+            <div class="menu-close" id="menuClose"><i class="fas fa-times"></i></div>
+            <div class="menu-item" id="menuHome"><i class="fas fa-home"></i> Home Page</div>
+            <div class="menu-item" id="menuShop"><i class="fas fa-store"></i> Shop</div>
+            <div class="menu-item" id="menuDeleteAll"><i class="fas fa-trash-alt"></i> Delete All Chat</div>
+            <div class="menu-item" id="menuMyCustomerChat" style="display: none;"><i class="fas fa-users"></i> My Customer Chat</div>
+            <div class="menu-item" id="menuChatNotifications" style="display: none;"><i class="fas fa-bell"></i> Chat Notifications</div>
+        </div>
+
+
+      <main class="message-area" id="messageArea">
+    <div class="payload-preview" id="initialPayloadPreview" style="display: none;">
+        
+        <h4 id="payloadTitle" style="margin-bottom: 5px;">Product Interest</h4>
+        
+        <div style="display: flex; gap: 10px;">
+            
+            <div class="payload-preview-images" id="payloadImages" style="flex-shrink: 0; max-width: 150px;">
+                </div>
+            
+            <div id="payloadText" style="flex-grow: 1;">
+                </div>
+        </div>
+        
+        </div>
+    </main>
+    
+<div id="chatContainer">
+    <button id="loadMoreBtn" style="display: none;">Load Older Messages</button> 
+    
+    <div id="messageArea" class="chat-messages-area">
+        </div>
+    
+    </div>
+
+        <footer class="chat-footer">
+            <label for="imageUpload" class="upload-icon">
+                <i class="fas fa-camera"></i>
+                <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;">
+            </label>
+            <div> <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+                    </div>
+                <textarea id="messageInput" placeholder="Type a message..." rows="1"></textarea>
+            </div>
+            <button class="send-button" id="sendMessageBtn" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </footer>
+
+    </div>
+    
+    <div id="imageModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="modalClose">❌</span>
+        <img class="modal-image" id="modalImage" src="" alt="Zoomed Image">
+        <a id="modalDownload" class="download-btn" download="chat_image.jpg">Download</a>
+    </div>
+</div>
+
+    <div class="modal" id="imageModal">
+        <span class="modal-close" id="modalClose"><i class="fas fa-times"></i></span>
+        <span class="modal-download" id="modalDownload"><i class="fas fa-download"></i></span>
+        <div class="modal-content"><img id="modalImage" src="" alt="Viewed Image"></div>
+    </div>
+
+    <div class="modal" id="confirmModal">
+        <div class="delete-confirm-box">
+            <h4 id="confirmTitle">Confirm Action</h4>
+            <p id="confirmMessage">Are you sure?</p>
+            <button class="btn-yes" id="confirmYes">Yes</button>
+            <button class="btn-no" id="confirmNo">No</button>
+        </div>
+    </div>
+
+  
+<script type="module">
+
+    import { app, analytics, firebaseConfig } from './firebase.js'; 
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    
+    import { getDatabase, ref, set, push, onValue, off, update, remove, get, query, limitToLast, endBefore, orderByChild } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+  
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    let currentLoggedInUserUID = null;
+    let isShopOwner = false;
+    let shopOwnerUID = getUrlParam('shopuid');
+    let chatPartnerUID = getUrlParam('chatuid');
+    let chatRoomID = null;
+    let uploadedImages = [];
+    let messageToDeleteID = null;
+    let lastMessageKey = null; 
+    const PAGE_SIZE = 10;
+    const DEFAULT_GUEST_AVATAR = "https://i.imgur.com/uT30K2C.png";
+  
+let payloadImageLink = null;
+
+let currentMessages = []; 
+
+let isFetchingOlderMessages = false;
+
+
+   
+    const loaderOverlay = document.getElementById('loaderOverlay');
+    const chatContainer = document.querySelector('.chat-container');
+    const messageInput = document.getElementById('messageInput');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const messageArea = document.getElementById('messageArea');
+    const shopNameEl = document.getElementById('shopName');
+    const myCustomerChatMenu = document.getElementById('menuMyCustomerChat');
+    const chatNotificationsMenu = document.getElementById('menuChatNotifications');
+    const initialPayloadPreview = document.getElementById('initialPayloadPreview');
+    const payloadTitleEl = document.getElementById('payloadTitle'); 
+    const payloadTextEl = document.getElementById('payloadText');
+    const payloadImagesEl = document.getElementById('payloadImages');
+    const menuToggle = document.getElementById('menuToggle');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuDeleteAll = document.getElementById('menuDeleteAll');
+    const menuHome = document.getElementById('menuHome');
+    const menuShop = document.getElementById('menuShop');
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    const modalDownload = document.getElementById('modalDownload');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmYes = document.getElementById('confirmYes');
+    const confirmNo = document.getElementById('confirmNo');
+    const loadMoreBtn = createLoadMoreButton();
+
+  
+    
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('messageInput');
+
+   
+    function autoResize() {
+       
+        textarea.style.height = 'auto'; 
+      
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+
+    function handleKeyPress(e) {
+      
+        if (e.key === 'Enter' || e.keyCode === 13) {
+                                  
+            
+            setTimeout(autoResize, 0); 
+        }
+    }
+
+  
+    textarea.addEventListener('input', autoResize);
+    textarea.addEventListener('keydown', handleKeyPress);
+    
+  
+    autoResize(); 
+});
+    
+    
+    function createLoadMoreButton() {
+        const button = document.createElement('button');
+        button.id = 'loadMoreBtn';
+        button.textContent = 'Load Older Messages';
+        button.className = 'load-more-btn';
+        button.style.display = 'none';
+        messageArea.prepend(button);
+        return button;
+    }
+
+    window.showNotification = (message, type = 'info', duration = 4000) => {
+        const container = document.getElementById('notificationContainer');
+        if (!container) return;
+        const notification = document.createElement('div');
+        notification.className = `notification ${type} timed`;
+        notification.style.setProperty('--notification-duration', `${duration}ms`);
+        
+        const iconClass = type === 'success' ? 'fas fa-check-circle' : 
+                             type === 'error' ? 'fas fa-times-circle' : 'fas fa-info-circle';
+        notification.innerHTML = `
+            <i class="icon ${iconClass}"></i>
+            <div class="message">${message}</div>
+            <button class="close-btn" onclick="this.closest('.notification').remove()"><i class="fas fa-times"></i></button>
+            <div class="progress-bar" style="background-color: var(--${type === 'success' ? 'accent-green' : type === 'error' ? 'danger-red' : 'accent-blue'});"></div>
+        `;
+        
+        container.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'fadeOut 0.5s forwards';
+            setTimeout(() => notification.remove(), 500);
+        }, duration);
+    }
+    
+    function getCustomerUID() {
+        let customerUID = localStorage.getItem('bebeji_customer_uid');
+        if (!customerUID || !customerUID.startsWith('GUEST_')) {
+            customerUID = `GUEST_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+            localStorage.setItem('bebeji_customer_uid', customerUID);
+          
+        }
+        return customerUID;
+    }
+    
+    function getUrlParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+    
+    function getChatRoomID(uid1, uid2) {
+        if (!uid1 || !uid2) return null;
+        return uid1 < uid2 ? `${uid1}_${uid2}` : `${uid2}_${uid1}`;
+    }
+    
+    function hideLoader() {
+        loaderOverlay.style.opacity = '0';
+        setTimeout(() => {
+            loaderOverlay.style.display = 'none';
+            chatContainer.style.display = 'flex';
+        }, 500);
+    }
+    
+    function adjustInputHeight() {
+        messageInput.style.height = 'auto';
+        messageInput.style.height = (messageInput.scrollHeight) + 'px';
+        
+        if (messageInput.scrollHeight > 150) {
+            messageInput.style.overflowY = 'auto';
+        } else {
+            messageInput.style.overflowY = 'hidden';
+        }
+    }
+    
+  
+async function getPartnerAvatar(uid) {
+    if (uid.startsWith('GUEST_')) {
+        return DEFAULT_GUEST_AVATAR;
+    }
+   
+    
+    const avatarRef = ref(db, `users/${uid}/userImageLink`);
+    
+    const snapshot = await get(avatarRef);
+  
+    return snapshot.val() || "https://i.imgur.com/JBNqM4s.png";
+}
+    
+    onAuthStateChanged(auth, async (user) => {
+        let userAuthUID = user ? user.uid : null;
+        
+        if (!shopOwnerUID) {
+          
+            hideLoader();
+            return;
+        }
+        if (shopOwnerUID && !chatPartnerUID) {
+          
+            if (userAuthUID === shopOwnerUID) {
+               
+                window.location.href = `mycustomerchat.html?uid=${shopOwnerUID}`; 
+                return;
+            }
+            currentLoggedInUserUID = userAuthUID || getCustomerUID(); 
+            chatPartnerUID = shopOwnerUID; 
+            isShopOwner = false; 
+        } else if (shopOwnerUID && chatPartnerUID) {
+           
+            if (userAuthUID !== shopOwnerUID) {
+              
+                hideLoader();
+                return;
+            }
+            currentLoggedInUserUID = userAuthUID;
+            isShopOwner = true;
+        } else {
+            showNotification("Initialization Error: Invalid URL parameters.", 'error');
+            hideLoader();
+            return;
+        }
+        
+        if (!currentLoggedInUserUID || !chatPartnerUID) {
+            showNotification("Initialization Error: User or Partner UID is missing.", 'error');
+            hideLoader();
+            return;
+        }
+
+        chatRoomID = getChatRoomID(currentLoggedInUserUID, chatPartnerUID);
+        
+        if (chatRoomID) {
+            await initializeChatInterface();
+        } else {
+            
+        }
+        hideLoader();
+    });
+
+    async function initializeChatInterface() {
+        const targetUID = isShopOwner ? chatPartnerUID : shopOwnerUID;
+        const targetRef = ref(db, `users/${targetUID}`);
+        const shopSnap = await get(targetRef);
+        let name;
+
+        if (isShopOwner) {
+           
+            const partnerUsername = shopSnap.val() ? shopSnap.val().username : null;
+            name = partnerUsername || (chatPartnerUID.startsWith('GUEST_') ? 'Guest Customer' : 'Customer');
+        } else {
+           
+            name = shopSnap.val() ? shopSnap.val().businessName || 'BEBEJI SHOP' : 'BEBEJI SHOP';
+        }
+
+        shopNameEl.textContent = name;
+        document.title = `Chat: ${name}`;
+
+        if (isShopOwner) {
+            myCustomerChatMenu.style.display = 'flex';
+            chatNotificationsMenu.style.display = 'none';
+        } else {
+            myCustomerChatMenu.style.display = 'none';
+          
+        }
+        document.getElementById('chatPartnerName').innerHTML = `Chatting with: <span id="shopName">${name}</span>`;
+       
+        handleInitialPayload();                 
+        listenForMessages(chatRoomID);                 
+        addUIListeners();
+    }
+
+   
+   async function createMessageHTML(message) {
+    const isSender = message.senderUID === currentLoggedInUserUID;
+    const typeClass = isSender ? 'customer' : 'shop';
+    const date = new Date(message.timestamp);
+    const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = date.toLocaleDateString();
+
+    const partnerUID = isSender ? currentLoggedInUserUID : chatPartnerUID;
+ 
+    const avatarSrc = await getPartnerAvatar(partnerUID); 
+
+    const seenIcon = isSender && message.seen ? '<i class="fas fa-check-double seen-icon" title="Seen"></i>' : (isSender ? '<i class="fas fa-check seen-icon" style="color:#bdc3c7;"></i>' : '');
+
+    let imageMediaHTML = '';
+    
+  
+    if (message.images && message.images.length > 0) {
+      
+        const mediaElements = message.images.map(imgUrl => {
+            const isVideo = imgUrl.match(/\.(mp4|mov|avi|wmv|mkv)$/i); 
+            
+            if (isVideo) {
+                
+                 return `
+                    <video src="${imgUrl}" controls preload="metadata" 
+                           class="chat-media-element video-element" 
+                           onclick="event.stopPropagation()"> 
+                           Your browser does not support the video tag.
+                    </video>`;
+            } else {
+               
+                 return `<img src="${imgUrl}" alt="Message Image" 
+                            class="chat-media-element image-element" 
+                            onclick="viewImage('${imgUrl}')">`;
+            }
+        }).join('');
+
+        imageMediaHTML = `<div class="message-media-wrapper">${mediaElements}</div>`;
+    }
+
+    const messageHTML = document.createElement('div');
+    messageHTML.className = `message-wrapper ${typeClass}`;
+    messageHTML.setAttribute('data-id', message.id);
+    messageHTML.setAttribute('data-timestamp', message.timestamp);
+    
+   
+    messageHTML.onclick = (e) => {
+        if (isSender && isShopOwner) { 
+            e.preventDefault();
+            window.confirmDeleteChat(message.id, false); 
+        } else if (isSender) {
+           
+    
+        }
+    };
+
+    messageHTML.innerHTML = `
+        ${!isSender ? `<img class="avatar" src="${avatarSrc}" alt="Shop Avatar"/>` : ''}
+        <div class="message-content">
+            ${message.text ? `<p>${message.text.replace(/\n/g, '<br>')}</p>` : ''}
+            ${imageMediaHTML} 
+            <div class="message-footer">
+                ${formattedTime} - ${formattedDate} ${seenIcon}
+            </div>
+        </div>
+        ${isSender ? `<img class="avatar" src="${avatarSrc}" alt="User Avatar"/>` : ''}
+    `;
+    return messageHTML;
+}
+
+   
+
+function listenForMessages(roomId) {
+    off(ref(db, `ChatMessage/${roomId}`));
+
+    const messagesQuery = query(
+        ref(db, `ChatMessage/${roomId}`),
+        orderByChild('timestamp'),
+        limitToLast(PAGE_SIZE)
+    );
+
+    onValue(messagesQuery, async (snapshot) => {
+        
+        const incomingMessages = [];
+        let count = 0; 
+        let newMessagesToAppend = []; 
+      
+        snapshot.forEach((childSnapshot) => {
+            incomingMessages.push({ ...childSnapshot.val(), id: childSnapshot.key });
+            count++; 
+        });
+
+       
+        
+        if (currentMessages.length === 0) {
+          
+            messageArea.innerHTML = '';
+                       
+            messageArea.appendChild(loadMoreBtn); 
+            
+            for (const message of incomingMessages) {
+                const messageElement = await createMessageHTML(message);
+                messageArea.appendChild(messageElement); 
+            }
+            
+        } else {
+          
+            newMessagesToAppend = incomingMessages.filter(
+                (msg) => !currentMessages.some((m) => m.id === msg.id)
+            );
+            
+            for (const message of newMessagesToAppend) {
+                const messageElement = await createMessageHTML(message);
+                messageArea.appendChild(messageElement); 
+            }
+        }
+       
+        
+        currentMessages = incomingMessages;
+        if (currentMessages.length > 0) {
+            lastMessageKey = currentMessages[0].id; 
+        }
+
+                               
+       
+        if (count >= PAGE_SIZE) { 
+            loadMoreBtn.style.display = 'block';
+            loadMoreBtn.textContent = 'Load Older Messages'; 
+        } else {
+            loadMoreBtn.style.display = 'none';
+        }        
+      
+        if (newMessagesToAppend.length > 0 || currentMessages.length <= PAGE_SIZE) { 
+             messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+    }, (error) => {
+      
+        showNotification(`Error listening to messages: ${error.message}`, 'error');
+    });
+}
+    
+    
+async function loadOlderMessages() {   
+    const firstMessageElement = messageArea.querySelector('.message-wrapper');
+    if (!firstMessageElement) {
+        loadMoreBtn.textContent = 'No More Messages';
+        loadMoreBtn.disabled = true;
+        return;
+    }
+    
+    const firstMessageTimestamp = Number(firstMessageElement.getAttribute('data-timestamp'));
+    
+    if (!firstMessageTimestamp || isFetchingOlderMessages) {
+        loadMoreBtn.textContent = 'No More Messages';
+        loadMoreBtn.disabled = true;
+        return;
+    }
+
+    isFetchingOlderMessages = true;
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.textContent = 'Loading...';
+
+  
+    const oldMessagesQuery = query(
+        ref(db, `ChatMessage/${chatRoomID}`),
+        orderByChild('timestamp'),
+        endBefore(firstMessageTimestamp), 
+        limitToLast(PAGE_SIZE) 
+    );
+
+    const snapshot = await get(oldMessagesQuery);
+    const messages = [];
+    const oldScrollHeight = messageArea.scrollHeight;
+
+    snapshot.forEach((childSnapshot) => {
+        messages.push({ ...childSnapshot.val(), id: childSnapshot.key });
+    });
+
+    if (messages.length > 0) {
+        messages.reverse(); 
+        
+        for (const message of messages) {
+            const messageElement = await createMessageHTML(message);          
+            
+            if (messageArea.children.length > 1) {
+                 messageArea.insertBefore(messageElement, messageArea.children[1]); 
+            } else {
+                 messageArea.appendChild(messageElement); 
+            }
+        }
+        
+      
+        const newScrollHeight = messageArea.scrollHeight;
+        messageArea.scrollTop = newScrollHeight - oldScrollHeight; 
+        
+        loadMoreBtn.textContent = 'Load Older Messages';
+        loadMoreBtn.disabled = false;
+        
+    } else {
+        loadMoreBtn.textContent = 'No More Messages';
+        loadMoreBtn.disabled = true;
+    }
+
+    isFetchingOlderMessages = false;
+}
+
+  
+
+
+  
+async function markMessageAsSeen(roomId, messageId) {
+    const messageRef = ref(db, `ChatMessage/${roomId}/${messageId}`);
+    
+   
+    await update(messageRef, { seen: true })
+        .catch(error => console.error("Failed to mark message as seen:", error));
+
+   
+    const partnerUID = isShopOwner ? chatPartnerUID : shopOwnerUID;
+    const selfUID = currentLoggedInUserUID; 
+    
+   
+    const selfChatRoomRef = ref(db, `users/${selfUID}/chatRooms/${partnerUID}`);
+    await update(selfChatRoomRef, { unreadCount: 0 }).catch(e => console.error("Failed to reset unread count:", e));
+  
+    if (!selfUID.startsWith('GUEST_')) {
+         await remove(ref(db, `users/${selfUID}/chatNotifications/${partnerUID}`));
+    }    
+   
+    if (selfUID.startsWith('GUEST_')) {       
+        await remove(ref(db, `guestNotifications/${selfUID}/${partnerUID}`));
+    }    
+   
+}
+    
+
+         
+async function sendMessage() {
+    const messageText = messageInput.value.trim();
+  
+    if (!messageText && uploadedImages.length === 0 && !payloadImageLink) { 
+        showNotification("Please enter a message, select an image, or send product details.", 'info');
+        return;
+    }
+        
+        if (!chatRoomID || !currentLoggedInUserUID) {
+            showNotification("Chat room not initialized.", 'error');
+            return;
+        }
+        
+        
+
+        try {
+        sendMessageBtn.disabled = true;
+        sendMessageBtn.classList.remove('ready');
+
+        const timestamp = Date.now();
+        const newMessageRef = push(ref(db, `ChatMessage/${chatRoomID}`));
+        
+      
+        let imagesToSend = uploadedImages;
+        if (payloadImageLink) {
+            
+            imagesToSend = [payloadImageLink, ...uploadedImages];
+        }
+
+        const newMessage = {
+            senderUID: currentLoggedInUserUID,
+            text: messageText,
+            timestamp: timestamp,
+            
+            images: imagesToSend.length > 0 ? imagesToSend : null, 
+            seen: false
+        };
+
+        await set(newMessageRef, newMessage);
+       
+        await updateChatRoomMetadata(newMessage);
+      
+        messageInput.value = '';
+        adjustInputHeight();        
+      
+        uploadedImages = [];
+        payloadImageLink = null; 
+        
+        imagePreviewContainer.innerHTML = '';
+        imagePreviewContainer.style.display = 'none';
+        initialPayloadPreview.style.display = 'none'; 
+
+    } catch (error) {
+        showNotification(`Failed to send message: ${error.message}`, 'error');
+    } finally {
+        
+            if (messageInput.value.trim() !== '' || uploadedImages.length > 0) {
+                sendMessageBtn.disabled = false;
+                sendMessageBtn.classList.add('ready');
+            } else {
+                sendMessageBtn.disabled = true;
+                sendMessageBtn.classList.remove('ready');
+            }
+        }
+    }
+
+
+
+  
+
+async function updateChatRoomMetadata(lastMessage) {
+    const partnerUID = isShopOwner ? chatPartnerUID : shopOwnerUID;
+    const selfUID = currentLoggedInUserUID;
+    const targetUID = partnerUID; 
+       
+    const partnerRef = ref(db, `users/${targetUID}/chatRooms/${selfUID}`);
+    const userRef = ref(db, `users/${selfUID}/chatRooms/${targetUID}`);
+      
+    const registeredUserNotifRef = ref(db, `users/${targetUID}/chatNotifications/${selfUID}`);
+    const guestNotifRef = ref(db, `guestNotifications/${selfUID}/${targetUID}`); 
+   
+    let lastMessageText = lastMessage.text || (lastMessage.images ? 'Image(s) Sent' : 'Product Interest');
+    lastMessageText = lastMessageText.replace(/https?:\/\/[^\s]+/g, '').trim() || lastMessageText;
+    
+    const updates = {
+        lastMessage: lastMessageText.substring(0, 100), 
+        timestamp: lastMessage.timestamp,
+    };
+    
+  
+    const partnerChatSnap = await get(partnerRef);
+    const oldUnreadCount = partnerChatSnap.val() ? (partnerChatSnap.val().unreadCount || 0) : 0;
+    
+    await update(partnerRef, { 
+        ...updates, 
+        partnerUID: selfUID,
+        unreadCount: oldUnreadCount + 1, 
+        isShopOwner: targetUID.startsWith('GUEST_') ? false : true 
+    });
+    
+          
+    
+    if (targetUID.startsWith('GUEST_')) {
+           
+       
+        if (selfUID.startsWith('GUEST_')) {
+         
+             await set(registeredUserNotifRef, {
+                timestamp: lastMessage.timestamp,
+            });
+        }
+      
+        else if (targetUID.startsWith('GUEST_')) {
+          
+            await set(ref(db, `guestNotifications/${targetUID}/${selfUID}`), {
+                timestamp: lastMessage.timestamp,
+            });
+        }
+
+    } else {
+   
+        await set(registeredUserNotifRef, {
+            timestamp: lastMessage.timestamp,
+        });
+    }
+
+   
+    await update(userRef, { 
+        ...updates, 
+        partnerUID: targetUID,
+        unreadCount: 0, 
+        isShopOwner: selfUID === shopOwnerUID 
+    });
+ 
+    
+    if (isShopOwner) {
+                       
+        await remove(ref(db, `users/${selfUID}/chatNotifications/${targetUID}`));
+       
+        
+    }
+}
+
+  
+    async function uploadToImgur(base64) {
+        try {
+         
+            const res = await fetch("https://api.imgur.com/3/image", {
+                method: "POST",
+                headers: { Authorization: "Client-ID 5acf7eff9c91660" }, 
+                body: new URLSearchParams({ image: base64, type: "base64" })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showNotification('Image uploaded successfully to Imgur.', 'success', 2000);
+                return data.data.link;
+            }
+            showNotification(`Imgur Error: ${data.data.error || 'Failed to get link.'}`, 'error');
+            return null;
+        } catch (error) {
+            showNotification("Imgur Upload Error. Check console.", 'error');
+            return null;
+        }
+    }
+
+    
+  
+    function handleImageUpload() {
+        const files = imageUpload.files;
+        if (!files.length) return;
+        
+        if (files.length > 3) {
+            showNotification("You can upload a maximum of 3 images per message.", 'error');          
+            imageUpload.value = null; 
+            return;
+        }
+
+
+
+         imagePreviewContainer.innerHTML = '';  
+    const imagesToUpload = [];     
+    sendMessageBtn.disabled = true;
+    sendMessageBtn.classList.remove('ready');
+    showNotification("Uploading images...", 'info', 5000);
+    
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const base64Image = e.target.result.split(',')[1];            
+          
+            const tempWrapper = document.createElement('div');
+            tempWrapper.className = 'preview-wrapper';
+            tempWrapper.innerHTML = `<img src="${e.target.result}" class="preview-img loading" alt="Uploading...">`;
+            imagePreviewContainer.appendChild(tempWrapper);
+            imagePreviewContainer.style.display = 'flex';
+            
+            const imgUrl = await uploadToImgur(base64Image);
+            if (imgUrl) {
+                imagesToUpload.push(imgUrl);
+                
+                if (imagesToUpload.length === files.length) {
+                    uploadedImages = [...uploadedImages, ...imagesToUpload];                     
+                   
+                    displayUploadedImages();
+                    
+                    showNotification('All images uploaded and ready to send.', 'success', 3000);
+                    sendMessageBtn.disabled = false;
+                    sendMessageBtn.classList.add('ready');
+                }
+            } else {
+                 showNotification('Image upload failed for one or more files.', 'error');
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+    
+    imageUpload.value = null; 
+}
+
+            
+  
+window.removeUploadedImage = (indexToRemove) => {
+    uploadedImages.splice(indexToRemove, 1);     
+  
+    displayUploadedImages();
+    
+    if (uploadedImages.length === 0 && messageInput.value.trim() === '') {
+        sendMessageBtn.disabled = true;
+        sendMessageBtn.classList.remove('ready');
+    }
+};
+
+
+function displayUploadedImages() {
+    imagePreviewContainer.innerHTML = '';
+    
+    if (uploadedImages.length === 0) {
+        imagePreviewContainer.style.display = 'none';
+        return;
+    }
+    
+    uploadedImages.forEach((imgUrl, index) => {
+        const previewWrapper = document.createElement('div');
+        previewWrapper.className = 'preview-wrapper';
+        
+        const previewImg = document.createElement('img');
+        previewImg.src = imgUrl; 
+        previewImg.className = 'preview-img';        
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-image-btn';
+        removeBtn.innerHTML = '❌';
+        removeBtn.onclick = () => window.removeUploadedImage(index);
+        
+        previewWrapper.appendChild(previewImg);
+        previewWrapper.appendChild(removeBtn);
+        imagePreviewContainer.appendChild(previewWrapper);
+    });
+    
+    imagePreviewContainer.style.display = 'flex';
+}
+
+
+
+function handleInitialPayload() {
+  
+    const encodedPayload = getUrlParam('payload');
+    let payloadMessage = '';
+    let payloadTitle = '';
+    let imageLink = null; 
+  
+    const formatPrice = (price) => {
+        
+        return `₦${Number(price).toLocaleString()}`; 
+    };
+
+    if (!encodedPayload) {
+        initialPayloadPreview.style.display = 'none';
+        payloadImageLink = null;
+        return;
+    }
+
+    if (!payloadTitleEl || !payloadTextEl || !payloadImagesEl || !initialPayloadPreview) {
+        console.error("Critical Error: Initial payload elements are missing in the HTML.");
+        payloadImageLink = null;
+        return; 
+    }
+    
+    payloadImagesEl.innerHTML = ''; 
+
+    try {
+        const decodedPayloadString = decodeURIComponent(encodedPayload);
+        const payload = JSON.parse(decodedPayloadString);
+
+        if (payload.shopUID && payload.shopUID !== shopOwnerUID) {
+             showNotification("Error: Payload shop UID mismatch.", 'error');
+             initialPayloadPreview.style.display = 'none';
+             payloadImageLink = null;
+             return;
+        }
+
+
+        if (payload.type === 'post') {            
+            payloadTitle = "Product Interest";
+            imageLink = payload.productLink; 
+            const formattedPrice = formatPrice(payload.price);
+            
+            payloadMessage = `I am interested in this product: "${payload.text.substring(0, 50)}..." (Price: ${formattedPrice}). Please share more details.`;
+            messageInput.value = payloadMessage;
+            
+        } else if (payload.type === 'cart') {
+           
+            payloadTitle = "Cart Items Interest";
+            const total = payload.total;
+            const formattedTotal = formatPrice(total);
+            
+            imageLink = payload.firstItemMedia;
+            
+            const cleanedProductList = payload.items.map((item, index) => {
+                const formattedItemPrice = formatPrice(item.price); 
+                return `*Item ${index + 1}* (${formattedItemPrice}): ${item.text || 'Product Details'}`;
+            }).join('\n');
+            
+            const productListHTML = cleanedProductList.replace(/\n/g, '<br>');
+
+            const messageTextForInput = `Hello, I would like to order the following items (Total: ${formattedTotal}):\n\n${cleanedProductList}`;
+            messageInput.value = messageTextForInput; 
+            
+            payloadMessage = `I would like to order the following items (Total: ${formattedTotal}):<br><br>${productListHTML}`;
+        }
+
+      
+        payloadImageLink = imageLink; 
+        
+        if (imageLink) {
+             const isVideo = imageLink.match(/\.(mp4|mov|avi|wmv|mkv)$/i);
+             
+             payloadImagesEl.innerHTML = `
+                <div class="payload-image-wrapper">
+                    ${isVideo ? 
+                        
+                        `<video src="${imageLink}" controls preload="metadata" style="max-width: 100%; height: auto; max-height: 150px; border-radius: 8px;">
+                            Your browser does not support the video tag.
+                         </video>` :
+                       
+                        `<img src="${imageLink}" alt="${payloadTitle} Image" 
+                        onclick="viewImage('${imageLink}')" 
+                        style="max-width: 100%; height: auto; max-height: 150px; border-radius: 8px; cursor: pointer;">`
+                    }
+                    <span class="image-label">${isVideo ? 'Video Preview' : 'Tap to View Large'}</span>
+                </div>
+             `;
+        }
+
+        if (payloadMessage) {
+            payloadTitleEl.textContent = payloadTitle; 
+            payloadTextEl.innerHTML = `<p><strong>Initial Message:</strong></p>${payloadMessage}`; 
+            initialPayloadPreview.style.display = 'block';
+            showNotification(`${payloadTitle} loaded for chat. Ready to send.`, 'success', 3000);
+            
+            adjustInputHeight();
+            sendMessageBtn.disabled = false;
+            sendMessageBtn.classList.add('ready');
+        } else {
+            initialPayloadPreview.style.display = 'none';
+            payloadImageLink = null;
+        }
+        
+    } catch (e) {
+               
+        initialPayloadPreview.style.display = 'none';
+        payloadImageLink = null;
+    }
+}
+
+   
+    window.viewImage = (imageUrl) => {
+        modalImage.src = imageUrl;
+        modalDownload.onclick = () => {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'chat_image.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+        imageModal.style.display = 'flex';
+    };
+
+  
+    window.confirmDeleteChat = (messageId, isAll = false) => {
+        if (!isShopOwner) {
+            showNotification("Only the shop owner can delete messages.", 'error');
+            return;
+        }
+        messageToDeleteID = messageId;
+        document.getElementById('confirmTitle').textContent = isAll ? "Delete All Chats" : "Delete Message";
+        document.getElementById('confirmMessage').textContent = isAll ? "WARNING: This will permanently delete all messages in this conversation. Are you sure?" : "Are you sure you want to delete this message?";
+               
+        confirmYes.onclick = isAll ? deleteAllChats : deleteMessage;
+        confirmNo.onclick = () => confirmModal.style.display = 'none';
+        confirmModal.style.display = 'flex';
+    };
+
+   
+    async function deleteMessage() {
+        if (!messageToDeleteID) return;
+        try {
+            const messageRef = ref(db, `ChatMessage/${chatRoomID}/${messageToDeleteID}`);
+            await remove(messageRef);
+            messageToDeleteID = null;
+            confirmModal.style.display = 'none';
+            showNotification('Message deleted successfully.', 'success', 2000);
+          
+        } catch (error) {
+            showNotification("Error deleting message. Please try again.", 'error');
+        }
+    }
+
+  
+    async function deleteAllChats() {
+        try {
+          
+            await remove(ref(db, `ChatMessage/${chatRoomID}`));           
+          
+            await remove(ref(db, `users/${currentLoggedInUserUID}/chatRooms/${chatPartnerUID}`));
+            await remove(ref(db, `users/${chatPartnerUID}/chatRooms/${currentLoggedInUserUID}`));
+            
+            confirmModal.style.display = 'none';
+            showNotification('All chats deleted successfully. Page will reload.', 'success', 2000);            
+          
+            setTimeout(() => window.location.reload(), 2000); 
+
+        } catch (error) {
+            showNotification("Error deleting all chats. Check connection.", 'error');
+        }
+    }
+
+    
+    function addUIListeners() {
+        messageInput.addEventListener('input', () => {
+            adjustInputHeight();
+            const text = messageInput.value.trim();
+            if (text !== '' || uploadedImages.length > 0) {
+                sendMessageBtn.disabled = false;
+                sendMessageBtn.classList.add('ready');
+            } else {
+                sendMessageBtn.disabled = true;
+                sendMessageBtn.classList.remove('ready');
+            }
+        });
+        
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (!sendMessageBtn.disabled) {
+                    sendMessage();
+                }
+            }
+        });
+
+        sendMessageBtn.addEventListener('click', sendMessage);
+        
+        imageUpload.addEventListener('change', handleImageUpload);
+
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.toggle('open');
+        });
+
+        sideMenu.addEventListener('click', (e) => {
+            if (e.target.id === 'menuClose' || e.target.closest('#menuClose') || e.target.id === 'sideMenu') {
+                sideMenu.classList.remove('open');
+            }
+        });
+
+        menuHome.addEventListener('click', () => { window.location.href = 'index.html'; });
+
+        menuShop.addEventListener('click', () => { 
+            window.location.href = `shop.html?uid=${shopOwnerUID}`; 
+        });
+
+        menuDeleteAll.addEventListener('click', () => {
+            window.confirmDeleteChat(null, true);
+        });
+
+        modalClose.addEventListener('click', () => { imageModal.style.display = 'none'; });
+        
+        imageModal.addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') {
+                imageModal.style.display = 'none';
+            }
+        });
+               
+        loadMoreBtn.addEventListener('click', loadOlderMessages); 
+    }
+
+</script>
+
+
+  
+</body>
+</html>
