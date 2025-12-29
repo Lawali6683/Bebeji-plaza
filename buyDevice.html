@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Buy-Back Pro - Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a1128;
+            --accent-green: #00ff99;
+            --accent-blue: #4c72d6;
+            --glass-bg: rgba(22, 33, 62, 0.9);
+            --text-color: #e8e8ff;
+            --danger-red: #e74c3c;
+        }
+
+   :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --card-border-color: rgba(76, 114, 214, 0.3);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),        
+                linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+                linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);            
+            background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+            background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;       
+            background-attachment: fixed;
+        }
+
+     
+        .lang-btn { padding: 8px 25px; border: 2px solid var(--accent-blue); color: white; background: transparent; cursor: pointer; border-radius: 30px; transition: 0.3s; font-weight: bold; }
+        .lang-btn.active { background: var(--accent-blue); box-shadow: 0 0 15px var(--accent-blue); }
+
+        .warning-text { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; font-size: 13px; margin-bottom: 20px; border: 1px solid rgba(76, 114, 214, 0.3); text-align: justify; }
+
+        .input-box { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color:#90ff2b ; font-weight: bold; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #90ff2b; background: #0f1a36; color: white; box-sizing: border-box; outline: none; }
+
+        .face-placeholder { width: 130px; height: 130px; border-radius: 50%; background: #16213e; border: 3px dashed var(--accent-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 auto 20px; position: relative; overflow: hidden; }
+        .face-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+        #success-screen { display: none; text-align: center; }
+        .btn { padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+        .btn-upload { background: var(--accent-blue); color: white; }
+        .btn-new { background: var(--accent-green); color: black; }
+
+        #camera-overlay { position: fixed; inset: 0; background: #000; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .scan-area { width: 300px; height: 300px; border-radius: 50%; border: 5px solid var(--accent-green); overflow: hidden; }
+
+       
+        #full-view { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10005; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: red; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 25px; cursor: pointer; z-index: 10006; display: flex; align-items: center; justify-content: center; }
+
+        #gallery-overlay { position: fixed; inset: 0; background: var(--primary-bg); z-index: 9999; display: none; padding: 20px; overflow-y: auto; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
+        .album-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; cursor: pointer; }
+
+       
+        #hidden-receipt { position: absolute; left: -9999px; width: 800px; background: white; color: black; padding: 30px; border: 15px solid #0a1128; }
+        .receipt-header { text-align: center; border-bottom: 4px solid #0a1128; padding-bottom: 15px; }
+        .receipt-logo { width: 100px; margin-bottom: 5px; }
+        .sig-box { width: 120px; text-align: center; font-size: 12px; }
+        .sig-img { width: 100px; height: 50px; object-fit: contain; margin-bottom: 5px; }
+        
+        #notificationContainer {
+    position: fixed;
+    top: 20px; 
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 380px;
+    pointer-events: none; 
+}
+
+.notification {
+    position: relative;
+    background-color: var(--secondary-bg);
+    color: var(--text-primary);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInRight 0.5s forwards;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(76, 114, 214, 0.3);
+    overflow: hidden;
+}
+
+.notification.success {
+    border-left: 5px solid var(--accent-green);
+    box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3);
+}
+
+.notification.error {
+    border-left: 5px solid var(--danger-red);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.notification.info {
+    border-left: 5px solid var(--accent-blue);
+    box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3);
+}
+
+.notification .icon {
+    font-size: 1.6em;
+    min-width: 25px; 
+}
+
+.notification.success .icon {
+    color: var(--accent-green);
+}
+
+.notification.error .icon {
+    color: var(--danger-red);
+}
+
+.notification.info .icon {
+    color: var(--accent-blue);
+}
+
+.notification .message {
+    flex-grow: 1;
+    text-align: left;
+    line-height: 1.4;
+    font-size: 0.95em;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    color: rgba(232, 232, 255, 0.7);
+    font-size: 1.5em;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+    padding: 0;
+}
+
+.notification .close-btn:hover {
+    color: var(--danger-red);
+    transform: scale(1.1);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+.notification.timed::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification.timed .progress-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: currentColor; 
+    animation: shrink-width var(--notification-duration) linear forwards;
+    width: 100%;
+}
+
+   .tv-frame {
+            width: 95%;
+            max-width: 700px;
+            height: 260px;
+            margin: 30px auto;
+            background: #1a1a1a; 
+            border: 12px solid #333;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+     
+        .tv-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+      
+        .stage {
+            position: absolute;
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            animation: tvSlide 28s infinite;
+        }
+
+        
+        .stage-1 { animation-delay: 0s; }
+       
+        .stage-2 { animation-delay: 7s; }
+        
+        .stage-3 { animation-delay: 14s; }
+        
+        .stage-4 { animation-delay: 21s; }
+
+        @keyframes tvSlide {
+            0%, 2% { opacity: 0; transform: scale(1.1); }
+            5%, 23% { opacity: 1; transform: scale(1); }
+            25%, 100% { opacity: 0; transform: scale(0.9); }
+        }
+
+        
+        .tv-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/KLDzIzl.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        
+        .tv-screen h2 {
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #007bff;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .tv-screen p {
+            font-family: Arial, sans-serif;
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .dial-code {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #fdf2f2;
+            border: 2px solid #d9534f;
+            border-radius: 50px;
+            color: #d9534f;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+       
+        .tv-indicator {
+            position: absolute;
+            bottom: 5px;
+            width: 40px;
+            height: 4px;
+            background: #555;
+            border-radius: 10px;
+        }
+        
+        .camera-controls {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    gap: 20px;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+    </style>
+</head>
+<body>
+
+    <div id="main-ui">
+        <div style="text-align:center; margin-bottom:15px;">
+            <img src="https://i.imgur.com/MNooQYo.png" style="width:70px;">
+            <h1 id="bizNameDisplay" style="color:var(--accent-green); margin:0;">BUSINESS NAME</h1>
+            <p id="user-welcome" style="color:var(--accent-blue); font-weight:bold;"></p>
+        </div>
+
+        <div class="warning-text" id="legal-warning"></div>
+
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+            <button id="btn-ha" class="lang-btn" onclick="setLang('ha')">HAUSA</button>
+            <button id="btn-en" class="lang-btn" onclick="setLang('en')">ENGLISH</button>
+        </div>
+        
+        <div class="tv-frame">
+    <div class="tv-screen">
+        
+        <div class="stage stage-1">
+            <h2>Duba IMEI/Serial Code</h2>
+            <p>Shiga wurin kiran waya sannan ka danna:</p>
+            <div class="dial-code">*#06#</div>
+        </div>
+
+        <div class="stage stage-2" style="height: 100%; width: 100%;">
+            <div class="tv-image"></div>
+        </div>
+
+        <div class="stage stage-3">
+            <h2>Get IMEI/Serial Code</h2>
+            <p>Open your phone dialer and type:</p>
+            <div class="dial-code">*#06#</div>
+        </div>
+
+        <div class="stage stage-4" style="height: 100%; width: 100%;">
+            <div class="tv-image"></div>
+        </div>
+
+    </div>
+    <div class="tv-indicator"></div>
+</div>
+
+
+        <div style="background:#2B2B47; padding:20px; border-radius:20px; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="face-placeholder" id="start-cam" onclick="startCamera()">
+                <i class="fas fa-camera" id="avatar-icon" style="font-size: 40px; color: var(--accent-blue);"></i>
+                <img id="face-captured" style="display:none;">
+            </div>
+
+            <div class="input-box">
+                <label id="lbl-nin">NIN Number</label>
+                <div style="display:flex; gap:5px;">
+                    <input type="number" id="ninInput">
+                    <button style="background:var(--accent-blue); color:white; border:none; border-radius:8px; padding:0 15px; cursor:pointer;" onclick="verifyNIN()">Verify</button>
+                </div>
+            </div>
+
+            <div class="input-box"><label id="lbl-name">Full Name</label><input type="text" id="sellerName" readonly></div>
+            <div class="input-box"><label id="lbl-email">Seller Email</label><input type="email" id="sellerEmail"></div>
+            <div class="input-box"><label id="lbl-phone">Phone Number</label><input type="tel" id="sellerPhone"></div>
+            <div class="input-box"><label id="lbl-dev">Device Model</label><input type="text" id="devName"></div>
+            <div class="input-box"><label id="lbl-imei">Divice IMEI Number (*#06#) </label><input type="text" id="devImei"></div>
+            <div class="input-box"><label id="lbl-price">Purchase Price (₦)</label><input type="number" id="buyPrice"></div>
+
+            <button class="btn-new btn" style="margin-top:10px;" onclick="finalizeSale()" id="btn-final">GENERATE AGREEMENT</button>
+            <button class="btn" style="margin-top:10px; background:transparent; border:1px solid #444; color:white;" onclick="openGallery()">
+                <i class="fas fa-history"></i> HISTORY / SEARCH
+            </button>
+        </div>
+    </div>
+
+    <div id="success-screen">
+        <h2 style="color:var(--accent-green);">TRANSACTION COMPLETED!</h2>
+        <div id="card-preview-area" style="margin: 20px 0;"></div>
+        <div style="max-width:400px; margin:0 auto; display:flex; flex-direction:column; gap:10px;">
+            <button class="btn btn-upload" onclick="downloadCard()"><i class="fas fa-download"></i> SAVE TO GALLERY</button>
+            <button class="btn btn-new" onclick="location.reload()"><i class="fas fa-plus"></i> NEW REGISTER</button>
+        </div>
+    </div>
+    
+    
+    <div id="camera-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; align-items:center; justify-content:center; z-index:10000;">
+    <div class="scan-area" style="width:300px; height:300px; border:2px solid #4c72d6; border-radius:15px; overflow:hidden;">
+        <video id="video" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+    </div>
+    
+    <div style="display:flex; gap:15px; margin-top:20px;">
+        <button class="btn" style="width:60px; height:60px; border-radius:50%; background:#4c72d6; color:white; border:none; cursor:pointer; font-size:20px;" onclick="switchCamera()">🔄</button>
+        
+        <button class="btn-new btn" style="width:150px;" onclick="takePhoto()">CAPTURE PHOTO</button>
+        
+        <button class="btn" style="width:60px; height:60px; border-radius:50%; background:red; color:white; border:none; cursor:pointer; font-size:20px;" onclick="stopCamera()">❌</button>
+    </div>
+</div>
+
+    
+
+    <div id="gallery-overlay">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="color:white;">Recent Cards</h2>
+            <button onclick="document.getElementById('gallery-overlay').style.display='none'" style="background:red; color:white; border:none; padding:10px 20px; border-radius:5px;">CLOSE</button>
+        </div>
+        <input type="text" id="imeiSearch" placeholder="Search IMEI..." onkeyup="filterGallery()" style="margin: 20px 0;">
+        <div class="gallery-grid" id="gallery-list"></div>
+    </div>
+
+    <div id="hidden-receipt">
+        <div class="receipt-header">
+            <img src="https://i.imgur.com/MNooQYo.png" class="receipt-logo">
+            <h1 style="margin:0; font-size:32px;">BEBEJI PLAZA PHONE'S CENTER</h1>
+            <p style="margin:5px 0; font-weight:bold; font-size:18px;">Sabon Gari Tankin Ruwa Gusau Zamfara state</p>
+            <h2 id="r-biz-name" style="margin:5px 0; color:#4c72d6;">(Business Name)</h2>
+            <div style="display:flex; justify-content:space-around; font-size:16px; margin-top:10px; font-weight:bold;">
+                <span>Shop No: <span id="r-shop"></span></span>
+                <span>Call: <span id="r-call"></span></span>
+                <span>Card ID: #<span id="r-id"></span></span>
+            </div>
+        </div>
+
+        <div style="display:flex; margin-top:30px;">
+            <div style="flex:1; font-size:18px; line-height:2;">
+                <h3 style="text-decoration:underline; margin-top:0;">Seller Information</h3>
+                <div><b>Full Name:</b> <span id="r-name"></span></div>
+                <div><b>Email:</b> <span id="r-email"></span></div>
+                <div><b>Phone Number:</b> <span id="r-phone"></span></div>
+                <div><b>NIN Number:</b> <span id="r-nin"></span></div>
+                <div><b>Date:</b> <span id="r-date"></span></div>
+                <div><b>Device IMEI:</b> <span id="r-imei"></span></div>
+            </div>
+            <div style="width:200px; display:flex; flex-direction:column; align-items:center;">
+                <img id="r-face" style="width:180px; height:180px; border-radius:50%; border:6px solid #0a1128; object-fit:cover;">
+                <p style="font-weight:bold; margin-top:10px;">SELLER PHOTO</p>
+            </div>
+        </div>
+
+        <div id="r-legal-box" style="margin-top:30px; padding:20px; background:#f4f4f4; border:1px solid #ccc; font-size:16px; text-align:justify; line-height:1.6;"></div>
+
+        <div style="margin-top:50px; display:flex; justify-content:space-between;">
+            <div class="sig-box">
+                <img src="https://i.imgur.com/LRBSj1U.png" class="sig-img">
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Bebeji Chairman Sig</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/ksZQtgb.png" class="sig-img">
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Police DPO Sig</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/v9S9tmf.png" class="sig-img">
+                <div style="border-top:2px solid black; padding-top:5px;"><b id="r-owner-sig">NGOs, Human Rights sin</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/DddZCm3.png" class="sig-img">
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Dev: Haruna Lawali</b></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationContainer"></div>
+
+    <script type="module">
+        import { app } from './firebase.js';
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        let shopData = null;
+        let capturedImg = null;
+        let currentLang = 'ha';
+
+        window.showNotify = (msg) => {
+            const container = document.getElementById('notificationContainer');
+            const div = document.createElement('div');
+            div.style = "background:#16213e; color:white; padding:15px; border-radius:8px; margin-bottom:10px; border-left:5px solid #4c72d6; box-shadow:0 4px 10px rgba(0,0,0,0.3);";
+            div.innerHTML = msg;
+            container.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
+        };
+
+        const translations = {
+            ha: {
+                welcome: (name) => `Barka da zuwa, ${name}`,
+                warning: (name) => `Barka <b>${name}</b>, hadin gwiwa da police, NGOs, Human Rights, Bisa dokokin kasuwanci da kare haikin mai Saye da mai sayarwa, da kare ka da sayan kayan sata, wannan shafin zai taimaka maka ka yi ma duk wanda zaka sayi waya a hanunsa register, hoton fuskarsa, NIN number da number waya Verify. Idan ka sayi device ka cika wannan register, koda wani abu ya taso kai ba wanda ake zargi bane.`,
+                nin: "Lambar NIN (Tabbatarwa)",
+                name: "Cikakken Suna",
+                email: "Email na Mai Siyarwa",
+                phone: "Lambar Waya",
+                model: "Irin Wayar (Model)",
+                imei: "IMEI / Serial Number",
+                price: "Farashin Sayayya (₦)",
+                generate: "SAMAR DA YARJEJENIYA",
+                legal: (date, sName, shopName, dName, price) => `Wannan cinikin da aka yi yau ${date} ${sName} da {shopName} na ${dName} akan kudi ₦${price} an Kammala shi bisa cika dokokin kasuwanci na Nigeria, da police, human rights, NGOs, idan an Samu matsala a tuntubi ciyaman da katin sheda ko human rights.`
+            },
+            en: {
+                welcome: (name) => `Welcome, ${name}`,
+                warning: (name) => `Hello <b>${name}</b>, in partnership with Police, NGOs, Human Rights, and under business laws to protect buyers and sellers from stolen goods. This page helps you register anyone you buy a phone from, including their face, NIN, and phone number. Once registered, you are legally protected from suspicion.`,
+                nin: "NIN Number (Verify)",
+                name: "Full Name",
+                email: "Seller's Email",
+                phone: "Phone Number",
+                model: "Device Model",
+                imei: "IMEI / Serial Number",
+                price: "Purchase Price (₦)",
+                generate: "GENERATE AGREEMENT",
+                 legal: (date, sName, shopName, dName, price) => `This transaction made today ${date} between ${sName} and ${shopName} for the device ${dName} at the sum of ₦${price}, has been completed in accordance with Nigerian commercial laws, the Police, Human Rights, and NGOs. In case of any issues, please contact the Chairman with this identification card or Human Rights.`
+            }
+        };
+
+                                
+        window.setLang = (lang) => {
+            currentLang = lang;
+            const name = shopData ? shopData.fullName : "User";
+            document.getElementById('legal-warning').innerHTML = translations[lang].warning(name);
+        };
+
+
+        let currentFacingMode = 'user'; // 'user' = gaba, 'environment' = baya
+
+window.startCamera = async () => {
+    document.getElementById('camera-overlay').style.display = 'flex';
+    
+   
+    if (window.stream) {
+        window.stream.getTracks().forEach(track => track.stop());
+    }
+
+    try {
+        const constraints = { 
+            video: { facingMode: currentFacingMode } 
+        };
+        
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        window.stream = stream;
+        const videoElement = document.getElementById('video');
+        videoElement.srcObject = stream;
+
+       
+        if (currentFacingMode === 'user') {
+            videoElement.style.transform = "scaleX(-1)";
+        } else {
+            videoElement.style.transform = "scaleX(1)";
+        }
+
+    } catch (err) {
+        console.error("Camera Error:", err);
+        showNotify("Error: Camera");
+    }
+};
+
+
+window.switchCamera = () => {
+    currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+    window.startCamera(); 
+
+
+window.stopCamera = () => {
+    if (window.stream) {
+        window.stream.getTracks().forEach(track => track.stop());
+    }
+    document.getElementById('camera-overlay').style.display = 'none';
+    }
+};
+
+
+window.takePhoto = () => {
+    const v = document.getElementById('video');
+    const c = document.createElement('canvas');
+    c.width = v.videoWidth; 
+    c.height = v.videoHeight;
+    const ctx = c.getContext('2d');
+
+   
+    if (currentFacingMode === 'user') {
+        ctx.translate(c.width, 0);
+        ctx.scale(-1, 1);
+    }
+
+    ctx.drawImage(v, 0, 0);
+    capturedImg = c.toDataURL('image/jpeg');
+
+    document.getElementById('face-captured').src = capturedImg;
+    document.getElementById('face-captured').style.display = 'block';
+    document.getElementById('avatar-icon').style.display = 'none';
+
+    window.stopCamera(); 
+};
+        
+        
+        
+
+        window.verifyNIN = () => {
+            document.getElementById('sellerName').value = "Haruna Lawali";
+            showNotify("NIN Verified Successfully!");
+        };
+
+        window.finalizeSale = async () => {
+            if(!capturedImg || !document.getElementById('sellerName').value) return alert("Cika dukkan bayani!");
+
+            const date = new Date().toLocaleString();
+            const cid = Math.floor(10000 + Math.random() * 90000);
+
+            document.getElementById('r-biz-name').textContent = shopData.businessName;
+            document.getElementById('r-shop').textContent = shopData.bebejiShopNumber || "N/A";
+            document.getElementById('r-call').textContent = shopData.phoneNumber || "N/A";
+            document.getElementById('r-id').textContent = cid;
+            document.getElementById('r-name').textContent = document.getElementById('sellerName').value;
+            document.getElementById('r-email').textContent = document.getElementById('sellerEmail').value;
+            document.getElementById('r-phone').textContent = document.getElementById('sellerPhone').value;
+            document.getElementById('r-nin').textContent = document.getElementById('ninInput').value;
+            document.getElementById('r-date').textContent = date;
+            document.getElementById('r-imei').textContent = document.getElementById('devImei').value;
+            document.getElementById('r-face').src = capturedImg;
+            document.getElementById('r-owner-sig').textContent = shopData.fullName;
+            document.getElementById('r-legal-box').innerHTML = translations[currentLang].legal(
+                date, document.getElementById('sellerName').value, shopData.fullName, document.getElementById('devName').value, document.getElementById('buyPrice').value
+            );
+
+            const canvas = await html2canvas(document.getElementById('hidden-receipt'), { useCORS: true, scale: 2 });
+            const cardImg = canvas.toDataURL('image/jpeg');
+            window.finalCard = cardImg;
+
+            
+            const hist = JSON.parse(localStorage.getItem('bebeji_cards') || '[]');
+            hist.unshift({ img: cardImg, imei: document.getElementById('devImei').value });
+            localStorage.setItem('bebeji_cards', JSON.stringify(hist));
+
+            document.getElementById('main-ui').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+            document.getElementById('card-preview-area').innerHTML = `<img src="${cardImg}" style="width:100%; border-radius:10px; cursor:pointer;" onclick="viewFull('${cardImg}')">`;
+            
+            sendEmail(cardImg);
+        };
+
+        async function sendEmail(img) {
+            try {
+                await fetch("https://bebejiplaza.pages.dev/api/myCard", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        apiKey: "@haruna66",
+                        adminEmail: shopData.email,
+                        sellerEmail: document.getElementById('sellerEmail').value,
+                        cardImage: img,
+                        subject: `New Receipt: ${document.getElementById('devImei').value}`
+                    })
+                });
+            } catch (e) { console.log(e); }
+        }
+
+        window.viewFull = (src) => {
+            document.getElementById('full-img').src = src;
+            document.getElementById('full-view').style.display = 'flex';
+        };
+
+        window.downloadCard = () => {
+            const a = document.createElement('a');
+            a.download = "Bebeji_Receipt.jpg"; a.href = window.finalCard; a.click();
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if(user) {
+                const s = await get(ref(db, `users/${user.uid}`));
+                if(s.exists()) {
+                    shopData = s.val();
+                    document.getElementById('bizNameDisplay').textContent = shopData.businessName;
+                    window.setLang('ha');
+                }
+            }
+        });
+
+        window.openGallery = () => {
+            document.getElementById('gallery-overlay').style.display = 'block';
+            window.filterGallery();
+        };
+
+        window.filterGallery = () => {
+            const q = document.getElementById('imeiSearch').value;
+            const hist = JSON.parse(localStorage.getItem('bebeji_cards') || '[]');
+            const list = document.getElementById('gallery-list');
+            list.innerHTML = "";
+            hist.filter(i => i.imei.includes(q)).forEach(item => {
+                const img = document.createElement('img');
+                img.src = item.img; img.style = "width:100%; border-radius:8px; cursor:pointer; margin-bottom:10px;";
+                img.onclick = () => viewFull(item.img);
+                list.appendChild(img);
+            });
+        };
+    </script>
+</body>
+</html>
