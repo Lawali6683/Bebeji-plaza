@@ -7,23 +7,23 @@ function generateOtp() {
 export async function onRequest(context) {
     const { request, env } = context;
     const origin = request.headers.get("Origin");
-    
-    
+
+    // Jerin wuraren da aka amince su yi kira
     const ALLOWED_ORIGINS = [
         "https://bebejiplaza.pages.dev",
         "http://localhost:8080",
         "https://www.bebejiplaza.com"
     ];
 
-    
+   
     const corsHeaders = {
         "Access-Control-Allow-Origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
         "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, x-api-key", 
+        "Access-Control-Allow-Headers": "Content-Type, x-api-key",
         "Access-Control-Max-Age": "86400",
     };
 
-    
+  
     if (request.method === "OPTIONS") {
         return new Response(null, { 
             status: 204, 
@@ -48,7 +48,10 @@ export async function onRequest(context) {
 
         if (ACTION === 'SEND') {
             const { email } = data;
-            if (!email) return new Response(JSON.stringify({ message: "Email is required." }), { status: 400, headers: corsHeaders });
+            if (!email) return new Response(JSON.stringify({ message: "Email is required." }), { 
+                status: 400, 
+                headers: { "Content-Type": "application/json", ...corsHeaders } 
+            });
 
             const otp = generateOtp();
             const otpKey = `otp:${email.toLowerCase()}`;
@@ -62,11 +65,12 @@ export async function onRequest(context) {
                 to: email,
                 subject: 'Verification Code (OTP)',
                 html: `
-                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd;">
-                        <h2>Verification Code</h2>
-                        <p>Your verification code is: <b style="font-size: 24px; color: #007bff;">${otp}</b></p>
-                        <p>This code will expire in <b>30 minutes</b>.</p>
-                        <p>If you did not request this, please ignore this email.</p>
+                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                        <h2 style="color: #333;">Verification Code</h2>
+                        <p>Your verification code is: <b style="font-size: 28px; color: #007bff; letter-spacing: 2px;">${otp}</b></p>
+                        <p>This code will expire in <b style="color: #dc3545;">30 minutes</b>.</p>
+                        <hr style="border: 0; border-top: 1px solid #eee;">
+                        <p style="font-size: 12px; color: #888;">If you did not request this, please ignore this email.</p>
                     </div>
                 `,
             });
@@ -80,12 +84,16 @@ export async function onRequest(context) {
 
         } else if (ACTION === 'VERIFY') {
             const { email, otp } = data;
-            if (!email || !otp) return new Response(JSON.stringify({ message: "Email and OTP required." }), { status: 400, headers: corsHeaders });
+            if (!email || !otp) return new Response(JSON.stringify({ message: "Email and OTP required." }), { 
+                status: 400, 
+                headers: { "Content-Type": "application/json", ...corsHeaders } 
+            });
 
             const otpKey = `otp:${email.toLowerCase()}`;
             const storedOtp = await EMAIL_KV.get(otpKey);
 
             if (storedOtp && storedOtp === otp) {
+               
                 await EMAIL_KV.delete(otpKey); 
                 return new Response(JSON.stringify({ message: "OTP verified successfully.", status: 'verified' }), {
                     status: 200,
