@@ -15,7 +15,6 @@ export async function onRequest(context) {
     "Access-Control-Max-Age": "86400",
   });
 
-  // 1. Handle CORS Preflight
   if (request.method === "OPTIONS") {
     if (ALLOWED_ORIGINS.includes(origin)) {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
@@ -31,7 +30,6 @@ export async function onRequest(context) {
     const data = await request.json();
     const apiKey = request.headers.get("x-api-key");
 
-    // 2. Authentication
     if (!apiKey || apiKey !== env.API_AUTH_KEY) {
       return new Response(JSON.stringify({ success: false, message: "Auth failed." }), {
         status: 401,
@@ -41,7 +39,6 @@ export async function onRequest(context) {
 
     const { to, imageData, data: cardData } = data;
 
-    // 3. Tabbatar da bayanan katin sun zo
     if (!imageData || !cardData) {
       return new Response(JSON.stringify({ success: false, message: "Missing image or card data." }), {
         status: 400,
@@ -49,12 +46,9 @@ export async function onRequest(context) {
       });
     }
 
-    // 4. Tsara jerin Emails (To List)
-    // Koyaushe tura kofin zuwa ga shago (Admin)
     const adminEmail = env.ADMIN_EMAIL || "bebejiplaza05@gmail.com"; 
     let recipients = [adminEmail];
 
-    // Idan akwai email na mai saya, a hada shi
     if (to && to.trim() !== "" && to.includes("@")) {
       recipients.push(to.trim());
     }
@@ -62,7 +56,6 @@ export async function onRequest(context) {
     const trackingID = cardData.postId || cardData.trackingKey;
     const subject = `Sales Record: ${cardData.deviceName} (ID: ${trackingID})`;
 
-    // 5. Tsarin Email Body (HTML)
     const emailBody = `
         <!DOCTYPE html>
         <html>
@@ -79,7 +72,7 @@ export async function onRequest(context) {
         </head>
         <body>
             <div class="container">
-                <div class="header"><h2>Bebeji Plaza Receipt</h2></div>
+                <div class="header"><h2>Bebeji Plaza Receipt Card</h2></div>
                 <p>Hello <strong>${cardData.buyerName}</strong>,</p>
                 <p>Attached is your digital receipt for the purchase of <strong>${cardData.deviceName}</strong>.</p>
                 <div class="details">
@@ -99,35 +92,32 @@ export async function onRequest(context) {
         </html>
     `;
 
-    // 6. Tura Email ta hanyar Resend API
-    const resendRes = await fetch("https://api.resend.com/emails", {
+    
+    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
+        "api-key": env.BREVO_API_KEY,
         "Content-Type": "application/json",
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Bebeji Plaza <onboarding@resend.dev>",
-        to: recipients, // Wannan zai dauki admin da kuma buyer idan akwai
-        subject: subject,
-        html: emailBody,
+        sender: { name: "Bebeji Plaza", email: "bebejiplaza05@gmail.com" },
+        to: recipients.map(email => ({ email })),
+        subject,
+        htmlContent: emailBody,
       }),
     });
 
-    const result = await resendRes.json();
+    const result = await brevoRes.json();
+    if (!brevoRes.ok) throw new Error(JSON.stringify(result));
 
-    if (resendRes.ok) {
-      return new Response(JSON.stringify({ 
-        success: true, 
-        message: recipients.length > 1 ? "Emails sent to Buyer & Admin" : "Email sent to Admin only", 
-        resendId: result.id 
-      }), {
-        status: 200,
-        headers: { "Content-Type": "application/json", ...corsHeaders(origin) },
-      });
-    } else {
-      throw new Error(JSON.stringify(result));
-    }
+    return new Response(JSON.stringify({ 
+      success: true, 
+      message: recipients.length > 1 ? "Emails sent to Buyer & Admin" : "Email sent to Admin only", 
+      brevoId: result.messageId || result.id 
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json", ...corsHeaders(origin) },
+    });
 
   } catch (error) {
     return new Response(JSON.stringify({ success: false, message: "Error sending email", error: error.message }), {
