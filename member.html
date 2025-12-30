@@ -934,12 +934,15 @@ async function handleLogin(e) {
     }
 }
 
-async function sendOtp(email) {
-    emailVerificationStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    otpSection.classList.add('otp-verify-section');
-    otpInputs.forEach(input => input.value = ''); 
-    correctOtp = '';
 
+
+async function sendOtp(email) {
+   
+    emailVerificationStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    otpSection.style.display = 'none'; 
+    otpSection.classList.remove('otp-verify-section');
+    otpInputs.forEach(input => input.value = ''); 
+    
     try {
         const response = await fetch(API_EMAIL_URL, {
             method: 'POST',
@@ -949,46 +952,78 @@ async function sendOtp(email) {
             },
             body: JSON.stringify({ email: email })
         });
-        
+
         const data = await response.json();
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Failed to send OTP.');
         }
+
+      
+        showNotification(`Verification code sent to ${email}. Please check your inbox.`, 'info', 10000);
+        emailVerificationStatus.innerHTML = '<i class="fas fa-paper-plane" style="color: #007bff;"></i>';
         
-        correctOtp = data.otp; 
-        showNotification(`OTP sent to ${email}. Check your inbox.`, 'info', 10000);
-        emailVerificationStatus.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: orange;"></i>';
-        otpInputs[0].focus();
+       
+        otpSection.style.display = 'block'; 
+        otpSection.classList.add('otp-verify-section');
+        
+      
+        setTimeout(() => otpInputs[0].focus(), 300);
 
     } catch (error) {
         console.error("OTP Error:", error);
-        showNotification(error.message || 'Error sending OTP.', 'error', 8000);
-        emailVerificationStatus.innerHTML = '<i class="fas fa-times"></i>';
-        otpSection.classList.remove('otp-verify-section');
+        showNotification(error.message || 'Error sending OTP. Please try again.', 'error', 8000);
+        emailVerificationStatus.innerHTML = '<i class="fas fa-times-circle" style="color: red;"></i>';
+        otpSection.style.display = 'none';
     }
 }
 
-function verifyOtp() {
+async function verifyOtp() {
     const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
-    
+    const email = emailInput.value.trim();
+
     if (enteredOtp.length !== 6) {
-        showNotification('Please enter the full 6-digit OTP.', 'error', 4000);
+        showNotification('Please enter the complete 6-digit code.', 'error', 4000);
         return;
     }
-    
-    if (enteredOtp === correctOtp) {
-        isEmailVerified = true;
-        emailVerificationStatus.innerHTML = '<i class="fas fa-check-circle"></i>';
-        emailVerificationStatus.classList.add('verified');
-        otpSection.classList.remove('otp-verify-section');
-        showNotification('Email successfully verified! ✔️', 'success', 5000);
-    } else {
-        showNotification('Invalid OTP. Please check your email and try again.', 'error', 6000);
+
+    toggleLoader(true, 'Verifying code...');
+
+    try {
+        const response = await fetch(`${API_EMAIL_URL}?action=verify`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'x-api-key': API_KEY 
+            },
+            body: JSON.stringify({ email: email, otp: enteredOtp })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === 'verified') {
+            isEmailVerified = true;
+            emailVerificationStatus.innerHTML = '<i class="fas fa-check-circle" style="color: green;"></i>';
+            emailVerificationStatus.classList.add('verified');
+            
+          
+            otpSection.style.display = 'none';
+            otpSection.classList.remove('otp-verify-section');
+            
+            showNotification('Email verified successfully! You may now proceed.', 'success', 5000);
+        } else {
+            throw new Error(data.message || 'Invalid or expired code.');
+        }
+    } catch (error) {
+        showNotification(error.message, 'error', 6000);
         otpInputs.forEach(input => input.value = '');
         otpInputs[0].focus();
+    } finally {
+        toggleLoader(false);
     }
 }
+
+
 
 async function handleImageUpload(inputEl, previewEl, linkEl) {
     const file = inputEl.files[0];
