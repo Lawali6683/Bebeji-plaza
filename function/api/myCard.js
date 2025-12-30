@@ -22,31 +22,29 @@ export async function onRequest(context) {
     const data = await request.json();
     const { apiKey, adminEmail, sellerEmail, cardImage, subject } = data;
 
-    // Tabbatar da API Key
     if (!apiKey || apiKey !== env.API_AUTH_KEY) {
       return new Response(JSON.stringify({ success: false, message: "Auth failed" }), {
         status: 401, headers: corsHeaders
       });
     }
 
-    // Tattara masu karbar email
     const recipients = [adminEmail];
     if (sellerEmail && sellerEmail.includes('@')) {
       recipients.push(sellerEmail);
     }
 
-    // Kiran Resend API
-    const resendRes = await fetch("https://api.resend.com/emails", {
+   
+    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
+        "api-key": env.BREVO_API_KEY,
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Bebeji Plaza <receipts@bebejiplaza.com>",
-        to: recipients,
+        sender: { name: "Bebeji Plaza", email: "bebejiplaza05@gmail.com" },
+        to: recipients.map(email => ({ email })),
         subject: subject || "Legal Device Purchase Agreement",
-        html: `
+        htmlContent: `
           <div style="font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background: #f9f9f9; padding: 20px;">
             <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; display: inline-block;">
               <h2 style="color: #0a1128;">Bebeji Plaza Official Receipt</h2>
@@ -59,11 +57,10 @@ export async function onRequest(context) {
       }),
     });
 
-    const emailStatus = await resendRes.json();
-    
-    return new Response(JSON.stringify({ success: true, emailStatus }), {
-      headers: corsHeaders
-    });
+    const emailStatus = await brevoRes.json();
+    if (!brevoRes.ok) throw new Error(JSON.stringify(emailStatus));
+
+    return new Response(JSON.stringify({ success: true, emailStatus }), { headers: corsHeaders });
 
   } catch (err) {
     return new Response(JSON.stringify({ success: false, error: err.message }), {
