@@ -1,5 +1,3 @@
-import { Resend } from 'resend';
-
 function generateOtp() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
@@ -7,7 +5,6 @@ function generateOtp() {
 export async function onRequest(context) {
     const { request, env } = context;
     const origin = request.headers.get("Origin");
-    const clientApiKey = request.headers.get("x-api-key");
     const SERVER_KEY = "@haruna66";
 
     const ALLOWED_ORIGINS = [
@@ -23,13 +20,11 @@ export async function onRequest(context) {
         "Access-Control-Max-Age": "86400",
     };
 
-    
     if (request.method === "OPTIONS") {
         return new Response(null, { status: 204, headers: corsHeaders });
     }
 
-   
-    if (clientApiKey !== SERVER_KEY || !ALLOWED_ORIGINS.includes(origin)) {
+    if (request.headers.get("x-api-key") !== SERVER_KEY || !ALLOWED_ORIGINS.includes(origin)) {
         return new Response(JSON.stringify({ message: "Unauthorized access." }), { 
             status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } 
         });
@@ -50,26 +45,36 @@ export async function onRequest(context) {
             const otpKey = `otp:${email.toLowerCase()}`;
             await EMAIL_KV.put(otpKey, otp, { expirationTtl: 1800 }); 
 
-            const resend = new Resend(env.RESEND_API_KEY);
-            const emailResponse = await resend.emails.send({
-                from: 'Bebeji Plaza <onboarding@resend.dev>',
-                to: email,
-                subject: 'Verification Code (OTP)',
-                html: `
-                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-                        <h2 style="color: #333;">Verification Code</h2>
-                        <p>Your verification code is: <b style="font-size: 28px; color: #007bff; letter-spacing: 2px;">${otp}</b></p>
-                        <p>This code will expire in <b style="color: #dc3545;">30 minutes</b>.</p>
-                        <hr style="border: 0; border-top: 1px solid #eee;">
-                        <p style="font-size: 12px; color: #888;">If you did not request this, please ignore this email.</p>
-                    </div>
-                `,
+            // -------------------
+            // Brevo API Email
+            // -------------------
+            const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+                method: "POST",
+                headers: {
+                    "api-key": env.BREVO_API_KEY,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sender: { name: "Bebeji Plaza", email: "bebejiplaza05@gmail.com" },
+                    to: [{ email }],
+                    subject: "Verification Code (OTP)",
+                    htmlContent: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                            <h2 style="color: #333;">Verification Code</h2>
+                            <p>Your verification code is: <b style="font-size: 28px; color: #007bff; letter-spacing: 2px;">${otp}</b></p>
+                            <p>This code will expire in <b style="color: #dc3545;">30 minutes</b>.</p>
+                            <hr style="border: 0; border-top: 1px solid #eee;">
+                            <p style="font-size: 12px; color: #888;">If you did not request this, please ignore this email.</p>
+                        </div>
+                    `
+                })
             });
 
-            if (emailResponse.error) throw new Error(emailResponse.error.message);
+            const result = await res.json();
+            if (!res.ok) throw new Error(JSON.stringify(result));
 
             return new Response(JSON.stringify({ message: "OTP sent successfully.", status: 'sent' }), {
-                status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
+                status: 200, headers: { "Content-Type": "application/json", ...corsHeaders }
             });
 
         } else if (ACTION === 'VERIFY') {
@@ -80,7 +85,7 @@ export async function onRequest(context) {
             if (storedOtp && storedOtp === otp) {
                 await EMAIL_KV.delete(otpKey); 
                 return new Response(JSON.stringify({ message: "OTP verified successfully.", status: 'verified' }), {
-                    status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
+                    status: 200, headers: { "Content-Type": "application/json", ...corsHeaders }
                 });
             } else {
                 return new Response(JSON.stringify({ message: "Invalid or expired OTP." }), {
