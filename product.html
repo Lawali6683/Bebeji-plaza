@@ -733,7 +733,7 @@ async function loadShopData(uid) {
     }
     shopData = snapshot.val();
 
-    const businessName = shopData.businessName || 'N/A';
+    const businessName = shopData.businesName || 'N/A';
     const shopNumber = shopData.bebejiShopNumber || 'N/A';
     shopTitleEl.textContent = `Bebeji Plaza ${businessName} Shop No. ${shopNumber}`;
     document.title = `${businessName} Shop | Products`;
