@@ -529,6 +529,60 @@ top: 400px;
 
 .btn-danger:hover { background: #e60000; }
 .btn-secondary:hover { background: #e0e0e0; }
+
+
+
+#studio-root {
+    width: 100%; max-width: 600px; margin: auto; height: 99vh;
+    display: none; flex-direction: column; position: fixed; 
+    top:0; left:0; right:0; bottom:0; background: #0b141a; z-index: 3000;
+}
+
+#top-posts-bar {
+    height: 90px; background: #111b21; display: none;
+    align-items: center; gap: 10px; padding: 5px 15px;
+    overflow-x: auto; border-bottom: 1px solid #222e35;
+}
+
+.post-thumb {
+    min-width: 65px; height: 65px; border-radius: 8px;
+    object-fit: cover; border: 2px solid transparent;
+}
+.post-thumb.active { border-color: #00a884; }
+
+.workspace { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+#main-view-container { width: 95%; position: relative; display: flex; justify-content: center; align-items: center; }
+
+#post-confirm-btn {
+    position: absolute; top: -55px; right: 10px; background: #00a884;
+    color: white; width: 50px; height: 50px; border-radius: 50%;
+    display: none; justify-content: center; align-items: center; border: none; font-size: 24px; z-index: 10;
+}
+
+#finalCanvas { max-width: 100%; max-height: 70vh; display: none; border-radius: 10px; }
+
+
+#editor-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; z-index: 4000; display: none; flex-direction: column;
+}
+.crop-container { flex: 1; position: relative; display: flex; justify-content: center; align-items: center; }
+#crop-image { max-width: 100%; max-height: 80vh; }
+
+.editor-footer {
+    height: 120px; background: #111b21;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;
+}
+
+.cut-btn {
+    background: #00a884; color: white; border: none;
+    padding: 12px 40px; border-radius: 30px; font-weight: bold; font-size: 16px;
+}
+
+.bottom-nav { background: #111b21; padding: 12px 0; display: flex; justify-content: space-around; border-top: 1px solid #222e35; }
+.nav-item { color: #8696a0; display: flex; flex-direction: column; align-items: center; font-size: 11px; cursor: pointer; }
+.nav-item i { font-size: 22px; margin-bottom: 4px; }
+
     </style>
 </head>
 <body>
@@ -592,18 +646,53 @@ top: 400px;
 
 
 
-  <div style=" z-index: 1000; "id="cropModalOverlay" class="modal-overlay">
-    <div id="cropModalContent" class="modal-content-wrapper">
-        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Crop Image</h3>
-        <div id="cropContainer">
-            <img id="cropImage" alt="Image to Crop">
+<input type="file" id="studioFileInput" multiple accept="image/*" style="display: none;">
+
+<div id="studio-root">
+    <div id="top-posts-bar"></div>
+    <div class="workspace">
+        <button id="post-confirm-btn"><i class="fas fa-check"></i></button>
+        <div id="welcome-ui" style="text-align: center; color: white;">
+            <label for="studioFileInput" style="font-size: 70px; color: #00a884; cursor: pointer;"><i class="fas fa-plus-square"></i></label>
+            <p>Click to select images</p>
         </div>
-        <div class="crop-buttons">
-            <button id="cropCancelBtn"><i class="fas fa-times"></i> Cancel</button>
-            <button id="cropConfirmBtn"><i class="fas fa-check"></i> Crop & Save</button>
+        <div id="main-view-container">
+            <canvas id="finalCanvas"></canvas>
         </div>
     </div>
+   <div class="bottom-nav">
+    <div class="nav-item" id="btnGallery"><i class="fas fa-images"></i><span>Gallery</span></div>
+    <div class="nav-item" id="btnMerge"><i class="fas fa-plus-circle"></i><span>Merge</span></div>
+    <div class="nav-item" onclick="closeStudio()"><i class="fas fa-times"></i><span>Cancel</span></div>
 </div>
+</div>
+
+<div id="editor-overlay" style="display:none;">
+    <div class="crop-container"><img id="crop-image"></div>
+    <div class="editor-footer">
+        <button class="cut-btn" id="cutAction"><i class="fas fa-crop-alt"></i> CROP SQUARE</button>
+        <p style="color: #8696a0; font-size: 12px;">Adjust the box to crop</p>
+    </div>
+</div>
+
+<input type="file" id="studioFileInput" multiple accept="image/*" style="display: none;">
+
+
+
+
+<div id="editor-overlay" style="display:none;">
+    <div class="crop-container">
+        <img id="crop-image-element">
+    </div>
+    <div class="editor-footer">
+        <button class="cut-btn" id="cutAction">
+            <i class="fas fa-crop-alt"></i> CROP SQUARE
+        </button>
+        <p style="color: #8696a0; font-size: 12px;">Adjust the box to fit your product</p>
+    </div>
+</div>
+
+<input type="file" id="imageUpload" multiple accept="image/*" style="display:none;">
 
 
 <div id="customConfirm" class="modal-overlay">
@@ -1270,14 +1359,233 @@ async function confirmDeleteSelectedPosts() {
 
 
 
+
+
+
+
+let currentCroppingIndex = -1;
 let selectedFiles = []; 
 let postData = [];
-let currentCroppingIndex = -1; 
+
+let studioCropper;
+let studioQueue = [];
+let allStudioPosts = []; 
+let currentMainImages = []; 
+let isMergingMode = false;
+
+const studioRoot = document.getElementById('studio-root');
+const studioFileInput = document.getElementById('fileInput') || document.getElementById('studioFileInput'); 
+const editorOverlay = document.getElementById('editor-overlay');
+const cropImgElement = document.getElementById('crop-image');
+const mainCanvas = document.getElementById('finalCanvas');
+const studioTopBar = document.getElementById('top-posts-bar');
+const studioConfirmBtn = document.getElementById('post-confirm-btn');
+
+
 function showNewPostModal() {
-    modalOverlay.innerHTML = createNewPostFormHTML();    modalOverlay.querySelector('.modal-content-wrapper').id = 'newPostModalContent';
-    modalOverlay.style.display = 'flex';   
-    setupPostFormListeners(false);
+    resetStudio();
+    if(studioRoot) studioRoot.style.display = 'flex';
 }
+
+function resetStudio() {
+    allStudioPosts = [];
+    currentMainImages = [];
+    isMergingMode = false;
+    if(studioTopBar) {
+        studioTopBar.innerHTML = '';
+        studioTopBar.style.display = 'none';
+    }
+    if(mainCanvas) mainCanvas.style.display = 'none';
+    if(studioConfirmBtn) studioConfirmBtn.style.display = 'none';
+    const welcomeUI = document.getElementById('welcome-ui');
+    if(welcomeUI) welcomeUI.style.display = 'block';
+}
+
+
+function openGallery() {
+    isMergingMode = false; 
+    if(studioFileInput) studioFileInput.click();
+}
+
+
+function triggerAddMore() {
+    if (currentMainImages.length >= 4) {
+        showNotification("Error .", "info");
+        return;
+    }
+    if (allStudioPosts.length === 0) {
+        showNotification("Sellet other image .", "info");
+        return;
+    }
+    isMergingMode = true; 
+    if(studioFileInput) studioFileInput.click();
+}
+
+
+if (studioFileInput) {
+    studioFileInput.onchange = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            studioQueue = files;
+            processStudioQueue(0);
+        }
+    };
+}
+
+
+
+function processStudioQueue(index) {
+    if (index >= studioQueue.length) {
+        if(editorOverlay) editorOverlay.style.display = 'none';
+        renderStudioMainView();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        if(editorOverlay) editorOverlay.style.display = 'flex';
+        cropImgElement.src = e.target.result;
+        
+        if (studioCropper) studioCropper.destroy();
+        studioCropper = new Cropper(cropImgElement, {
+            aspectRatio: 1,
+            viewMode: 1,
+            autoCropArea: 1,
+            background: false
+        });
+
+        document.getElementById('cutAction').onclick = () => {
+            const canvas = studioCropper.getCroppedCanvas({ width: 800, height: 800 });
+            const imgData = canvas.toDataURL('image/jpeg', 0.9);
+
+            if (isMergingMode) {
+                
+                currentMainImages.push(imgData);
+            } else {
+               
+                currentMainImages = [imgData];
+                allStudioPosts.push({ id: Date.now(), images: currentMainImages });
+            }
+            
+            isMergingMode = false; 
+            updateStudioTopBar();
+            processStudioQueue(index + 1);
+        };
+    };
+    reader.readAsDataURL(studioQueue[index]);
+}
+
+
+function updateStudioTopBar() {
+    if (allStudioPosts.length > 0) {
+        studioTopBar.style.display = 'flex';
+        studioTopBar.innerHTML = '';
+        allStudioPosts.forEach((post) => {
+            const img = document.createElement('img');
+            img.src = post.images[0]; 
+            img.className = 'post-thumb' + (post.images === currentMainImages ? ' active' : '');
+            
+           
+            img.onclick = () => {
+                currentMainImages = post.images;
+                updateStudioTopBar();
+                renderStudioMainView();
+            };
+            studioTopBar.appendChild(img);
+        });
+    }
+}
+
+function renderStudioMainView() {
+    const welcomeUI = document.getElementById('welcome-ui');
+    if(welcomeUI) welcomeUI.style.display = 'none';
+    if(mainCanvas) mainCanvas.style.display = 'block';
+    if(studioConfirmBtn) studioConfirmBtn.style.display = 'flex';
+
+    const ctx = mainCanvas.getContext('2d');
+    mainCanvas.width = 1000;
+    mainCanvas.height = 1000;
+    
+    let loaded = 0;
+    const imgs = [];
+
+    currentMainImages.forEach((src, idx) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            loaded++;
+            imgs[idx] = img;
+            if (loaded === currentMainImages.length) {
+                drawStudioCollage(ctx, imgs);
+            }
+        };
+    });
+}
+
+function drawStudioCollage(ctx, imgs) {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, 1000, 1000);
+    const count = imgs.length;
+    if (count === 1) ctx.drawImage(imgs[0], 0, 0, 1000, 1000);
+    else if (count === 2) {
+        ctx.drawImage(imgs[0], 0, 0, 498, 1000);
+        ctx.drawImage(imgs[1], 502, 0, 498, 1000);
+    } else if (count === 3) {
+        ctx.drawImage(imgs[0], 0, 0, 498, 498);
+        ctx.drawImage(imgs[1], 502, 0, 498, 498);
+        ctx.drawImage(imgs[2], 251, 502, 498, 498);
+    } else if (count >= 4) {
+        ctx.drawImage(imgs[0], 0, 0, 498, 498);
+        ctx.drawImage(imgs[1], 502, 0, 498, 498);
+        ctx.drawImage(imgs[2], 0, 502, 498, 498);
+        ctx.drawImage(imgs[3], 502, 502, 498, 498);
+    }
+}
+
+
+studioConfirmBtn.onclick = async () => {
+    if (allStudioPosts.length === 0) return;
+    
+    showLoader("committed Things...");
+    postData = [];
+
+    for (const post of allStudioPosts) {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 1000;
+        tempCanvas.height = 1000;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        const imgs = await Promise.all(post.images.map(src => {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve(img);
+            });
+        }));
+
+        drawStudioCollage(tempCtx, imgs);
+        const finalData = tempCanvas.toDataURL('image/jpeg', 0.9);
+        const blob = await (await fetch(finalData)).blob();
+        const file = new File([blob], `product_${Date.now()}.jpg`, { type: "image/jpeg" });
+
+        postData.push({
+            file: file,
+            price: 0,
+            text: '',
+            link: finalData
+        });
+    }
+
+    if(studioRoot) studioRoot.style.display = 'none';
+    modalOverlay.innerHTML = createNewPostFormHTML(); 
+    modalOverlay.style.display = 'flex';
+    updateImagePreview();
+    setupPostFormListeners(false);
+    hideLoader();
+};
+
+
+
 function showEditPostModal(post) {   
     postData = [{
         file: null, 
@@ -1287,28 +1595,22 @@ function showEditPostModal(post) {
         postId: post.postId
     }];
     
-    modalOverlay.innerHTML = createNewPostFormHTML(post);    modalOverlay.querySelector('.modal-content-wrapper').id = 'newPostModalContent';
+    modalOverlay.innerHTML = createNewPostFormHTML(post);
     modalOverlay.style.display = 'flex';
     updateImagePreview();
     setupPostFormListeners(true);
 }
+
 function createNewPostFormHTML(post = null) {
     const isEdit = post !== null;
-    const title = isEdit ? 'Edit Product' : 'Add New Product';
-    const submitText = isEdit ? 'Save Changes' : 'Submit All Products';    
+    const title = isEdit ? 'Edit Product' : 'Product Details';
+    const submitText = isEdit ? 'Save Changes' : 'Post Product';    
     return `
-        <div class="modal-content-wrapper" ${isEdit ? 'data-is-edit="true"' : 'data-is-edit="false"'}>
+        <div class="modal-content-wrapper" data-is-edit="${isEdit}">
             <button class="close-modal"><i class="fas fa-times"></i></button>
-            <h3 style="color: var(--primary-color); margin-bottom: 20px; padding: 10px;">${title}</h3>
-            <div id="imageInputWrapper" style="${isEdit ? 'display:none;' : ''}">
-                <label for="imageUpload" id="imageUploadLabel">
-                    <i class="fas fa-camera"></i> Select Images/Gift
-                </label>
-                <input type="file" id="imageUpload" accept="image/*,video/mp4,video/gif" multiple/>
-            </div>
+            <h3 style="color: var(--primary-color); padding: 10px;">${title}</h3>
             <form id="postForm" style="padding: 10px;">
-                <div id="imagePreviewGrid">
-                </div>
+                <div id="imagePreviewGrid"></div>
                 <button type="submit" id="submitPost" style="margin-bottom: 50px;">
                     <i class="fas fa-upload"></i> ${submitText}
                 </button>
@@ -1320,201 +1622,51 @@ function createNewPostFormHTML(post = null) {
 function setupPostFormListeners(isEdit) {
     const form = modalOverlay.querySelector('#postForm');
     const closeBtn = modalOverlay.querySelector('.close-modal');
-    const imageUpload = modalOverlay.querySelector('#imageUpload');    
-    closeBtn.addEventListener('click', () => {
-        modalOverlay.style.display = 'none';
-        postData = [];
-        selectedFiles = [];
-    });
-
-    if (imageUpload) {
-        imageUpload.addEventListener('change', handleImageSelection);
-    }
-    
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handlePostSubmission(isEdit);
-    });
+    closeBtn.onclick = () => { modalOverlay.style.display = 'none'; postData = []; };
+    form.onsubmit = (e) => { e.preventDefault(); handlePostSubmission(isEdit); };
 }
-function handleImageSelection(e) {
-    const files = Array.from(e.target.files);
-    
-    files.forEach(file => {       
-        if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
-            selectedFiles.push(file);           
-            postData.push({ 
-                file: file, 
-                price: 0, 
-                text: '',
-                link: URL.createObjectURL(file) 
-            });
-        }
-    });  
-    e.target.value = null; 
-    
-    updateImagePreview();
-}
-
 
 function updateImagePreview() {
     const container = modalOverlay.querySelector('#imagePreviewGrid');
     if (!container) return;
     container.innerHTML = '';   
-    const isEditMode = modalOverlay.querySelector('.modal-content-wrapper').dataset.isEdit === 'true';
     postData.forEach((data, index) => {
-        const isVideo = data.file && data.file.type.startsWith('video');        
         const itemEl = document.createElement('div');
         itemEl.className = 'image-preview-item';        
-        const mediaEl = document.createElement(isVideo ? 'video' : 'img');
-        mediaEl.className = 'image-preview-media';
-        mediaEl.src = data.link;
-        if (isVideo) {
-            mediaEl.autoplay = true;
-            mediaEl.loop = true;
-            mediaEl.muted = true;
-        }
-
-        const cropButtonHTML = (!isVideo && data.file) ? 
-            `<button class="crop-image-btn action-button" data-index="${index}" title="Crop Image"><i class="fas fa-crop-alt"></i></button>` : '';
         itemEl.innerHTML = `
-            <button class="remove-image" data-index="${index}" style="${isEditMode ? 'display: none;' : ''}">
-                <i class="fas fa-times"></i>
-            </button>
-            ${cropButtonHTML}
-            
             <div class="input-group">
-                <label for="text-${index}">Product Description (Max 150 Chars)</label>
-                <textarea id="text-${index}" maxlength="150" class="product-text-input" data-index="${index}" placeholder="Optional text">${data.text}</textarea>
+                <label>Product Description</label>
+                <textarea id="text-${index}" maxlength="150" class="product-text-input" data-index="${index}">${data.text}</textarea>
             </div>           
-            ${mediaEl.outerHTML}
+            <img src="${data.link}" class="image-preview-media">
             <div class="input-group">
-                <label for="price-${index}">Price (₦)</label>
-                <input type="number" id="price-${index}" class="product-price-input" data-index="${index}" placeholder="e.g. 5000" value="${data.price || ''}" required>
+                <label>Price (₦)</label>
+                <input type="number" id="price-${index}" class="product-price-input" data-index="${index}" value="${data.price || ''}" required>
             </div>
         `;        
         container.appendChild(itemEl);
     });
 
-       container.querySelectorAll('.product-text-input').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const index = e.target.dataset.index;
-            postData[index].text = e.target.value;
-        });
+    container.querySelectorAll('.product-text-input').forEach(input => {
+        input.oninput = (e) => { postData[e.target.dataset.index].text = e.target.value; };
     });
     container.querySelectorAll('.product-price-input').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const index = e.target.dataset.index;
-            postData[index].price = Number(e.target.value);
-        });
+        input.oninput = (e) => { postData[e.target.dataset.index].price = Number(e.target.value); };
     });
-  
-    container.querySelectorAll('.remove-image').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const index = e.target.closest('.remove-image').dataset.index;
-            if (postData[index].postId) {
-                 showNotification("Cannot remove image in Edit mode. Delete the whole post instead.", 'error');
-                 return;
-            }
-            postData.splice(index, 1);
-            selectedFiles.splice(index, 1);
-            updateImagePreview();
-        });
-    });
-     container.querySelectorAll('.crop-image-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const index = e.target.closest('.crop-image-btn').dataset.index;
-            showCropModal(Number(index));
-        });
-    });
-
-    if (!isEditMode) {
-        const inputWrapper = modalOverlay.querySelector('#imageInputWrapper');
-        if (inputWrapper) inputWrapper.style.display = postData.length > 0 ? 'none' : 'flex';
-    }
 }
-
-
-function showCropModal(index) {
-    currentCroppingIndex = index;
-    const data = postData[index];   
-    if (currentCropper) {
-        currentCropper.destroy();
-        currentCropper = null;
-    }
-  
-    cropModalOverlay.style.display = 'flex';  
-    cropImageElement.src = data.link;
-    cropImageElement.onload = () => {       
-        currentCropper = new Cropper(cropImageElement, {
-            aspectRatio: NaN,
-            viewMode: 1,
-            autoCropArea: 0.9,
-            background: false,
-        });
-    };
-}
-
-
-cropConfirmBtn.addEventListener('click', () => {
-    if (currentCropper && currentCroppingIndex >= 0) {
-        showLoader("Cropping Image...");
-              
-        const croppedCanvas = currentCropper.getCroppedCanvas();
-        const croppedDataURL = croppedCanvas.toDataURL(postData[currentCroppingIndex].file.type);        
-      
-        croppedCanvas.toBlob(async (blob) => {
-            const originalFile = postData[currentCroppingIndex].file;
-            const croppedFile = new File([blob], originalFile.name, {
-                type: originalFile.type,
-                lastModified: Date.now(),
-            });
-           
-            postData[currentCroppingIndex].link = croppedDataURL;
-            postData[currentCroppingIndex].file = croppedFile;
-            selectedFiles[currentCroppingIndex] = croppedFile;
-           
-            currentCropper.destroy();
-            currentCropper = null;
-            currentCroppingIndex = -1;
-            cropModalOverlay.style.display = 'none';         
-            updateImagePreview();
-            hideLoader();
-            showNotification("Image cropped and updated successfully!", 'success');
-        }, postData[currentCroppingIndex].file.type);
-    } else {
-        showNotification("No image selected or Cropper not initialized.", 'error');
-    }
-});
-
-
-
-cropCancelBtn.addEventListener('click', () => {
-    if (currentCropper) {
-        currentCropper.destroy();
-    }
-    currentCropper = null;
-    currentCroppingIndex = -1;
-    cropModalOverlay.style.display = 'none';
-});
 
 async function handlePostSubmission(isEdit) {
-    if (postData.length === 0) {
-        showNotification("Please select at least one product.", 'error');
-        return;
-    }
-    
+    if (postData.length === 0) return;
+
     const validData = postData.every(d => d.price && Number(d.price) > 0);
-    if (!validData) {
-        showNotification("All selected products must have a valid price.", 'error');
-        return;
+    if (!validData) { 
+        showNotification("Please enter a valid price.", 'error'); 
+        return; 
     }
-    
-    loadingTextEl.textContent = isEdit ? "Saving Changes..." : "Processing Products...";
-    loaderOverlay.style.display = 'flex';
-    loaderOverlay.style.opacity = '1';
+
+    showLoader(isEdit ? "Saving..." : "Posting...");
 
     try {
-      
         const shopDetails = {
             fullName: shopData.fullName || 'N/A',
             bebejiShopNumber: shopData.bebejiShopNumber || 'N/A',
@@ -1522,68 +1674,57 @@ async function handlePostSubmission(isEdit) {
             businessName: shopData.businessName || 'N/A',
         };
 
-        if (isEdit) {         
+        if (isEdit) {
             const post = postData[0];
-            const updates = {
-                price: post.price,
-                text: post.text,              
-            };
-            
-            const postRef = ref(db, `users/${currentShopOwnerUID}/Posting/${post.postId}`);
-            await update(postRef, updates);
-            showNotification("Post Updated Successfully!", 'success');
-            
-        } else {           
-            for (let i = 0; i < postData.length; i++) {
-                const data = postData[i];
-                loadingTextEl.textContent = `Uploading Product ${i + 1} of ${postData.length}...`;
-                               
+            const updates = { price: post.price, text: post.text };
+            await update(ref(db, `users/${currentShopOwnerUID}/Posting/${post.postId}`), updates);
+            showNotification("Post Updated!", 'success');
+        } else {
+            for (let data of postData) {
+              
                 const reader = new FileReader();
                 reader.readAsDataURL(data.file);
-                await new Promise(resolve => reader.onload = () => resolve());
-                const base64 = reader.result.split(',')[1];                              
+                await new Promise(res => reader.onload = () => res());
+                const base64 = reader.result.split(',')[1];
+
+                
                 const link = await uploadToImgur(base64);
+
+               
                 if (!link) {
-                    throw new Error(`Error uploading image ${i + 1}`);
+                    throw new Error("Failed to upload image. Please check your internet or try again.");
                 }
-             
-                const userPostingRef = ref(db, `users/${currentShopOwnerUID}/Posting`);
-                const newPostRef = push(userPostingRef); 
-                const newPostId = newPostRef.key;
+
               
+                const newPostRef = push(ref(db, `users/${currentShopOwnerUID}/Posting`));
                 const newPostData = {
                     price: data.price,
                     text: data.text,
-                    imageLink1: link,
-                    giftVideoLink: data.file.type.startsWith('video') ? link : null,
+                    imageLink1: link, 
                     postTime: Date.now(),
                     ownerUid: currentShopOwnerUID,
                     seeCount: 0,
                     likeCount: 0,
-                  
                     ...shopDetails
                 };
-                
+
                 await set(newPostRef, newPostData);
-                               
-                posts.unshift({ postId: newPostId, ...newPostData });
-                const newPostCard = createPostCard({ postId: newPostId, ...newPostData });
-                if (productsGallery) productsGallery.prepend(newPostCard);
             }
-            showNotification("All Products Posted Successfully!", 'success');
+            showNotification("Posted Successfully!", 'success');
         }
 
         modalOverlay.style.display = 'none';
-        postData = [];
-        selectedFiles = [];
         hideLoader();
-        
+       
+        if (typeof resetStudio === 'function') resetStudio();
+
     } catch (error) {
         console.error("Submission Error:", error);
-        showNotification(`Submission Error: ${error.message}`, 'error');
+        showNotification(error.message, 'error'); 
         hideLoader();
     }
 }
+
 
 
 async function uploadToImgur(base64) {
@@ -1683,6 +1824,65 @@ function hideNotification(notification) {
         notification.remove();
     }, 500);
 }
+
+
+function setupStudioListeners() {
+    const btnGallery = document.getElementById('btnGallery');
+    const btnMerge = document.getElementById('btnMerge');
+
+    if (btnGallery) {
+        btnGallery.addEventListener('click', () => {
+            isMergingMode = false; 
+            document.getElementById('studioFileInput').click();
+        });
+    }
+
+    if (btnMerge) {
+        btnMerge.addEventListener('click', () => {
+            if (allStudioPosts.length === 0) {
+                alert("Sai ka fara saka hoto ta Gallery kafin ka yi Merge.");
+                return;
+            }
+            if (currentMainImages.length >= 4) {
+                alert("Hotuna sun cika 4 a wannan collage din!");
+                return;
+            }
+            isMergingMode = true; 
+            document.getElementById('studioFileInput').click();
+        });
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', setupStudioListeners);
+
+
+
+window.closeStudio = function() {
+    const studioRoot = document.getElementById('studio-root');
+    if (studioRoot) {
+        studioRoot.style.display = 'none';
+      
+        if (typeof resetStudio === 'function') resetStudio();
+    }
+};
+
+window.resetStudio = function() {
+    allStudioPosts = [];
+    currentMainImages = [];
+    isMergingMode = false;
+    
+    const topBar = document.getElementById('top-posts-bar');
+    const canvas = document.getElementById('finalCanvas');
+    const confirmBtn = document.getElementById('post-confirm-btn');
+    const welcome = document.getElementById('welcome-ui');
+
+    if (topBar) { topBar.innerHTML = ''; topBar.style.display = 'none'; }
+    if (canvas) canvas.style.display = 'none';
+    if (confirmBtn) confirmBtn.style.display = 'none';
+    if (welcome) welcome.style.display = 'block';
+};
+
 </script> 
 </body>
 </html>
