@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Profile - Bebeji Plaza Phone Center Gusau</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+      
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --header-height: 50px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+             
+
+body {
+       background-color: var(--primary-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;  
+    min-height: 100vh; 
+    display: block; 
+    border: 1px solid rgba(76, 114, 214, 0.3);
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.1);
+      
+    background-color: var(--primary-bg);      
+    background-image: 
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);        
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;  
+    background-image:        
+        linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),        
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);            
+    background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+    background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;       
+    background-attachment: scroll;        
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+    
+        #shopContainer {
+            width: 100%;
+            max-width: 800px;
+            padding: 0 15px 30px 15px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        #shopContainer.loaded {
+            opacity: 1;
+        }
+       
+        .card {            
+            background-color: var(--secondary-bg);
+            position: relative;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+             overflow: hidden;
+                      
+            background: conic-gradient(
+          transparent, 
+                rgba(255, 0, 170, 0.6) 45%, 
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;
+            animation: rotate-shine 15s linear infinite;
+                        
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+               
+     
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+            background-size: 400% 400%;
+            animation: gradientMove 7s ease infinite;
+            z-index: 999999;
+            transition: opacity 0.5s;
+        }
+        .loader-overlay.hidden {
+             opacity: 0;
+             pointer-events: none;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loader-container {
+          position: relative;
+          width: 150px;
+          height: 150px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }   
+        .pulse {
+          position: absolute;
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+           border: 3px solid #00eaff;
+      animation: pulseAnim 2.5s infinite ease-in-out;
+      opacity: 0.5;
+        
+        }
+
+        @keyframes pulseAnim {
+          0% { transform: scale(0.6); opacity: 0.4; }
+          50% { transform: scale(1); opacity: 1; }
+          100% { transform: scale(0.6); opacity: 0.4; }
+        }
+
+        .logo-wrapper {
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+            animation: floatLogo 3s infinite ease-in-out; 
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+        }             
+
+        @keyframes floatLogo {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+          100% { transform: translateY(0); }
+        }
+       
+        .orbit {
+          position: absolute;
+          width: 160px;
+          height: 160px;
+          border-radius: 50%;
+          border: 2px dashed var(--accent-blue);
+          animation: spin 5s linear infinite;
+          opacity: 0.3;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .loading-text {
+          position: absolute;
+          bottom: -60px;
+          width: 100%;
+          text-align: center;
+          font-size: 18px;
+        color: #00eaff;            
+          animation: fadeText 2s infinite;
+        }
+
+        @keyframes fadeText {
+          0% { opacity: 0.3; }
+          50% { opacity: 1; }
+          100% { opacity: 0.3; }
+        }
+     
+        .profile-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(232, 232, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        #headerWelcomeText {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+        
+        .image-section {
+            position: relative;
+            height: 200px; 
+            margin-bottom: 50px;
+        }
+        
+        .shop-image-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 15px var(--shadow-color);
+            border: 2px solid var(--accent-blue);
+            cursor: pointer;
+        }
+        #shopImageLink {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .shop-image-wrapper:hover #shopImageLink {
+             transform: scale(1.05);
+        }
+
+        .shop-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--accent-green);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .profile-image-wrapper {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;           
+            box-shadow: 0 0 15px var(--shadow-color);
+            z-index: 1;
+            cursor: pointer;
+               clip-path: polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%);
+            border: 9px solid #009688;
+            
+    border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
+        }
+        #userImageLink {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;            
+          
+        }
+        .profile-info {
+            text-align: center;
+            margin-top: 10px;
+            
+        }
+        #fullName {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+        #businessName {
+             font-size: 1em;
+             color: var(--accent-green);
+        }
+
+        .edit-icon {
+            display: none; 
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--accent-green);
+            border-radius: 50%;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        .edit-icon:hover {
+            background: var(--accent-blue);
+        }
+
+        
+        .business-description-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border: 1px solid #5bff15;
+        }
+        #businessText {
+            flex-grow: 1;
+        }
+        #editBusinessDescription {
+            color: var(--accent-green);
+            cursor: pointer;
+            font-size: 1.2em;
+            flex-shrink: 0;
+            transition: color 0.3s;
+        }
+        #editBusinessDescription:hover {
+            color: var(--accent-blue);
+        }
+        .description-placeholder {
+            color: rgba(232, 232, 255, 0.5);
+            font-style: italic;
+        }
+
+      
+.main-menu {
+    display: grid;        
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); 
+    justify-content: center; 
+    align-items: center;      
+    gap: 15px 10px;     
+    padding: 15px 10px;      
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    border-radius: 12px; 
+    background-color: var(--secondary-bg, #2a2a44);
+    border: 1px solid rgba(255, 255, 255, 0.05); 
+}
+
+.menu-item { 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;    
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    font-size: 0.9em;
+    padding: 10px 5px; 
+    border-radius: 8px; 
+    color: var(--text-primary, #ffffff); 
+      
+}
+
+.menu-item:hover {
+    transform: translateY(-2px); 
+    background-color: rgba(76, 114, 214, 0.15); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.menu-icon-circle {   
+    width: auto;
+    height: auto;
+    border-radius: 0; 
+    background-color: transparent !important;
+    box-shadow: none;       
+    margin: 0 auto 6px auto; 
+    line-height: 1;   
+    color: var(--accent-blue, #4c72d6); 
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.2); 
+}
+
+
+#menuChatVisitor .menu-icon-circle { color: var(--accent-blue, #4c72d6); }
+#menuWhatsApp .menu-icon-circle { color: #25D366; }
+#menuCall .menu-icon-circle { color: var(--accent-green, #4cd6b3); } 
+#menuPostingOwner .menu-icon-circle { color: var(--danger-red, #ff334f); }
+
+.menu-item span {
+    font-weight: 500;
+    font-size: 0.9em;
+    display: block; 
+    line-height: 1.2;
+    color: var(--text-secondary, #b0b0cc);
+    font-weight: bold;
+}
+
+      
+#productsButton {
+ 
+    background: linear-gradient(90deg, var(--accent-blue, #4c72d6) 0%, var(--accent-green, #4cd6b3) 100%);
+    color: var(--primary-bg, #0F0F24);         
+    border: none;    
+    padding: 12px 25px; 
+    border-radius: 50px; 
+    font-size: 1.1em; 
+    font-weight: 700;
+    cursor: pointer;    
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;    
+  
+    box-shadow: 0 8px 20px rgba(76, 114, 214, 0.5);    
+    transition: all 0.3s ease-in-out; 
+    
+    
+}
+#productsButton:hover {  
+    transform: translateY(-4px) scale(1.02);     
+   
+    box-shadow: 0 12px 30px rgba(76, 114, 214, 0.7), 
+                0 0 50px rgba(255, 255, 255, 0.2); 
+  
+    animation: none; 
+}
+               
+        .product-sub-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; 
+            margin-top: 15px;
+        }
+
+        .sub-action-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(76, 114, 214, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1em;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .sub-action-circle:hover {
+            transform: translateY(-2px);
+            background-color: var(--accent-green);
+        }
+
+        #chatNotificationsBtn {
+            background-color: var(--danger-red);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-green);
+            color: var(--primary-bg);
+            font-size: 0.7em;
+            padding: 3px 6px;
+            border-radius: 50%;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1;
+            border: 2px solid var(--secondary-bg);
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 153, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 153, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 153, 0); }
+        }
+
+       
+        #postsContainer {
+            display: grid;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .post-card {
+            padding: 0;
+            border-radius: 15px;
+            overflow: hidden;          
+            background: var(--secondary-bg); 
+            animation: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s;
+                       
+            background: conic-gradient(
+          transparent, 
+                rgba(255, 0, 170, 0.6) 45%, 
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;
+            animation: rotate-shine 15s linear infinite;
+                        
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+        .post-card:hover {
+             box-shadow: 0 8px 20px rgba(0, 255, 153, 0.2);
+             transform: translateY(-2px);
+        }
+
+        .post-content-wrapper {
+            padding: 20px;
+            position: relative;
+        }
+
+        .post-owner-options {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .post-owner-options i {
+            color: var(--text-primary);
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .post-owner-options i:hover {
+             color: var(--accent-green);
+        }
+
+        .post-text {
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .post-media-container {
+            position: relative;
+            width: 100%;
+           aspect-ratio: 13 / 13;            
+            border-radius: 10px;                    
+           
+        }
+
+        .post-media {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            display: block;
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--danger-red);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 1.1em;
+            z-index: 5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            animation: pulse-price 1s infinite alternate;
+        }
+        @keyframes pulse-price {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.05); opacity: 0.9; }
+        }
+       
+        .image-carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: transform 1s, opacity 1s, z-index 0s 1s;
+        }
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+            transform: translateX(0);
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+        .carousel-item.prev {
+            z-index: 0;
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+               
+        .post-footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .stats-group {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: rgba(232, 232, 255, 0.7);
+            transition: color 0.2s;
+        }
+        .stat-item:hover {
+            color: var(--accent-green);
+        }
+        .stat-item.like-count-btn.liked {
+            color: var(--danger-red);
+            animation: heart-beat 0.5s;
+        }
+        @keyframes heart-beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .buy-button {
+            background-color: var(--accent-green);
+            color: var(--primary-bg);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 255, 153, 0.4);
+        }
+        .buy-button:hover {
+            background-color: #00e68d;
+            transform: translateY(-1px);
+        }
+       
+        .action-group {
+            position: relative;
+        }
+        
+        .buy-options-flyout {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: var(--secondary-bg);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        .buy-options-flyout.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .buy-option-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: white;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        .buy-option-circle:hover {
+            transform: scale(1.05);
+        }
+        .option-chat { background-color: var(--accent-blue); }
+        .option-whatsapp { background-color: #25D366; }
+        
+                      
+        #loadMoreBtn {
+            display: none;
+            width: 80%;
+            margin: 30px auto;
+            padding: 12px;
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #loadMoreBtn:hover:not(:disabled) {
+            background-color: #3f60b4;
+        }
+        #loadMoreBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+.buy-options-flyout {  
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    padding: 10px;
+}
+
+.buy-option-circle {   
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;     
+    cursor: pointer;
+    padding: 8px; 
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    text-align: center;
+    color: var(--text-primary);   
+    width: auto !important; 
+    height: auto !important;
+}
+
+.buy-option-circle:hover {
+    background-color: rgba(76, 114, 214, 0.15);
+}
+
+.buy-option-circle i {
+ 
+    font-size: 3em;
+    display: block;       
+    margin: 0; 
+    padding: 0; 
+    line-height: 1;   
+    color: white; 
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.buy-option-circle p, .buy-option-circle {  
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--text-secondary, #b0b0cc);
+}
+
+
+
+.buy-option-circle.option-whatsapp {  
+    text-align: center;  
+}
+
+.buy-option-circle.option-whatsapp i {
+    margin-bottom: 0px; 
+}
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9000;
+            backdrop-filter: blur(5px);
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            animation: modal-fade-in 0.3s ease-out;
+            border: 1px solid var(--accent-blue);
+        }
+        @keyframes modal-fade-in {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--danger-red);
+            font-size: 3.8em;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-content h3 {
+            color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+        .modal-content textarea, .modal-content input[type="text"], .modal-content input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(232, 232, 255, 0.3);
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            resize: vertical;
+        }
+        
+        .char-count {
+            text-align: right;
+            font-size: 0.85em;
+            color: rgba(232, 232, 255, 0.6);
+            margin-bottom: 15px;
+        }
+                
+        .media-upload-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .upload-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .upload-btn:hover {
+            background-color: #3f60b4;
+        }
+
+        #imgurStatus {
+            color: var(--accent-green);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+        
+        #previewContainer {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .preview-item img, .preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .preview-remove {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-red);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            z-index: 10;
+        }
+              
+        #imageViewerModal .modal-content {
+            max-width: 90%;
+            width: auto;
+            padding: 0;
+            background: none;
+            box-shadow: none;
+            border: none;
+        }
+        #viewedImage, #viewedVideo {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 10px;
+            display: block;
+        }
+        #viewedVideo {
+            display: none;
+        }
+
+        #notificationContainer {
+            position: fixed;
+            top: 20px; 
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 380px;
+            pointer-events: none; 
+        }
+
+        .notification {
+            position: relative;
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideInRight 0.5s forwards;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 114, 214, 0.3);
+            overflow: hidden;
+        }
+
+        .notification.success {
+            border-left: 5px solid var(--accent-green);
+            box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3);
+        }
+
+        .notification.error {
+            border-left: 5px solid var(--danger-red);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .notification.info {
+            border-left: 5px solid var(--accent-blue);
+            box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3);
+        }
+
+        .notification .icon {
+            font-size: 1.6em;
+            min-width: 25px; 
+        }
+
+        .notification.success .icon { color: var(--accent-green); }
+        .notification.error .icon { color: var(--danger-red); }
+        .notification.info .icon { color: var(--accent-blue); }
+
+        .notification .message { flex-grow: 1; text-align: left; line-height: 1.4; font-size: 0.95em; }
+
+        .notification .close-btn {
+            background: none;
+            border: none;
+            color: rgba(232, 232, 255, 0.7);
+            font-size: 1.5em;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease;
+            padding: 0;
+        }
+
+        .notification .close-btn:hover { color: var(--danger-red); transform: scale(1.1); }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .notification.timed::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .notification.timed .progress-bar {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            background-color: currentColor; 
+            animation: shrink-width var(--notification-duration) linear forwards;
+            width: 100%;
+        }
+
+        @keyframes shrink-width {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+       
+        @media (max-width: 600px) {
+            #shopContainer {
+                padding: 0 10px 30px 10px;
+            }
+            .main-menu {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .menu-item {
+                flex-basis: 45%; 
+                font-size: 0.8em;
+            }
+            .menu-icon-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            #headerWelcomeText {
+                font-size: 1.4em;
+            }
+            #fullName {
+                font-size: 1.3em;
+            }
+            
+            #notificationContainer {
+                top: 10px;   
+                bottom: auto; 
+                left: 10px;  
+                right: 10px;
+                max-width: none;
+            }
+        }
+        
+        
+ 
+.main-header {
+    width: 100%;
+    height: 40px; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  
+    background: linear-gradient(135deg, #1A1A2E 0%, #0F0F24 60%, #4C72D6 100%);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    border-bottom: 3px solid #007bff; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;    
+    transition: background 0.3s ease;
+}
+
+
+.compact-header-content {  
+    height: 100%; 
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.animated-welcome-text {  
+    margin: 10px;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;      
+    font-size: 1.2em;
+    font-weight: 900;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);      
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+    background-size: 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    animation: colorChange 10s linear infinite;
+}
+
+
+@keyframes colorChange {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 400% 50%; } 
+}
+
+
+.header-spacer { 
+    display: block; 
+    content: ''; 
+}
+
+
+@media (max-width: 450px) {
+    .main-header {
+        height: 35px; 
+    }
+    .animated-welcome-text {
+        font-size: 1em; 
+    }
+}
+
+
+.footer-bebeji {  
+    position: relative !important; 
+    bottom: auto !important;
+    right: auto !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+    width: 100% !important; 
+    padding: 25px 20px; 
+    text-align: center;
+    background-color: #0F0F24 !important; 
+    backdrop-filter: blur(0px) !important; 
+    border-top: 3px solid var(--accent-blue, #4c72d6) !important; 
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}
+.footer-bebeji p {
+    margin: 5px 0 !important;
+    color: #E8E8FF !important; 
+    font-size: 1.0em !important;
+    font-family: sans-serif;
+}
+.footer-bebeji h3 {
+    margin: 10px 0 15px 0 !important;
+    color: var(--accent-green, #4cd6b3) !important;
+    font-size: 1.5em !important;
+    font-weight: 700 !important;
+}
+.footer-bebeji .social-icons {
+    margin: 15px 0 !important;
+    font-size: 1.0em !important;
+}
+.footer-bebeji .social-icons a {
+    color: #fff !important;
+    font-size: 1.6em !important; 
+    margin: 0 12px !important;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.footer-bebeji .social-icons a:hover {
+    color: var(--accent-blue, #4c72d6) !important; 
+    transform: scale(1.1);
+}
+.footer-bebeji .contact-link {
+    color: var(--accent-green, #4cd6b3) !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    display: block;
+    margin-top: 15px;
+    font-size: 1.1em !important;
+}
+.footer-bebeji .email-link {
+    color: var(--accent-green, #4cd6b3) !important;
+    text-decoration: none !important;
+}
+
+
+.main-header .compact-header-content {
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 100%;
+    padding: 0 15px; 
+    box-sizing: border-box;
+}
+
+
+.home-menu-icon {    
+    position: absolute; 
+    top: 50%; 
+    right: 15px; 
+    transform: translateY(-50%); 
+      
+    color: #70ff15 ;
+    font-size: 30px; 
+    padding: 8px; 
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    z-index: 1001; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-menu-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+
+.postDel-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center; align-items: center;
+    z-index: 10001; 
+}
+
+.postDel-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transform: scale(0.8);
+    transition: 0.3s ease;
+}
+
+.postDel-modal-overlay.active .postDel-modal-content {
+    transform: scale(1);
+}
+
+.postDel-icon { margin-bottom: 15px; }
+
+.postDel-modal-content h3 { font-size: 22px; color: #333; margin-bottom: 10px; font-family: sans-serif; }
+.postDel-modal-content p { color: #666; font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
+
+.postDel-buttons { display: flex; gap: 12px; }
+
+.postDel-btn-danger { flex: 1; background: #ff4d4d; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.postDel-btn-secondary { flex: 1; background: #f0f0f0; color: #333; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+.postDel-btn-danger:hover { background: #e60000; }
+.postDel-btn-secondary:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container">
+            <div class="orbit"></div>
+            <div class="pulse"></div>
+            <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+            <div class="loading-text" id="loadingText">Loading Shop Profile...</div>
+        </div>
+    </div>
+    
+    <header id="mainHeader" class="main-header fixed-top">
+    <div class="compact-header-content">
+        <h1 id="headerWelcomeText" class="animated-welcome-text" style="font-size: 14px; font-weight: bold;">
+            Wellecome to BEBEJI Shop
+        </h1>
+
+        <a href="index.html" class="home-menu-icon" title="Go to Homepage">
+            <i class="fas fa-home"></i>
+        </a>
+    </div>
+</header>
+    
+    
+<div id="headerSpacer" class="header-spacer"></div>
+
+    <div id="shopContainer">
+
+        <div class="card profile-card">
+            
+            
+            
+            <div class="image-section">
+                <div class="shop-image-wrapper">
+                    <img id="shopImageLink" src="https://i.imgur.com/mmiXbDo.png" alt="Shop Image">
+                    <div class="edit-icon" id="editShopImage">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="shopImageInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div class="shop-badge">
+                   Shop Number: <span id="bebejiShopNumber">N/A</span>
+                </div>
+                
+                <div class="profile-image-wrapper">
+                    <img id="userImageLink" src="https://i.imgur.com/MNooQYo.png" alt="User Image">
+                    <div class="edit-icon" id="editProfileImage">
+                        <i style="z-index: 999; "class="fas fa-camera"></i>
+                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-info">
+                <h3 id="fullName">Shop Owner Name</h3>
+                <p id="businessName">N/A Business Type</p>
+            </div>
+              <div class="business-description-card card" style="background: none; box-shadow: none;">
+                <p id="businessText">Click the pencil icon to add a brief business history.</p>
+                <i class="fas fa-pencil-alt" id="editBusinessDescription"></i>
+            </div>
+          
+        </div>
+        
+        <div class="main-menu card">
+            
+            <div class="menu-item menu-visitor-only" id="menuChatVisitor" style="display: none;">
+                <div class="menu-icon-circle"><i  class="fas fa-comment-dots"  style="font-size: 2.5em;" ></i ></div>
+                <span>Chat now</span>
+            </div>
+           
+            <div  class="menu-item" id="menuWhatsApp">
+                <div class="menu-icon-circle"><i class="fab fa-whatsapp" style="font-size: 2.5em;" ></i></div>
+                <span>WhatsApp</span>
+            </div>
+            
+            <div class="menu-item" id="menuCall">
+                <div class="menu-icon-circle"><i class="fas fa-phone" style="font-size: 2.5em;" ></i></div>
+                <span>Call</span>
+            </div>
+
+            <div class="menu-item menu-owner-only" id="menuPostingOwner" style="display: none;">
+                <div class="menu-icon-circle"><i class="fas fa-bullhorn" style="font-size: 2.5em;" ></i></div>
+                <span>Product</span>
+            </div>
+        </div>
+        
+        <div class="card" style="text-align: center; margin-top: 20px;">
+             <button id="productsButton">
+                <i class="fas fa-store"></i>
+                <span id="productsButtonText">Available Products</span>
+            </button>
+            
+            <div class="product-sub-actions">
+                
+                <div class="sub-action-circle" id="shareShopLink">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                
+                <div class="sub-action-circle" id="copyShopLink">
+                    <i class="fas fa-link"></i>
+                </div>
+                
+                <div class="sub-action-circle menu-owner-only" id="chatNotificationsBtn" style="display: none;">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="chatNotificationsCount" style="display: none;">0</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="postsContainer">
+            </div>
+        
+        <button id="loadMoreBtn" style="display: none;">More Products</button>
+
+    </div>
+
+    <div class="modal" id="descriptionModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-id="descriptionModal">&times;</button>
+            <h3>Edit Business Description</h3>
+            <form id="descriptionForm">
+                <textarea id="modalBusinessText" maxlength="150" rows="5" placeholder="Enter a brief history of your business..."></textarea>
+                <div class="char-count" id="charCount">0/150</div>
+                <button type="submit" class="upload-btn" style="width: 100%; justify-content: center;">Save Description</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-id="postModal">&times;</button>
+            <h3 id="postModalTitle">Create New Product Post</h3>
+            <form id="postForm">
+                <input type="hidden" id="postIdInput">
+                
+                <textarea id="postTextarea" maxlength="150" rows="3" placeholder="Describe your product... (Max 150 chars)"></textarea>
+                <div class="char-count" id="postCharCount">0/150</div>
+
+                <div class="media-upload-options">
+                    <button type="button" class="upload-btn" id="uploadImageBtn"><i class="fas fa-image"></i> Images (Max 3)</button>
+                    <button type="button" class="upload-btn" id="uploadGifBtn"><i class="fas fa-video"></i> GIF/Video</button>
+                    <button type="button" class="upload-btn" id="linkInputBtn"><i class="fas fa-link"></i> Links</button>
+                </div>
+
+                <input type="file" id="imageFileInput" accept="image/*" multiple style="display: none;">
+                <input type="file" id="gifVideoFileInput" accept="image/gif, video/mp4, video/quicktime" style="display: none;">
+                
+                <div id="imgurStatus" style="display: none;">Uploading media...</div>
+
+                <div id="previewContainer"></div>
+                
+                <div id="linkInputArea" style="display: none;">
+                    <input type="text" class="image-link-input" placeholder="Image Link 1">
+                    <input type="text" class="image-link-input" placeholder="Image Link 2 (Optional)">
+                    <input type="text" class="image-link-input" placeholder="Image Link 3 (Optional)">
+                    <input type="text" id="gifVideoLinkInput" placeholder="GIF/Video Link (Only One)">
+                </div>
+
+                <input type="number" id="productPrice" placeholder="Product Price (NGN)" min="100" step="100" required>
+
+                <button type="submit" id="submitPostBtn" class="upload-btn" style="width: 100%; justify-content: center; margin-top: 15px;">
+                    <i class="fas fa-upload"></i> Submit Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="imageViewerModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-id="imageViewerModal">&times;</button>
+            <img id="viewedImage" src="" alt="Viewed Media">
+            <video id="viewedVideo" src="" controls loop muted style="display: none;"></video>
+        </div>
+    </div>
+    
+    <div id="notificationContainer"></div>
+    
+   <div id="postDel-Overlay" class="postDel-modal-overlay">
+    <div class="postDel-modal-content">
+        <div class="postDel-icon">
+            <svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <h3>Delete Post?</h3>
+        <p>Are you sure you want to permanently delete this post? This action cannot be undone.</p>
+        <div class="postDel-buttons">
+            <button id="postDel-CancelBtn" class="postDel-btn-secondary">Cancel</button>
+            <button id="postDel-ConfirmBtn" class="postDel-btn-danger">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-bebeji">
+    
+    <h3>BEBEJI PLAZA Phone Centre Gusau</h3> 
+
+    <div class="social-icons">
+        <a href="#" id="facebook-share" aria-label="Share on Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="#" id="email-share" aria-label="Share via Email"><i class="fas fa-envelope"></i></a>
+        <a href="#" id="whatsapp-share" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" id="telegram-share" aria-label="Share on Telegram"><i class="fab fa-telegram"></i></a>
+        <a href="#" id="instagram-share" aria-label="Share on Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" id="x-share" aria-label="Share on X (Twitter)"><i class="fab fa-twitter"></i></a>
+    </div>
+
+    <p>&copy; Bebeji Plaza. All rights reserved.</p>
+    <p>Gusau, Zamfara State.</p> 
+
+    <p>Email: <a href="mailto:bebejiplaza5@gmail.com" class="email-link">info@bebejiplaza.com</a></p>
+    
+    <a href="about.html" class="contact-link">Contact Our Support Team</a>
+</footer>
+
+   <script type="module">
+
+    import { app, analytics, firebaseConfig } from './firebase.js';
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { getDatabase, ref, onValue, off, get, set, push, update, remove, query, limitToLast, endBefore, orderByChild, equalTo, runTransaction } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+  
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const IMGUR_CLIENT_ID = "5acf7eff9c91660";
+    
+    const POSTS_PER_PAGE = 5; 
+    const MAX_CHARACTERS = 150;
+    const MAX_VIDEO_DURATION_SECONDS = 60; 
+  
+    let currentShopOwnerUID = null; 
+    let currentLoggedInUserUID = null; 
+    let isShopOwner = false; 
+    let lastPostTime = null; 
+    let postMediaFiles = [];
+    let postMediaLinks = [];
+    let isUploading = false;
+    let isFetching = false;
+    const viewedPostIds = new Set(); 
+
+  
+    const loaderOverlay = document.getElementById('loaderOverlay');
+    const shopContainer = document.getElementById('shopContainer');
+    const postsContainer = document.getElementById('postsContainer');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const notificationContainer = document.getElementById('notificationContainer');
+    const headerWelcomeText = document.getElementById('headerWelcomeText');
+    const shopImageLinkEl = document.getElementById('shopImageLink');
+    const userImageLinkEl = document.getElementById('userImageLink');
+    const businessTextEl = document.getElementById('businessText');
+    const shopImageInput = document.getElementById('shopImageInput');
+    const profileImageInput = document.getElementById('profileImageInput');
+    const menuChatVisitor = document.getElementById('menuChatVisitor');
+    const postTextarea = document.getElementById('postTextarea');
+    const postCharCount = document.getElementById('postCharCount');
+    const productPrice = document.getElementById('productPrice');
+    const submitPostBtn = document.getElementById('submitPostBtn');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const gifVideoFileInput = document.getElementById('gifVideoFileInput');
+    const linkInputArea = document.getElementById('linkInputArea');
+    const previewContainer = document.getElementById('previewContainer');
+    const imgurStatus = document.getElementById('imgurStatus');
+    const postIdInput = document.getElementById('postIdInput');
+    const viewedVideo = document.getElementById('viewedVideo');
+
+
+
+    function showNotification(message, type = 'info', duration = 3000) {
+        const id = Date.now();
+        const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle';
+        
+        const notif = document.createElement('div');
+        notif.className = `notification ${type} timed`;
+        notif.id = `notif-${id}`;
+        notif.style.setProperty('--notification-duration', `${duration}ms`);
+
+        notif.innerHTML = `
+            <span class="icon"><i class="fas fa-${icon}"></i></span>
+            <div class="message">${message}</div>
+            <button class="close-btn" data-close-id="notif-${id}">&times;</button>
+            <div class="progress-bar"></div>
+        `;
+        notificationContainer.appendChild(notif);
+        
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            setTimeout(() => notif.remove(), 500);
+        }, duration);
+    }
+
+    function hideLoader() {
+        loaderOverlay.classList.add('hidden');
+        shopContainer.classList.add('loaded');
+    }
+
+    function showModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('show');
+        }
+    }
+
+    function hideModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            if (id === 'imageViewerModal' && viewedVideo) viewedVideo.pause();
+            modal.classList.remove('show');
+        }
+    }
+
+
+function getGuestUIDForNotification() {
+    const uid = localStorage.getItem('bebeji_customer_uid'); 
+    return uid && uid.startsWith('GUEST_') ? uid : null; 
+}
+
+
+function playNotificationSound(newCount) {
+  
+    if (newCount > 0 && typeof notificationSound !== 'undefined') {
+        notificationSound.play().catch(e => console.log("Sound play error:", e));
+    }
+}
+
+
+function updateNotificationUI(count) {
+    const notifEl = document.getElementById('chatNotificationsCount'); 
+      
+    if (count > 0) {
+        playNotificationSound(count); 
+    }    
+    if (notifEl) {
+        notifEl.textContent = count;        
+        notifEl.style.display = count > 0 ? 'block' : 'none'; 
+    }
+}
+
+
+function listenForChatNotifications(userUID) {
+    const notificationsRef = ref(db, `users/${userUID}/chatNotifications`);
+    off(notificationsRef); 
+    
+    onValue(notificationsRef, (snapshot) => { 
+       
+        const count = snapshot.size; 
+        updateNotificationUI(count);
+    });
+}
+
+
+function listenForGuestNotifications(shopOwnerUID) {
+    const guestUID = getGuestUIDForNotification();
+    if (!guestUID || !shopOwnerUID) return; 
+   
+    const notificationsRef = ref(db, `guestNotifications/${guestUID}/${shopOwnerUID}`); 
+    off(notificationsRef);
+
+    onValue(notificationsRef, (snapshot) => {        
+        const hasNotification = snapshot.exists();                
+        const count = hasNotification ? 1 : 0;       
+        updateNotificationUI(count);
+    });
+}
+
+
+    async function uploadToImgur(base64) {
+        try {
+            const res = await fetch("https://api.imgur.com/3/image", {
+                method: "POST",
+                headers: { Authorization: `Client-ID ${IMGUR_CLIENT_ID}` },
+                body: new URLSearchParams({ image: base64, type: "base64" })
+            });
+            const data = await res.json();
+            if (data.success) {
+                return data.data.link;
+            } else {
+                throw new Error(data.data.error || "Imgur upload failed.");
+            }
+        } catch (error) {
+            throw new Error(`Upload error: ${error.message}`);
+        }
+    }
+    
+   
+    async function createBase64(file) {
+        return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(file);
+        });
+    }
+
+ 
+    async function handleImgurUpload(file, isVid) {
+        try {
+            const base64 = await createBase64(file);
+            const link = await uploadToImgur(base64);
+            return link;
+        } catch (error) {
+            console.error("Imgur Upload Error:", error);
+            showNotification(`Failed to upload media: ${error.message}`, 'error');
+            return null;
+        }
+    }
+
+    function updateCharCount(textarea, counterElement) {
+        const count = textarea.value.length;
+        counterElement.textContent = `${count}/${MAX_CHARACTERS}`;
+        if (count > MAX_CHARACTERS) {
+            counterElement.style.color = 'var(--danger-red)';
+        } else {
+            counterElement.style.color = 'rgba(232, 232, 255, 0.6)';
+        }
+    }
+
+    function createMediaPreview(src, type, index) {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+        item.setAttribute('data-index', index);
+        
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'preview-remove';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.onclick = () => {     
+            postMediaFiles.splice(index, 1);
+            postMediaLinks.splice(index, 1);
+            renderMediaPreviews();
+        };
+        item.appendChild(removeBtn);
+
+        if (type === 'image') {
+            const img = document.createElement('img');
+            img.src = src;
+            item.appendChild(img);
+        } else if (type === 'video' || type === 'gif') {
+            const video = document.createElement('video');
+            video.src = src;
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            item.appendChild(video);
+        }
+        return item;
+    }
+
+    function renderMediaPreviews() {
+        previewContainer.innerHTML = '';
+        
+        postMediaLinks.forEach((link, index) => {
+             if (link) {
+                 const type = link.match(/\.(mp4|gif|webm)/i) ? 'video' : 'image';
+                 previewContainer.appendChild(createMediaPreview(link, type, index));
+             }
+        });
+    }
+
+    function getShopOwnerTarget() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopuid = urlParams.get('shopuid');
+          
+        const pathSegments = window.location.pathname.split('/').filter(s => s.length > 0);
+      
+        const possibleShopUID = pathSegments.length >= 2 ? pathSegments[1] : null; 
+      
+        const marketId = pathSegments.length >= 3 ? pathSegments[2] : null;
+      
+        if (shopuid) return { type: 'UID_PARAM', value: shopuid };
+          
+        if (possibleShopUID && possibleShopUID.length > 20) { 
+            return { type: 'UID_PATH', value: possibleShopUID };
+        }   
+      
+        if (marketId) return { type: 'MARKET_ID', value: marketId }; 
+        
+        return { type: 'FALLBACK', value: null };
+    }
+
+    async function resolveMarketId(marketId) {
+        if (!marketId || marketId.length < 5) return null;
+          
+        const usersRef = ref(db, 'users');
+        const userQuery = query(usersRef, orderByChild('marketId'), equalTo(marketId), limitToLast(1));
+        
+        try {
+            const snapshot = await get(userQuery);
+            if (snapshot.exists()) {
+                const userKey = Object.keys(snapshot.val())[0];
+                return userKey;
+            }
+            return null;
+        } catch (error) {
+            console.error("Error resolving Market ID:", error);
+            return null;
+        }
+    }
+
+
+
+
+  
+    onAuthStateChanged(auth, async (user) => {
+        const target = getShopOwnerTarget();
+        let determinedUID = null;
+
+        if (user) {
+            currentLoggedInUserUID = user.uid;
+        } 
+          
+        if (target.type === 'MARKET_ID') {
+            determinedUID = await resolveMarketId(target.value);
+        } else if (target.type === 'UID_PARAM' || target.type === 'UID_PATH') {
+            determinedUID = target.value;
+        }
+        
+      
+        currentShopOwnerUID = determinedUID || currentLoggedInUserUID || null;
+
+        if (!currentShopOwnerUID) {
+             document.getElementById('loadingText').textContent = "Shop ID missing or invalid. Please check the URL or log in.";
+             showNotification("Error: Shop ID is missing. Please provide a valid Shop UID in the URL or log in.", 'error', 0);
+             hideLoader();
+             return; 
+        }
+      
+        isShopOwner = (currentLoggedInUserUID === currentShopOwnerUID);
+        
+        initializeProfile();
+    });
+
+
+  
+   async function initializeProfile() {
+    try {
+        if (!currentShopOwnerUID) {
+            return;
+        }            
+      
+        const guestUID = getGuestUIDForNotification();
+        
+        if (guestUID) {              
+            listenForGuestNotifications(currentShopOwnerUID); 
+        } 
+        else if (currentLoggedInUserUID) { 
+            if (currentLoggedInUserUID === currentShopOwnerUID) {
+                listenForChatNotifications(currentLoggedInUserUID);
+            }
+        }            
+     
+        await loadProfileData(currentShopOwnerUID); 
+              
+        
+        const businessPencil = document.getElementById('editBusinessDescription');
+        const businessText = document.getElementById('businessText');
+        const businessCard = document.querySelector('.business-description-card');
+
+        if (!isShopOwner) {
+         
+            if (businessPencil) businessPencil.style.display = 'none';
+                      
+            if (businessText && businessText.textContent.includes("Click the pencil icon")) {
+                if (businessCard) {
+                    businessCard.style.display = 'none'; 
+                }
+            }
+        } else {
+          
+            if (businessPencil) businessPencil.style.display = 'inline-block';
+            if (businessCard) businessCard.style.display = 'block';
+        }
+       
+        setupMenuVisibility();                       
+        await loadPosts(POSTS_PER_PAGE, null, true);              
+        hideLoader();            
+    } catch (error) {
+        console.error("Initialization error:", error);
+        document.getElementById('loadingText').textContent = `Error: Data not found for shop UID: ${currentShopOwnerUID}.`;
+        showNotification(`Failed to load shop data for UID: ${currentShopOwnerUID}. Check data path.`, 'error', 0);
+        hideLoader();
+    }
+}
+
+    async function loadProfileData(uid) {
+        const userRef = ref(db, `users/${uid}`); 
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+             
+            const businessName = data.businesName || 'Bebeji Plaza Shop';
+             
+            document.getElementById('fullName').textContent = data.fullName || 'Shop Owner';
+            document.getElementById('businessName').textContent = data.businesName || 'Business Type';
+            document.getElementById('bebejiShopNumber').textContent = data.bebejiShopNumber || 'N/A';
+           
+            shopImageLinkEl.src = data.shopImageLink || 'https://i.imgur.com/mmiXbDo.png'; 
+          
+            userImageLinkEl.src = data.userImageLink || 'https://i.imgur.com/MNooQYo.png'; 
+            businessTextEl.textContent = data.businessText || 'Click the pencil icon to add a brief business history.';       
+             
+            headerWelcomeText.textContent = `Welcome to ${businessName} Bebeji Plaza Shop`;
+            
+            shopImageLinkEl.dataset.phoneNumber = data.phoneNumber || '';
+            shopImageLinkEl.dataset.shopLink = `https://bebejiplaza.pages.dev/shop/${data.bebejiShopNumber}/${data.marketId || uid}`;
+             
+             
+        } else {
+            throw new Error("Shop profile data not found."); 
+        }
+    }
+                   
+ 
+    function setupMenuVisibility() {
+        const ownerElements = document.querySelectorAll('.menu-owner-only');
+        const visitorElements = document.querySelectorAll('.menu-visitor-only');
+        const editIcons = document.querySelectorAll('.edit-icon');
+
+        if (isShopOwner) {
+            ownerElements.forEach(el => el.style.display = 'flex');
+            visitorElements.forEach(el => el.style.display = 'none');
+            editIcons.forEach(el => el.style.display = 'flex'); 
+            document.getElementById('productsButtonText').textContent = 'My Shop Products';
+        } else {
+            ownerElements.forEach(el => el.style.display = 'none');
+            visitorElements.forEach(el => el.style.display = 'flex'); 
+            editIcons.forEach(el => el.style.display = 'none');
+            document.getElementById('productsButtonText').textContent = 'Available Products';
+                      
+            if (currentLoggedInUserUID) {
+                 const menuChatVisitor = document.getElementById('menuChatVisitor');
+                 if (menuChatVisitor) {
+                     menuChatVisitor.style.display = 'flex';
+                 }
+            }
+        }
+    }
+    
+              
+    
+    async function handleProfileImageChange(isShopImage) {
+        if (!isShopOwner) return;
+
+        const fileInput = isShopImage ? shopImageInput : profileImageInput;
+        const targetImg = isShopImage ? shopImageLinkEl : userImageLinkEl;
+
+        if (fileInput.files.length === 0) return;
+
+        const file = fileInput.files[0];
+        
+        if (!file.type.startsWith('image/')) {
+            showNotification('Please select an image file.', 'error');
+            return;
+        }
+
+        try {
+            imgurStatus.style.display = 'block';
+            imgurStatus.textContent = 'Uploading image...';
+            
+            const base64 = await createBase64(file);
+            const link = await uploadToImgur(base64);
+            
+            if (link) {
+                targetImg.src = link;               
+                const fieldName = isShopImage ? 'shopImageLink' : 'userImageLink'; 
+                await update(ref(db, `users/${currentLoggedInUserUID}`), { [fieldName]: link });
+                showNotification(`${isShopImage ? 'Shop' : 'Profile'} image updated successfully!`, 'success');
+            }
+        } catch (error) {
+            showNotification(`Failed to save image: ${error.message}`, 'error');
+        } finally {
+            imgurStatus.style.display = 'none';
+        }
+    }
+
+
+    async function loadPosts(count, startTime, isInitialLoad = false) {
+        if (isFetching || !currentShopOwnerUID) return;
+
+        isFetching = true;
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = 'Loading...';
+        
+        try {
+           
+            const userPostsRef = ref(db, `users/${currentShopOwnerUID}/Posting`); 
+            let postsQuery;
+
+            if (startTime) {
+              
+                postsQuery = query(
+                    userPostsRef, 
+                    orderByChild('postTime'),
+                    endBefore(startTime), 
+                    limitToLast(count)
+                );
+            } else {
+                
+                postsQuery = query(
+                    userPostsRef, 
+                    orderByChild('postTime'), 
+                    limitToLast(count)
+                );
+            }
+
+            const snapshot = await get(postsQuery);
+
+            if (!snapshot.exists()) {
+                loadMoreBtn.style.display = 'none';
+                if (isInitialLoad) postsContainer.innerHTML = `<p style="text-align:center; color:var(--accent-blue);">No products posted yet.</p>`;
+                return;
+            }
+
+            let posts = [];
+            snapshot.forEach(child => {
+                 posts.push({ id: child.key, ...child.val() });
+            });
+            
+          
+            posts.reverse();
+
+            if (posts.length > 0) {
+                lastPostTime = posts[posts.length - 1].postTime;
+              
+                if (snapshot.size === count) { 
+                    loadMoreBtn.style.display = 'block';
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+
+
+            if (isInitialLoad) postsContainer.innerHTML = ''; 
+
+            posts.forEach(post => renderPostCard(post));
+
+
+        } catch (error) {
+            console.error("Error loading posts:", error);
+            showNotification('Failed to load posts.', 'error');
+        } finally {
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.textContent = 'More Products';
+            isFetching = false;
+        }
+    }
+
+
+   
+    async function incrementPostViews(ownerUID, postId) {        
+        if (viewedPostIds.has(postId) || currentLoggedInUserUID === ownerUID) return;
+                
+        const viewerKey = currentLoggedInUserUID || `guest_${Date.now()}`;
+        if (viewedPostIds.has(`${postId}_${viewerKey}`)) return;
+        
+        viewedPostIds.add(`${postId}_${viewerKey}`); 
+        
+       
+        const postViewsRef = ref(db, `users/${ownerUID}/Posting/${postId}/seeCount`);
+
+        try {
+            await runTransaction(postViewsRef, (currentViews) => {
+                return (currentViews || 0) + 1;
+            });
+          
+            const viewCountEl = document.querySelector(`#post-${postId} .see-count-btn span`);
+            if (viewCountEl) {
+                const currentCount = parseInt(viewCountEl.textContent) || 0;
+                viewCountEl.textContent = (currentCount + 1).toLocaleString();
+            }
+        } catch (error) {
+            console.error("Transaction failed: Incrementing views failed:", error);
+            
+            viewedPostIds.delete(`${postId}_${viewerKey}`); 
+        }
+    }
+
+   
+    async function togglePostLike(ownerUID, postId, btn) {
+        if (!currentLoggedInUserUID) {
+            showNotification("Please log in to like a post.", 'info');
+            return;
+        }
+
+       
+        const postLikesCountRef = ref(db, `users/${ownerUID}/Posting/${postId}/likeCount`);
+        
+        const userLikeRef = ref(db, `users/${ownerUID}/Posting/${postId}/userLikes/${currentLoggedInUserUID}`);
+        
+        try {
+            const userLikeSnapshot = await get(userLikeRef);
+            const isLiked = userLikeSnapshot.exists();
+
+            await runTransaction(postLikesCountRef, (currentLikes) => {
+                if (isLiked) {
+                  
+                    return Math.max(0, (currentLikes || 1) - 1);
+                } else {
+                   
+                    return (currentLikes || 0) + 1;
+                }
+            });
+
+            if (isLiked) {
+               
+                await remove(userLikeRef);
+                btn.classList.remove('liked');
+                showNotification("Post Unliked!", 'info');
+            } else {
+               
+                await set(userLikeRef, true);
+                btn.classList.add('liked');
+                showNotification("Post Liked!", 'success');
+            }
+            
+            
+            updateLikeStatusUI(ownerUID, postId);
+
+        } catch (error) {
+            console.error("Error toggling like:", error);
+            showNotification('Failed to process like/unlike.', 'error');
+        }
+    }
+
+    
+    async function updateLikeStatusUI(ownerUID, postId) {
+        const likeBtn = document.querySelector(`#post-${postId} .like-count-btn`);
+        const likeCountEl = document.getElementById(`likeCount-${postId}`);
+
+        if (!likeBtn || !likeCountEl) return;
+
+       
+        const postLikesRef = ref(db, `users/${ownerUID}/Posting/${postId}/likeCount`);
+        const likesSnapshot = await get(postLikesRef);
+        const totalLikes = likesSnapshot.val() || 0;
+        likeCountEl.textContent = totalLikes.toLocaleString();
+
+        if (currentLoggedInUserUID) {
+            
+            const userLikeRef = ref(db, `users/${ownerUID}/Posting/${postId}/userLikes/${currentLoggedInUserUID}`);
+            const userLikeSnapshot = await get(userLikeRef);
+            const isLiked = userLikeSnapshot.exists();
+
+            likeBtn.classList.toggle('liked', isLiked);
+        } else {
+            likeBtn.classList.remove('liked');
+        }
+    }
+
+   
+function renderPostCard(post) {
+    const ownerUID = currentShopOwnerUID; 
+    const postId = post.id;
+    
+    const card = document.createElement('div');
+    card.className = 'post-card card';
+    card.id = `post-${postId}`;
+   
+    incrementPostViews(ownerUID, postId);       
+    const mediaLinks = [post.imageLink1, post.imageLink2, post.imageLink3].filter(Boolean);
+    const hasMultipleImages = mediaLinks.length > 1;
+    const mainMediaLink = post.giftVideoLink || mediaLinks[0];
+    const mediaType = post.giftVideoLink ? 'video' : 'image';
+     
+    const rawPrice = post.price || 0; 
+       
+    const formattedPrice = new Intl.NumberFormat('ha-NG', { 
+        style: 'currency', 
+        currency: 'NGN',
+        currencyDisplay: 'symbol' 
+    }).format(rawPrice).replace('NGN', '₦'); 
+    
+    const timePosted = new Date(post.postTime).toLocaleString('en-NG', { dateStyle: 'short', timeStyle: 'short' });
+    const seeCount = post.seeCount || 0;
+    const likeCount = post.likeCount || 0;    
+   
+    card.innerHTML = `
+        <div class="post-content-wrapper" 
+             data-post-id="${postId}" 
+             data-price="${rawPrice}"  data-video-link="${post.giftVideoLink || ''}" 
+             data-image-link="${mediaLinks[0] || ''}">
+            
+            ${isShopOwner ? `<div class="post-owner-options">
+                <i class="fas fa-edit edit-post-btn" data-post-id="${postId}"></i>
+                <i class="fas fa-trash-alt delete-post-btn" data-post-id="${postId}"></i>
+            </div>` : ''}
+            
+            <p class="post-text">${post.text || ''}</p>
+            
+            <div class="post-media-container" data-post-id="${postId}">
+                <span class="price-tag">${formattedPrice}</span> 
+                ${hasMultipleImages ? 
+                  
+                    `<div class="image-carousel" data-post-id="${postId}">
+                        ${mediaLinks.map((link, index) => `
+                            <img class="carousel-item ${index === 0 ? 'active' : ''} post-media view-media-trigger" 
+                                data-media-type="image" data-media-src="${link}" src="${link}">
+                        `).join('')}
+                    </div>`
+                    : mediaType === 'video' ? 
+                    `<video class="post-media view-media-trigger" data-media-type="video" data-media-src="${mainMediaLink}" src="${mainMediaLink}" autoplay loop muted></video>` 
+                    : 
+                    `<img class="post-media view-media-trigger" data-media-type="image" data-media-src="${mainMediaLink}" src="${mainMediaLink}">`
+                }
+            </div>
+            
+            <div class="post-footer-actions">
+                <div class="stats-group">
+                    <div class="stat-item see-count-btn" data-post-id="${postId}">
+                        <i class="fas fa-eye"></i> <span>${seeCount}</span>
+                    </div>
+                    <div class="stat-item like-count-btn" data-post-id="${postId}" onclick="window.togglePostLike('${ownerUID}', '${postId}', this)">
+                        <i class="fas fa-thumbs-up"></i> <span id="likeCount-${postId}">${likeCount}</span>
+                    </div>
+                </div>
+                
+                <div class="action-group">
+                    <button class="buy-button" data-post-id="${postId}">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <div class="buy-options-flyout" id="buyOptions-${postId}">
+                        <div class="buy-option-circle option-chat" data-post-id="${postId}" data-action="chat">
+                            <i class="fas fa-comment-dots"></i> Chat Now
+                        </div>
+                        <div class="buy-option-circle option-whatsapp" data-post-id="${postId}" data-action="whatsapp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Chat
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size:0.8em; color: rgba(232, 232, 255, 0.4); margin-top: 10px; text-align: right;">Posted: ${timePosted}</p>
+        </div>
+    `;
+    postsContainer.appendChild(card);
+      
+    updateLikeStatusUI(ownerUID, postId); 
+    
+    if (hasMultipleImages) {
+        startCarousel(postId);
+    }
+}
+
+     
+    function startCarousel(postId) {
+        const carousel = document.querySelector(`#post-${postId} .image-carousel`);
+        if (!carousel) return;
+        const items = carousel.querySelectorAll('.carousel-item');
+        let currentIndex = 0;
+        
+        function rotate() {
+            const nextIndex = (currentIndex + 1) % items.length;
+          
+            items.forEach(item => item.classList.remove('active', 'prev'));
+                      items[currentIndex].classList.add('prev');        
+           
+            items[nextIndex].classList.add('active');
+            
+            currentIndex = nextIndex;
+        }
+       
+        setInterval(rotate, 4000); 
+    }
+    
+  
+    function handleBuyClick(postId) {
+        const flyout = document.getElementById(`buyOptions-${postId}`);
+        const isShown = flyout.classList.contains('show');
+                  document.querySelectorAll('.buy-options-flyout').forEach(f => f.classList.remove('show'));
+        
+        if (!isShown) {
+            flyout.classList.add('show');
+        }
+    }
+              
+   
+function handleBuyOptionClick(postId, action) {
+    const postWrapper = document.querySelector(`#post-${postId} .post-content-wrapper`);
+    if (!postWrapper) return; 
+            
+    const shopUID = typeof currentShopOwnerUID !== 'undefined' ? currentShopOwnerUID : 'ERROR_UID_MISSING'; 
+       
+    if (shopUID === 'ERROR_UID_MISSING') {
+        console.error("Critical Error: Shop UID is missing in the global scope.");
+        showNotification("Shop information not found. Cannot start chat.", 'error');
+        return;
+    }
+    
+  
+    const price = postWrapper.dataset.price;
+    const productLink = postWrapper.dataset.videoLink || postWrapper.dataset.imageLink;
+    const text = postWrapper.dataset.text || 'Product Details'; 
+
+    
+    if (action === 'chat') {
+        const chatPayload = {
+            type: 'post', 
+            postId: postId,
+            productLink: productLink, 
+            text: text,
+            price: price,
+            shopUID: shopUID 
+        };
+        
+        const encodedPayload = encodeURIComponent(JSON.stringify(chatPayload));
+              
+        window.location.href = `chat.html?shopuid=${shopUID}&payload=${encodedPayload}`;
+        return;
+    }
+      
+    
+    if (action === 'whatsapp') {
+        if (phoneNumber) {
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        } else {
+            showNotification('Shop owner phone number not available.', 'error');
+        }
+    }
+    document.getElementById(`buyOptions-${postId}`).classList.remove('show');
+}
+               
+   async function handleDeletePost(postId) {
+   
+    if (!isShopOwner || !currentLoggedInUserUID) return;
+
+    const modal = document.getElementById('postDel-Overlay');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+
+    return new Promise((resolve) => {
+       
+        document.getElementById('postDel-CancelBtn').onclick = () => {
+            closePostDelModal();
+            resolve(false);
+        };
+
+      
+        document.getElementById('postDel-ConfirmBtn').onclick = async () => {
+            closePostDelModal();
+            
+            try {
+              
+                const deletePath = `users/${currentLoggedInUserUID}/Posting/${postId}`;
+                await remove(ref(db, deletePath)); 
+
+                
+                const element = document.getElementById(`post-${postId}`);
+                if (element) {
+                    element.style.opacity = '0';
+                    element.style.transform = 'scale(0.9)';
+                    setTimeout(() => element.remove(), 300);
+                }
+
+                showNotification('Post deleted successfully!', 'success');
+                resolve(true);
+            } catch (error) {
+                showNotification('Failed to delete post.', 'error');
+                console.error("Delete post error:", error);
+                resolve(false);
+            }
+        };
+    });
+}
+
+function closePostDelModal() {
+    const modal = document.getElementById('postDel-Overlay');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+}
+
+  
+    async function handleEditPost(postId) {
+        if (!isShopOwner) return;
+        
+        try {
+         
+            const snapshot = await get(ref(db, `users/${currentLoggedInUserUID}/Posting/${postId}`));
+            if (!snapshot.exists()) {
+                showNotification('Post not found.', 'error');
+                return;
+            }
+            
+            const post = snapshot.val();
+            
+            document.getElementById('postModalTitle').textContent = 'Edit Post';
+            postIdInput.value = postId;
+            postTextarea.value = post.text || '';
+            productPrice.value = post.price || 0;                     
+            postMediaFiles = [];
+            postMediaLinks = [post.imageLink1, post.imageLink2, post.imageLink3].filter(Boolean);
+            if (post.giftVideoLink) postMediaLinks.push(post.giftVideoLink);
+                     
+            linkInputArea.style.display = 'none';
+            updateCharCount(postTextarea, postCharCount);
+            renderMediaPreviews();
+            showModal('postModal');
+
+        } catch (error) {
+            showNotification('Failed to load post for editing.', 'error');
+        }
+    }
+      
+
+    document.addEventListener('click', (e) => {  
+        if (e.target.closest('.modal-close')) {
+            const modalId = e.target.closest('.modal').id;
+            hideModal(modalId);
+        }
+        if (e.target.closest('.close-btn') && e.target.closest('.close-btn').dataset.closeId) {
+            document.getElementById(e.target.closest('.close-btn').dataset.closeId).remove();
+        }
+              
+        if (e.target.id === 'shopImageLink' || e.target.id === 'userImageLink') {
+             window.viewMedia(e.target.src, 'image');
+        }
+        if (e.target.closest('.view-media-trigger')) {
+            const el = e.target.closest('.view-media-trigger');
+            window.viewMedia(el.dataset.mediaSrc, el.dataset.mediaType);
+         
+        }
+                     
+        if (e.target.closest('.buy-button')) {
+            handleBuyClick(e.target.closest('.buy-button').dataset.postId);
+        }
+        if (e.target.closest('.buy-option-circle')) {
+            const el = e.target.closest('.buy-option-circle');
+            handleBuyOptionClick(el.dataset.postId, el.dataset.action);
+        }
+        if (e.target.closest('.delete-post-btn')) {
+            handleDeletePost(e.target.closest('.delete-post-btn').dataset.postId);
+        }
+        if (e.target.closest('.edit-post-btn')) {
+            handleEditPost(e.target.closest('.edit-post-btn').dataset.postId);
+        }
+       
+        if (!e.target.closest('.action-group')) {
+             document.querySelectorAll('.buy-options-flyout').forEach(f => f.classList.remove('show'));
+        }
+               
+        if (e.target.closest('#productsButton')) {
+            if (currentShopOwnerUID) {
+                window.location.href = `product.html?shopuid=${currentShopOwnerUID}`;
+            } else {
+                window.location.href = 'product.html';
+            }
+        }
+        
+        
+        
+        if (e.target.closest('#menuChatVisitor')) {
+         
+            if (currentShopOwnerUID) {
+               
+                window.location.href = `chat.html?shopuid=${currentShopOwnerUID}`;
+
+            } else {
+              
+                showNotification('Error: Shop owner data not loaded. Please try again.', 'error');
+            }
+        }
+        
+        
+        
+        if (e.target.closest('#menuWhatsApp')) {
+            const phoneNumber = shopImageLinkEl.dataset.phoneNumber;
+            if (phoneNumber) {
+                const message = encodeURIComponent("Ina da buƙatar zama memba/mai siye a Kasuwar Bebeji Plaza Na Online.");
+                window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+            } else {
+                showNotification('Shop number not available.', 'error');
+            }
+        }
+        if (e.target.closest('#menuCall')) {
+            const phoneNumber = shopImageLinkEl.dataset.phoneNumber;
+            if (phoneNumber) {
+                window.location.href = `tel:${phoneNumber}`;
+            } else {
+                showNotification('Shop number not available.', 'error');
+            }
+        }
+        if (e.target.closest('#chatNotificationsBtn') && isShopOwner) {
+            window.location.href = 'chatNotifications.html';
+        }
+    });
+
+  
+    window.viewMedia = (src, type) => {
+        const viewedImage = document.getElementById('viewedImage');
+        const viewedVideo = document.getElementById('viewedVideo');
+
+        if (type === 'video') {
+            viewedImage.style.display = 'none';
+            viewedVideo.style.display = 'block';
+            viewedVideo.src = src;
+            viewedVideo.play();
+        } else {
+            viewedVideo.style.display = 'none';
+            viewedImage.style.display = 'block';
+            viewedImage.src = src;
+        }
+        showModal('imageViewerModal');
+    };
+  
+  
+    loadMoreBtn.addEventListener('click', () => {
+        loadPosts(POSTS_PER_PAGE, lastPostTime, false);
+    });
+  
+    document.getElementById('editShopImage').addEventListener('click', () => shopImageInput.click());
+    shopImageInput.addEventListener('change', () => handleProfileImageChange(true));
+    document.getElementById('editProfileImage').addEventListener('click', () => profileImageInput.click());
+    profileImageInput.addEventListener('change', () => handleProfileImageChange(false));
+        document.getElementById('editBusinessDescription').addEventListener('click', () => {
+        document.getElementById('modalBusinessText').value = businessTextEl.textContent === 'Click the pencil icon to add a brief business history.' ? '' : businessTextEl.textContent;
+        updateCharCount(document.getElementById('modalBusinessText'), document.getElementById('charCount'));
+        showModal('descriptionModal');
+    });
+
+    document.getElementById('modalBusinessText').addEventListener('input', () => updateCharCount(document.getElementById('modalBusinessText'), document.getElementById('charCount')));
+
+    document.getElementById('descriptionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newText = document.getElementById('modalBusinessText').value.substring(0, MAX_CHARACTERS).trim();
+        if (!newText) {
+            showNotification('Description cannot be empty.', 'error');
+            return;
+        }
+        try {
+            await update(ref(db, `users/${currentLoggedInUserUID}`), { businessText: newText });
+            businessTextEl.textContent = newText;
+            showNotification('Description updated!', 'success');
+            hideModal('descriptionModal');
+        } catch (error) {
+            showNotification('Failed to update description.', 'error');
+        }
+    });
+   
+    document.getElementById('menuPostingOwner').addEventListener('click', () => {
+        document.getElementById('postModalTitle').textContent = 'Create New Post';
+        postIdInput.value = '';
+        document.getElementById('postForm').reset();
+        previewContainer.innerHTML = '';
+        postMediaFiles = [];
+        postMediaLinks = [];
+        linkInputArea.style.display = 'none';
+        showModal('postModal');
+    });
+    
+    document.getElementById('uploadImageBtn').addEventListener('click', () => {
+        linkInputArea.style.display = 'none';
+        imageFileInput.click();
+    });
+    document.getElementById('uploadGifBtn').addEventListener('click', () => {
+        linkInputArea.style.display = 'none';
+        gifVideoFileInput.click();
+    });
+   document.getElementById('linkInputBtn').addEventListener('click', () => {
+        linkInputArea.style.display = linkInputArea.style.display === 'none' ? 'block' : 'none';
+        if (linkInputArea.style.display === 'block') {
+             imageFileInput.value = '';
+             gifVideoFileInput.value = '';
+             postMediaFiles = [];
+             postMediaLinks = [];
+             renderMediaPreviews();
+        }
+    });
+
+    imageFileInput.addEventListener('change', (e) => {
+        postMediaFiles = [];
+        postMediaLinks = [];
+        const files = Array.from(e.target.files).slice(0, 3);
+        for (const file of files) {
+            if (file.type.startsWith('image/')) {
+                 postMediaFiles.push(file);
+                 postMediaLinks.push(URL.createObjectURL(file)); 
+            }
+        }
+        renderMediaPreviews();
+    });
+
+    gifVideoFileInput.addEventListener('change', async (e) => {
+        postMediaFiles = [];
+        postMediaLinks = [];
+        const file = e.target.files[0];
+        if (file && (file.type.includes('video/') || file.type.includes('gif'))) {
+          
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = function() {
+                 window.URL.revokeObjectURL(video.src);
+                 if (video.duration > MAX_VIDEO_DURATION_SECONDS) {
+                     showNotification(`Video must be less than ${MAX_VIDEO_DURATION_SECONDS} seconds.`, 'error');
+                     e.target.value = ''; 
+                 } else {
+                     postMediaFiles.push(file);
+                     postMediaLinks.push(URL.createObjectURL(file)); 
+                     renderMediaPreviews();
+                 }
+            }
+            video.src = URL.createObjectURL(file);
+            
+        } else {
+            showNotification('Please select a GIF or Video file.', 'error');
+        }
+    });
+   
+    document.getElementById('postForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const priceValue = parseFloat(productPrice.value);
+        if (isNaN(priceValue) || priceValue <= 0) {
+            showNotification('Please enter a valid product price (NGN).', 'error');
+            return;
+        }
+
+        const text = postTextarea.value.substring(0, MAX_CHARACTERS).trim();
+        let finalLinks = [];
+        let videoLink = null;
+        let postSuccessfully = false;
+        let isEditing = !!postIdInput.value;
+        
+        submitPostBtn.disabled = true;
+
+        if (linkInputArea.style.display === 'block') {
+         
+            const linkInputs = document.querySelectorAll('.image-link-input');
+            linkInputs.forEach(input => {
+                if (input.value.trim()) finalLinks.push(input.value.trim());
+            });
+            videoLink = document.getElementById('gifVideoLinkInput').value.trim();
+            postSuccessfully = finalLinks.length > 0 || videoLink;
+        } else {
+            // Uploading files to Imgur
+            if (postMediaFiles.length > 0) {
+                 isUploading = true;
+                 imgurStatus.style.display = 'block';
+                 imgurStatus.textContent = 'Starting media upload to Imgur...';
+                 
+                 for (const file of postMediaFiles) {
+                     const isVid = file.type.includes('video/') || file.type.includes('gif');
+                     const link = await handleImgurUpload(file, isVid);
+
+                     if (link) {
+                         if (isVid) {
+                             videoLink = link;
+                         } else {
+                             finalLinks.push(link);
+                         }
+                     }
+                 }
+                 isUploading = false;
+            }
+          
+            if (isEditing && finalLinks.length === 0 && !videoLink) {
+                
+                 const existingPost = await get(ref(db, `users/${currentLoggedInUserUID}/Posting/${postIdInput.value}`));
+                 if (existingPost.exists()) {
+                     const oldData = existingPost.val();
+                     finalLinks = [oldData.imageLink1, oldData.imageLink2, oldData.imageLink3].filter(Boolean);
+                     videoLink = oldData.giftVideoLink;
+                 }
+            }
+            
+            postSuccessfully = finalLinks.length > 0 || videoLink || text;
+        }
+        
+        if (!postSuccessfully) {
+             showNotification('Post must contain text and/or at least one image/video or valid link.', 'error');
+             submitPostBtn.disabled = false;
+             imgurStatus.style.display = 'none';
+             return;
+        }
+
+        const newPostData = {
+            
+             uid: currentLoggedInUserUID, 
+             text: text,
+             imageLink1: finalLinks[0] || null,
+             imageLink2: finalLinks[1] || null,
+             imageLink3: finalLinks[2] || null,
+             giftVideoLink: videoLink,
+             price: priceValue,
+             postTime: new Date().getTime(),
+        };
+
+        try {
+          
+            const postPath = `users/${currentLoggedInUserUID}/Posting`;
+
+            if (isEditing) {
+               
+                 await update(ref(db, `${postPath}/${postIdInput.value}`), newPostData); 
+                 showNotification('Post updated successfully!', 'success');
+            } else {
+               
+                 await push(ref(db, postPath), { ...newPostData, seeCount: 0, likeCount: 0 });
+                 showNotification('New product posted!', 'success');
+            }
+            
+            hideModal('postModal');
+        
+            await loadPosts(POSTS_PER_PAGE, null, true); 
+        } catch (error) {
+             showNotification('Failed to submit post to Firebase.', 'error');
+             console.error("Firebase Post Error:", error);
+        } finally {
+             submitPostBtn.disabled = false;
+             imgurStatus.style.display = 'none';
+             document.getElementById('postForm').reset();
+        }
+
+    });
+  
+    document.getElementById('shareShopLink').addEventListener('click', async () => {
+        const shopLink = shopImageLinkEl.dataset.shopLink;
+        const shareData = {
+             title: 'Bebeji Plaza Shop',
+             text: 'Ku zo my shop link ku ga kayan da nake sayarwa a Kasuwar Bebeji Plaza Na Online!',
+             url: shopLink
+        };
+
+        if (navigator.share) {
+             try {
+                 await navigator.share(shareData);
+             } catch (error) {
+                 showNotification('Failed to share.', 'error');
+             }
+        } else {
+             navigator.clipboard.writeText(shopLink);
+             showNotification('Sharing not supported. Link copied successfully!', 'success');
+        }
+    });
+
+    document.getElementById('copyShopLink').addEventListener('click', () => {
+        const shopLink = shopImageLinkEl.dataset.shopLink;
+        navigator.clipboard.writeText(shopLink);
+        showNotification('Shop Link copied successfully!', 'success');
+    });
+
+   
+
+    window.addEventListener('scroll', async () => {
+        if (loadMoreBtn.style.display === 'block' && !isFetching && !isUploading) {
+             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+             if (scrollTop + clientHeight >= scrollHeight - 100) { 
+                 await loadPosts(POSTS_PER_PAGE, lastPostTime, false);
+             }
+        }
+    });
+    
+  
+    window.togglePostLike = togglePostLike;
+    
+    
+    let networkTimeout = setTimeout(() => {
+    const loadingText = document.getElementById('loadingTextEl') || document.querySelector('.loading-text');
+    const loaderOverlay = document.getElementById('loaderOverlay');
+
+    if (loaderOverlay && loaderOverlay.style.display !== 'none') {
+        showNotification("Poor network connection. Checking internet...", 'error');
+        if (loadingText) {
+            loadingText.innerHTML = '<b style="color:red;">Network Error: Processing...</b>';
+        }
+    }
+}, 15000); 
+
+
+const originalHideLoader = hideLoader;
+hideLoader = function() {
+    clearTimeout(networkTimeout);
+    if (typeof originalHideLoader === 'function') originalHideLoader();
+};
+</script>
+    
+</body>
+</html>
