@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ha" data-lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ha="Game da Mu | Bebeji Plaza App" data-en="About Us | Bebeji Plaza App">Game da Mu | Bebeji Plaza App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        
+       
+:root {
+    --primary-bg: #1A1A2E;
+    --secondary-bg: #2B2B47;
+    --text-primary: #E8E8FF;
+    --accent-green: #00FF99;
+    --accent-blue: #4C72D6;
+    --danger-red: #E74C3C;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --border-color: rgba(76, 114, 214, 0.3);
+    --main-padding: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;    
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);    
+    background-color: var(--primary-bg);      
+    background-image: 
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);        
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;  
+    background-image:        
+        linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),        
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);            
+    background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+    background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;       
+    background-attachment: scroll;        
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+#app-container {
+    width: 95%;
+    max-width: 1280px;
+    padding: var(--main-padding) 0;
+}
+
+.section {
+    padding: 40px 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+h2 {
+    text-align: center;
+    color: var(--accent-green);
+    margin-bottom: 40px;
+    font-size: 2em;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(0, 255, 153, 0.6);
+}
+
+h3 {
+    color: var(--accent-blue);
+    margin-bottom: 10px;
+}
+
+
+.card {
+    
+    padding: 25px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border: 1px solid rgba(76, 114, 214, 0.3);
+    isolation: isolate;
+}
+
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+   background: conic-gradient(
+          transparent, 
+                rgba(255, 0, 170, 0.6) 45%, 
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;
+            animation: rotate-shine 15s linear infinite;
+                        
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid rgba(76, 114, 214, 0.3);
+          
+        }
+
+
+.card > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+.lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: var(--accent-blue);
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+}
+
+.banner-section {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px var(--shadow-color);
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4) grayscale(20%);
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.banner-overlay h1 {
+    font-size: 2em;
+    color: var(--accent-green);
+    margin-bottom: 5px;
+}
+
+
+
+.developer-card {
+    padding: 30px;
+}
+
+.dev-profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.unique-style-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5%; 
+    border: 8px solid var(--accent-blue);
+    box-shadow: 0 0 0 10px rgba(76, 114, 214, 0.3);
+}
+
+.dev-info-box h3 {
+    font-size: 15px;
+    color: var(--accent-green);
+}
+
+.dev-info-box p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.fellowship-tag {
+    color: var(--accent-green);
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.dev-details-body h4 {
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-top: 15px;
+    font-size: 1em;
+}
+
+
+
+.team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.profile-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+
+.round-image {
+    border-radius: 50%;
+    border: 5px solid var(--accent-green);
+}
+
+.member-details h3 {
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.role-rating {
+    color: var(--accent-green);
+    font-weight: bold;
+    margin-top: 10px;
+    border: 1px dashed var(--accent-green);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+.legal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.large-round-image {
+    width: 250px;
+    height: 250px;
+    border-width: 8px;
+    border-color: var(--danger-red); 
+    margin-bottom: 20px;
+}
+
+.legal-details h3 {
+    color: var(--danger-red);
+}
+
+
+
+.features-grid, .leaders-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--accent-green);
+    font-size: 15px;
+}
+
+.feature-list li strong {
+    color: var(--accent-green);
+}
+
+.leader-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.leader-image {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-blue);
+    margin-bottom: 15px;
+}
+
+
+@media (min-width: 768px) {   
+    .dev-profile-header {
+        flex-direction: row;
+        text-align: left;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    
+    .dev-info-box p {
+        justify-content: flex-start;
+    }
+
+   
+    .team-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .member-card {
+        text-align: left;
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+   
+    .member-card:nth-child(even) { 
+        flex-direction: row-reverse;
+        text-align: right;
+    }
+    .member-card:nth-child(even) .member-details p {
+        justify-content: flex-end;
+    }
+    
+    .member-details p {
+        justify-content: flex-start;
+    }
+
+    
+    .legal-card {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 30px;
+    }
+    
+    
+    .features-grid, .leaders-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .features-grid, .leaders-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+p{
+    Font-size: 13px;
+}
+.contributors-section .member-card p {
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.contributors-section .role-rating {
+    margin-bottom: 10px;
+}
+h2 {
+    Font-size: 22px;
+}
+h3 {
+    Font-size: 22px;
+}
+
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        
+        <button id="lang-toggle" data-current-lang="ha" class="lang-toggle card">
+            <i class="fas fa-globe"></i>
+            <span data-ha="Switch to English" data-en="Canja zuwa Hausa">Switch to English</span>
+        </button>
+
+        <header class="banner-section">
+            <div class="banner-content">
+                <img src="https://i.imgur.com/mmiXbDo.png" alt="Bebeji Plaza Banner" class="banner-image">
+                <div class="banner-overlay">
+                    <h1 data-ha="Ƙungiyar Ci Gaban Bebeji Plaza" data-en="Bebeji Plaza Teams Development">
+                        Ƙungiyar Ci Gaban Bebeji Plaza
+                    </h1>
+                    <p data-ha="Shafin Bayani - Fasahar Zamani don Kasuwar Gusau" data-en="About Page - Modern Technology for Gusau Market">
+                        Shafin Bayani - Fasahar Zamani don Kasuwar Gusau
+                    </p>
+                </div>
+            </div>
+        </header>
+
+       <section class="section main-developer-section">
+    <h2 data-ha="Jagoran Ci Gaba (Lead Development)" data-en="Lead Software Development">
+        Jagoran Ci Gaba (Lead Development)
+    </h2>
+    <div class="developer-card card">
+        <div class="dev-profile-header">
+            <img src="https://i.imgur.com/KFlnSBR.jpeg" alt="Hoton Haruna Lawali" class="dev-image unique-style-image">
+            <div class="dev-info-box">
+                <h3><i class="fas fa-code-branch"></i> Haruna Lawali (Software Development)</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Zamfara State, Gusau</p>
+                <p><i class="fas fa-phone-alt"></i> 08166836059 / 07033963960</p>
+                <p><i class="fas fa-envelope"></i> harunalawali5522@gmail.com</p>
+                <p class="fellowship-tag"><i class="fas fa-certificate"></i> 3MTT NITDA Fellow FE/23/25680061</p>
+            </div>
+        </div>
+        <div class="dev-details-body">
+            <h4 data-ha="Ra'ayi, Kwarewa, da Tsarin Gini" data-en="Vision, Expertise, and Development Stack">
+                Ra'ayi, Kwarewa, da Tsarin Gini
+            </h4>
+            
+            <p data-ha="Ni ne Haruna Lawali, kuma a matsayina na ɗaya daga cikin ƴan'uwa daliban Fasahar Zamani na 3MTT, manufarmu a kodayaushe ita ce mu gano matsaloli mu samar da mafita mai dorewa. Na yi amfani da damar da na samu ta ilimin haɓaka manhajoji (Software Development) wajen ƙirƙiro wani muhimmin shafi wanda zai riƙa tallafawa kasuwancin zamani na yanar gizo. Wannan shafi, wanda muka yi wa laƙabi da Bebeji Plaza App, an gina shi ne don ya taimaka wa matasa masu sana'o'i a kasuwar Bebeji Plaza su bunƙasa kasuwancinsu." 
+               
+            data-en="My name is Haruna Lawali. As one of the dedicated 3MTT tech students, our main hustle is always to find a problem and build a lasting solution for our community. I used the knowledge I gained in Software Development to create a powerful platform that supports modern online business. This platform, which we call the Bebeji Plaza App, is specially designed to help the young hustlers and entrepreneurs at Bebeji Plaza market to grow their businesses.">
+            </p>
+
+            <p data-ha="A ɓangaren fasaha, na yi amfani da ingantacciyar tsarin User Interface (UI) wajen tsara dukkan abubuwan gani na manhajar don ya kasance mai sauƙin amfani da kuma kyan gani. Don samun saurin aiki da inganci mai ɗorewa, na yi amfani da HTML da CSS. Kuma na haɗa shi da Vanilla JavaScript don manhajar ta kasance mai saurin amsawa, mai amfani da ɗan data kaɗan, mai laushi da daɗin amfani, tare da tabbatar da saurin aiki da inganci. Mafi muhimmanci, Na haɗa da dabarun Fasahar Ɗan Adam (AI) ( Artificial Intelligence (AI)) don tsara manhajar daidai da buƙatun zamani, yadda za ta riƙa taimaka wa masu saye da masu sayarwa ta hanyar da suke gani da kuma wadda ba sa gani a sarari (wato a baya da gaba na manhajar)." 
+               
+            data-en="Technically, I focused on a top-notch **User Interface (UI)** to make the app easy on the eyes and very simple to use. I built it with **HTML** and **CSS** for super-fast loading and stability. I also integrated **Vanilla JavaScript** to ensure the app is lightweight, saves data consumption, and gives a smooth, quality user experience. Most importantly, we incorporated some smart **AI (Artificial Intelligence)** features to structure the app for today's market, helping both buyers and sellers behind the scenes and in what they see.">
+            </p>
+        </div>
+    </div>
+</section>
+
+       <section class="section support-team-section">
+    <h2 data-ha="Ƙwararrun Masu Bayar da Gudummawa" data-en="Expert Contributors">
+        Ƙwararrun Masu Bayar da Gudummawa
+    </h2>
+    <div class="team-grid">
+        
+        <div class="member-card card">
+            <img src="https://i.imgur.com/lbd9b2d.jpeg" alt="Hoton Surajo Habibu Ibrahim" class="profile-image round-image">
+            <div class="member-details">
+                <h3><i class="fas fa-database"></i> Surajo Habibu Ibrahim (Data Analysis)</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Zamfara State, Gusau</p>
+                <p><i class="fas fa-phone-alt"></i> 070686818760</p>
+                <p><i class="fas fa-envelope"></i> surajohabibuibrahim01@gmail.com</p>
+                <p class="role-rating" data-ha="Aikin Yinsa: Tattara Bayanai (5/5)" data-en="Execution Rating: Data Collection (5/5)">Aikin Yinsa: Tattara Bayanai (5/5)</p>
+                
+                <p data-ha="Na yaba matuƙa da wannan gagarumin tunani na Haruna Lawali na samar da wannan manhajar ta Bebeji Plaza App. A bisa haka, na amince kuma na bada gudunmawa ta a ɓangaren **tattara bayanan kasuwar Bebeji Plaza da kuma tace su**. Aiki na shi ne tabbatar da cewa dukkan bayanan da suka shafi kasuwa sun kasance cikin tsari, sahihanci, kuma sun dace da ka'idojin amfani da manhajar. Wannan zai taimaka wajen tabbatar da cewa manhajar tana aiki da inganci kuma tana samar da sakamakon da ya dace ga masu saye da masu sayarwa." 
+                   
+                data-en="I fully support Haruna Lawali’s vision and agreed to assist in the crucial area of **data collection and analysis for Bebeji Plaza Market**. My job is to ensure that all market-related data is structured, authentic, and meets the app's usage standards. This will help ensure the app functions efficiently and provides accurate results for both buyers and sellers.">
+                </p>
+            </div>
+        </div>
+        
+        <div class="member-card card">
+            <img src="https://i.imgur.com/1mi9NT2.jpeg" alt="Hoton Jagaba Abdullahi" class="profile-image round-image">
+            <div class="member-details">
+                <h3><i class="fas fa-tasks"></i> Abubakar Bello (Quality Assurance & Advisory)</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Zamfara State, Gusau</p>
+                <p><i class="fas fa-phone-alt"></i> 09065465695</p>
+                <p><i class="fas fa-envelope"></i> abubakarbello4656@gmail.com</p>
+                <p class="role-rating" data-ha="Aikin Yinsa: Tabbatar da Inganci (5/5)" data-en="Execution Rating: Quality Assurance (5/5)">Aikin Yinsa: Tabbatar da Inganci (5/5)</p>
+                
+                <p data-ha="A matsayina na mai bada shawara da kuma tabbatar da ingancin aikin (**Quality Assurance**), aikin da ke kaina shi ne tabbatar da tsarin manhajar, musamman yadda masu shagunan Kasuwar Bebeji Plaza za su yi anfani da ita, da kuma yadda masu saye za su riƙa amfana da ita cikin sauƙi. Ni ne na tabbatar da aikin manhajar, na yi gwaje-gwaje (testing) daban-daban don sanin matsaloli da kuma ba da shawarwari kan inda za a inganta. Na mai da hankali sosai kan **sauƙin amfani** da kuma **ingancin tsaro** na bayanan masu amfani da masu ziyartar shafin. Tabbas, na tabbatar cewa Bebeji Plaza App zai kawo sauƙi, sauri, da kuma jin daɗi ga harkokin saye da sayarwa a kasuwar, inda dukkan bangarorin biyu za su ji daɗin amfani da shi." 
+                   
+                data-en="My role encompasses **Quality Assurance** and **Advisory services**. I tested the app rigorously to ensure both Bebeji Plaza merchants and buyers can use it smoothly and reliably. I focused heavily on the app's **ease of use** and the **security** of user data. I confirmed that the Bebeji Plaza App will bring **speed, simplicity, and pleasure** (kuntawa) to buying and selling in the market, ensuring both parties enjoy using it.">
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="section contributors-section">
+    <h2 data-ha="Masu Taimakawa Wajen Tsara Manhajar" data-en="Key Contributors to the App Design">
+        Masu Taimakawa Wajen Tsara Manhajar
+    </h2>
+
+    <div class="team-grid">
+
+        
+        <div class="member-card card">
+            <img src="https://i.imgur.com/9UxeijE.jpeg" alt="Hoton Nafiu Lawali" class="profile-image round-image">
+
+            <div class="member-details">
+                <h3>
+                    <i class="fas fa-bullhorn"></i>
+                    Nafiu Lawali
+                </h3>
+                   <p><i class="fas fa-phone-alt"></i> 07066215238</p>
+                <p><i class="fas fa-envelope"></i> nafiulawaliabubakar@gmail.com</p>
+
+                <p class="role-rating">
+                    CEO – ALBAYAN Media & Digital Creator
+                </p>
+
+             
+
+                <p
+                  data-ha="Ni ne Nafiu Lawali, Shugaban ALBAYAN Media kuma Digital Creator. A kullum ina fuskantar rahotanni da labaran da ke nuna yadda jama’a ke rayuwa cikin fargaba—musamman matsalar kwacen waya a tituna da unguwanni. Wasu har rasa dukiyarsu, wasu kuma rayukansu. Wannan ne ya sa na ba da gudummawa wajen tsara Bebeji Plaza App, domin na yi imani cewa fasaha na da rawar takawa wajen kare jama’a. Na bada hangen nesa da shawara domin wannan manhaja ta zama mafita mai ma’ana, wadda za ta rage hatsari, ta ƙara tsaro, kuma ta kare mutunci da rayukan al’umma."
+                  
+                  data-en="My name is Nafiu Lawali, CEO of ALBAYAN Media and a Digital Creator. Every day, I encounter reports that show how people live in fear due to rising phone theft and insecurity in our communities. Some lose property, others even lose their lives. This reality motivated me to contribute to the design of the Bebeji Plaza App. I strongly believe technology can protect people, so I provided vision and guidance to ensure this app becomes a meaningful solution—one that reduces risk, improves security, and safeguards lives and dignity."
+                ></p>
+            </div>
+        </div>
+
+       
+        <div class="member-card card">
+            <img src="https://i.imgur.com/a2dPcfw.jpeg" alt="Hoton Maryam Aliyu" class="profile-image round-image">
+
+            <div class="member-details">
+                <h3>
+                    <i class="fas fa-user-shield"></i>
+                    Maryam Aliyu
+                </h3>
+                 </p>
+ <p><i class="fas fa-phone-alt"></i> 07040831743</p>
+                <p><i class="fas fa-envelope"></i> maryam643155@gmail.com</p>
+
+
+                <p class="role-rating">
+                    3MTT Fellow – Software Development
+               
+               
+                <p
+                  data-ha="Sunana Maryam Aliyu, 3MTT Fellow a fannin Software Development. A wannan aiki, na mayar da hankali ne kan tsaro da jin daɗin mata. A zahiri, mata su ne suka fi fuskantar barazana idan waya ta ɓace ko aka kwace ta. Saboda haka, na bada gudummawa wajen tsara Bebeji Plaza App ta yadda mace za ta iya saye daga gida cikin aminci. Za ta ga farashi a sarari, ta tattauna da dan kasuwa ta hanyar doka, sannan a kawo mata kaya. Idan ta sayi waya, ana yi mata rajista kuma ana tura mata katin shaida ta Email—wanda ke taimaka mata kare kanta idan aka samu matsala ko satar waya."
+                  
+                  data-en="My name is Maryam Aliyu, a 3MTT Fellow in Software Development. My focus in this project is women’s safety and wellbeing. In reality, women face higher risks when phones are lost or stolen. That is why I contributed to shaping the Bebeji Plaza App to allow women to shop safely from home. Prices are clear, communication with merchants is regulated, and delivery is secure. Every phone purchase is registered, and a digital ID card is sent via email—helping women protect themselves in case of theft or disputes."
+                ></p>
+
+                <ul class="feature-list" data-ha-list="true">
+                    <li>👩‍💻 Sauƙin saye daga gida ba tare da barazana ba</li>
+                    <li>📱 Gani da kwatanta farashi cikin sauƙi</li>
+                    <li>💬 Tattaunawa ta App ko WhatsApp cikin tsarin doka</li>
+                    <li>🔐 Katin shaida don kare kai daga asara ko satar waya</li>
+                </ul>
+
+                <ul class="feature-list" data-en-list="true" style="display:none;">
+                    <li>👩‍💻 Safe and easy shopping from home</li>
+                    <li>📱 Clear product search and transparent pricing</li>
+                    <li>💬 Regulated in-app or WhatsApp communication</li>
+                    <li>🔐 Digital ID card for protection against theft or loss</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section legal-section">
+    <h2 data-ha="Doka da Shari'a (Legal & Compliance)" data-en="Legal and Compliance">
+        Doka da Shari'a (Legal & Compliance)
+    </h2>
+    <div class="legal-card card">
+        <img src="https://i.imgur.com/IkYw64R.jpeg" alt="Hoton Bar. Aisha Lawali" class="profile-image round-image large-round-image">
+        <div class="legal-details">
+            <h3><i class="fas fa-balance-scale"></i> Bar. Aisha Lawali (Legal & Compliance Advisor)</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Zamfara State, Gusau</p>
+            <p class="role-rating" data-ha="Aikin Yinsa: Kare Hakkoki (5/5)" data-en="Execution Rating: Rights Protection (5/5)">Aikin Yinsa: Kare Hakkoki (5/5)</p>
+            
+            <p data-ha="A matsayina na lauya mai bada shawara, aikina shi ne kula da abubuwan da suka shafi **dokokin Fasaha (Technology Law)** da kuma kare hakkin kowa. Na tabbatar da cewa masu gina wannan manhaja sun bi dukkan matakan da suka dace don tsara ta bisa ka’idojin **kare bayanan sirri na kowa (Data Privacy and Protection)**. Wannan ya haɗa da samar da tsari mai kyau na karɓar korafi da kuma magance shi cikin adalci. Zan riƙa kare hakkin masu amfani, masu sayarwa, da masu saye don tabbatar da cewa komai yana gudana bisa doka, kuma ba a shiga hakkin kowa ba, wanda hakan zai tabbatar da inganci, adalci, da kuma aminci a cikin dukkan harkokin kasuwanci na manhajar Bebeji Plaza App." 
+               
+            data-en="As a legal advisor, my role is to oversee matters related to **Technology Law** and the protection of everyone's rights. I ensured that the developers adhered to all necessary steps for design under **Data Privacy and Protection** regulations. This included advising on a fair complaint resolution system. I will defend the rights of users, sellers, and buyers to ensure that everything operates lawfully, and no one's rights are infringed upon, which guarantees quality, fairness, and trust in all Bebeji Plaza App transactions.">
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="section features-section">
+    <h2 data-ha="Cikakken Bayani: Ayyukan (Features) Bebeji Plaza App" data-en="Detailed Overview: Bebeji Plaza App Features">
+        Cikakken Bayani: Ayyukan (Features) Bebeji Plaza App
+    </h2>
+    <div class="features-grid">
+        
+        <div class="feature-card card">
+            <h3 data-ha="Fasahar Kasuwanci ga Masu Shaguna (Sellers)" data-en="E-Commerce Features for Shop Owners (Sellers)">
+                <i class="fas fa-store"></i> Fasahar Kasuwanci ga Masu Shaguna (Sellers)
+            </h3>
+            <ul class="feature-list" data-ha-list="true">
+                <li>**Manufar Manhajar:** Bunƙasa Kasuwanci da Inganta Tsaro. Wannan gidan yanar gizo/manhaja an tsara shi da fasali biyu (Masu Sayarwa da Masu Saye).</li>
+                <li>**Shagon Kansa (Digital Storefront):** Kowane mai kasuwanci a Bebeji Plaza zai mallaki shagonsa a cikin manhajar, inda zai ɗora dukkan kayayyakinsa da farashinsu a sarari.</li>
+                <li>**Gudanar da Kaya:** Suna da ikon goge kayan da aka sayar, ɗora sababbi, da kuma sanya kyaututtuka (gifts) ko rangwame don tallata sabon kaya.</li>
+                <li>**Bayani Mai Jan Hankali:** Za su iya rubuta ɗan gajeren bayani wanda bai wuce kalmomi 150 ba game da amfanin wani kaya da kuma ingancinsa.</li>
+                <li>**Tallace-Tallace Ta Atomatik:** Manhajar tana da fasahar tallata kayayyakin kowa ta atomatik a shafin masu ziyara. Zai haɗa da tallace-tallace ta hanyar shafukan kamar **Facebook Marketplace** don ƙara yawan masu gani.</li>
+                <li>**Raba Shago:** Mai shago zai iya raba hanyar haɗi (link) na shagonsa a shafukan sada zumunta (social media). Kowa zai iya biyo hanyar, ziyarci shagonsa, duba kayan da yake da su, ya zaɓa, ya gani gabaɗayan kuɗin, sannan ya tattauna da shi.</li>
+                <li>**Takardar Sheda (Digital Receipt) & Rajista:** Dukkan kayan da aka saya ta manhajar ko a cikin kasuwar (idan mai shago ya yi rajista) za a yi musu rajista. Za a tura takardar sheda (Receipt) ga imel na mai saye da mai sayarwa, tare da damar buga takardar (print card). Wannan tsari ne na sauƙi, adalci, da kuma gaskiya.</li>
+                <li>**Damar Bincike (Verification):** Kamfanoni da masu bincike daga ko'ina zasu iya duba kowane shago don tabbatar da kayan da yake sayarwa. Wannan zai ba da damar kamfanoni su samar masa da kayayyakin su kai tsaye, wanda zai **haɓaka Kasuwar Bebeji Plaza Gusau**.</li>
+            </ul>
+
+            <ul class="feature-list" data-en-list="true" style="display: none;">
+                <li>**App Goal:** Business Expansion and Security Enhancement. This website/app is structured with two key features (Sellers and Buyers).</li>
+                <li>**Digital Storefront:** Every merchant in Bebeji Plaza will own a shop within the app where they can upload all their products and clear prices.</li>
+                <li>**Inventory Management:** They have the ability to delete sold items, upload new ones, and include **Gifts** or discounts to promote new stock.</li>
+                <li>**Compelling Description:** They can write a short description, not exceeding 150 words, about a product's benefits and quality.</li>
+                <li>**Automatic Marketing:** The app has a feature to automatically promote products on the visitors' page. It integrates promotions through platforms like **Facebook Marketplace** to increase visibility.</li>
+                <li>**Shop Sharing:** A shop owner can share the **link** of their shop on **social media**. Anyone can follow the link, visit the shop, view available items, select them, see the total cost, and then chat with the seller.</li>
+                <li>**Digital Receipt & Registration:** All items purchased via the app or in the market (if the merchant registers the sale) will be registered. A **Receipt** (printable) will be sent to the buyer's and seller's email for simplicity, fairness, and transparency.</li>
+                <li>**Verification Opportunity:** Companies and researchers globally can view any shop to verify the products being sold. This allows companies to supply goods directly to the merchant, which will **boost the Bebeji Plaza Market Gusau**.</li>
+            </ul>
+        </div>
+        
+        <div class="feature-card card">
+            <h3 data-ha="Amfani ga Masu Saye (Buyers) da Abokan Ziyara" data-en="Benefits for Buyers and Visitors">
+                <i class="fas fa-user-check"></i> Amfani ga Masu Saye (Buyers) da Abokan Ziyara
+            </h3>
+            <ul class="feature-list" data-ha-list="true">
+                <li>**Ziyartar Shaguna:** Masu saye za su iya ziyartar kowane shago a Bebeji Plaza, inda za su ga kayayyaki kamar wayoyi, kwamfyuta, da sauran kayan lantarki, tare da farashinsu.</li>
+                <li>**Yin Neman Saye (Ordering):** Za su iya yin odar sayan kaya cikin sauƙi.</li>
+                <li>**Tattaunawa:** Masu saye za su iya tattaunawa da mai kayan ta cikin manhajar ko kuma kai tsaye ta **WhatsApp** don yin ƙarin bayani kan kaya da farashinsa.</li>
+            </ul>
+
+            <ul class="feature-list" data-en-list="true" style="display: none;">
+                <li>**Shop Visiting:** Buyers can visit any shop in Bebeji Plaza, where they will see items like phones, laptops, and other electronics, along with their prices.</li>
+                <li>**Placing Orders (Ordering):** They can place orders for buying items easily.</li>
+                <li>**Communication:** Buyers can communicate with the seller via the app or directly via **WhatsApp** for further details on the product and its price.</li>
+            </ul>
+            
+            </div>
+    </div>
+</section>
+
+        <section class="section leadership-section">
+            <h2 data-ha="Shugabanci & Godiya" data-en="Leadership & Gratitude">
+                Shugabanci & Godiya
+            </h2>
+            <div class="leaders-grid">
+                
+                <div class="leader-card card">
+                    <img src="https://i.imgur.com/2qXwtZr.png" alt="Hoton Mai Daukar Nauyi" class="leader-image large-round-image">
+                    <h3 data-ha="Mai Daukar Nauyin Aikin (Sponsor)" data-en="Project Sponsor">Mai Daukar Nauyin Aikin (Sponsor)</h3>
+                    <p data-ha="Wannan logo na wanda ya dauki nauyin aikin kuma ya ba shi ga Kasuwar Bebeji Plaza kyauta, don bunkasa kasuwanci da kuma samar da saukin wahalar jama'a." data-en="This is the logo of the project sponsor who donated the application to Bebeji Plaza Market free of charge, with the aim of boosting commerce and easing community challenges.">
+                    </p>
+                </div>
+
+                <div class="leader-card card">
+                    <img src="https://i.imgur.com/cWjPiby.png" alt="Hoton Chairman na Bebeji Plaza" class="leader-image">
+                    <h3 data-ha="Chairman, Bebeji Plaza (2025)" data-en="Chairman, Bebeji Plaza (2025)">Chairman, Bebeji Plaza (2025)</h3>
+                    <p data-ha="Shugaban kasuwar Bebeji Plaza na yanzu a lokacin ƙirƙirar wannan sabon app." data-en="The current Head of Bebeji Plaza Market during the creation of this new app.">
+                    </p>
+                </div>
+
+                <div class="leader-card card">
+                    <img src="https://i.imgur.com/lGb8hIq.png" alt="Hoton Mataimakin Chairman na Bebeji Plaza" class="leader-image">
+                    <h3 data-ha="Mataimakin Chairman" data-en="Vice Chairman">Mataimakin Chairman</h3>
+                    <p data-ha="Mataimakin Shugaban Kasuwar Bebeji Plaza wanda ke goyon bayan wannan cigaban fasaha." data-en="The Vice Head of Bebeji Plaza Market who fully supports this technological advancement.">
+                    </p>
+                </div>
+                
+                <div class="leader-card card">
+                    <img src="https://i.imgur.com/ISDT1Iq.png" alt="Hoton Mai Kula da Korafi na Bebeji Plaza" class="leader-image">
+                    <h3 data-ha="Mai Kula da Korafi & Adalci" data-en="Head of Complaints & Fairness">Mai Kula da Korafi & Adalci</h3>
+                    <p data-ha="Wanda ke kula da korafi da kuma tabbatar da inganci, adalci, da kuma cika hakkin mai saya da mai sayarwa a kasuwar." data-en="The individual responsible for managing complaints and ensuring quality, fairness, and the fulfillment of the rights of both buyer and seller in the market.">
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer" style="text-align: center;">
+            <p data-ha="&copy; 2025 Bebeji Plaza App. An Gina shi da Fasaha da Kwarewar Haruna Lawali . Muna Ci gaba da Bunkasa." data-en="&copy; 2025 Bebeji Plaza App. Built with 3MTT Technology and Expertise. Progress is Our Goal.">
+                &copy; 2025 Bebeji Plaza App. An Gina shi da Fasaha da Kwarewar Haruna Lawali. Muna Ci gaba da Bunkasa.
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const langToggleBtn = document.getElementById('lang-toggle');
+    const htmlElement = document.documentElement;
+       
+    let currentLang = 'ha';
+
+   
+    function switchLanguage(newLang) {
+        currentLang = newLang;
+        htmlElement.lang = newLang;
+        htmlElement.setAttribute('data-lang', newLang);
+        langToggleBtn.setAttribute('data-current-lang', newLang);
+        
+        document.querySelectorAll('[data-ha]').forEach(element => {
+            const haText = element.getAttribute('data-ha');
+            const enText = element.getAttribute('data-en');
+            
+            
+            element.textContent = newLang === 'ha' ? haText : enText;
+        });
+
+        
+        const btnSpan = langToggleBtn.querySelector('span');
+      
+        if (newLang === 'ha') {
+            btnSpan.textContent = btnSpan.getAttribute('data-en'); 
+        } else {
+            btnSpan.textContent = btnSpan.getAttribute('data-ha'); 
+        }
+
+       
+        document.querySelectorAll('.feature-list[data-ha-list]').forEach(ul => {
+            ul.style.display = newLang === 'ha' ? 'block' : 'none';
+        });
+
+        document.querySelectorAll('.feature-list[data-en-list]').forEach(ul => {
+            ul.style.display = newLang === 'en' ? 'block' : 'none';
+        });
+    }
+
+  
+    langToggleBtn.addEventListener('click', () => {
+        const newLang = currentLang === 'ha' ? 'en' : 'ha';
+        switchLanguage(newLang);
+    });
+
+    
+    switchLanguage('ha'); 
+});
+        
+    </script>
+</body>
+</html>
