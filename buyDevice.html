@@ -1,0 +1,1519 @@
+
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Buy-Back Pro - Bebeji Plaza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a1128;
+            --accent-green: #00ff99;
+            --accent-blue: #4c72d6;
+            --glass-bg: rgba(22, 33, 62, 0.9);
+            --text-color: #e8e8ff;
+            --danger-red: #e74c3c;
+        }
+
+   :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --card-border-color: rgba(76, 114, 214, 0.3);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),        
+                linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+                linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);            
+            background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+            background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;       
+            background-attachment: fixed;
+        }
+
+     
+        .lang-btn { padding: 8px 25px; border: 2px solid var(--accent-blue); color: white; background: transparent; cursor: pointer; border-radius: 30px; transition: 0.3s; font-weight: bold; }
+        .lang-btn.active { background: var(--accent-blue); box-shadow: 0 0 15px var(--accent-blue); }
+
+        .warning-text { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; font-size: 13px; margin-bottom: 20px; border: 1px solid rgba(76, 114, 214, 0.3); text-align: justify; }
+
+        .input-box { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color:#90ff2b ; font-weight: bold; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #90ff2b; background: #0f1a36; color: white; box-sizing: border-box; outline: none; }
+
+        .face-placeholder { width: 130px; height: 130px; border-radius: 50%; background: #16213e; border: 3px dashed var(--accent-blue); display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 auto 20px; position: relative; overflow: hidden; }
+        .face-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+        #success-screen { display: none; text-align: center; }
+        .btn { padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+        .btn-upload { background: var(--accent-blue); color: white; }
+        .btn-new { background: var(--accent-green); color: black; }
+
+        #camera-overlay { position: fixed; inset: 0; background: #000; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .scan-area { width: 300px; height: 300px; border-radius: 50%; border: 5px solid var(--accent-green); overflow: hidden; }
+
+       
+        #full-view { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10005; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: red; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 25px; cursor: pointer; z-index: 10006; display: flex; align-items: center; justify-content: center; }
+
+        #gallery-overlay { position: fixed; inset: 0; background: var(--primary-bg); z-index: 9999; display: none; padding: 20px; overflow-y: auto; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
+        .album-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; cursor: pointer; }
+                              
+        .receipt-header { text-align: center; border-bottom: 4px solid #0a1128; padding-bottom: 15px; }
+        .receipt-logo { width: 100px; margin-bottom: 5px; }
+        .sig-box { width: 120px; text-align: center; font-size: 12px; }
+        .sig-img { width: 100px; height: 50px; object-fit: contain; margin-bottom: 5px; }
+        
+        #notificationContainer {
+    position: fixed;
+    top: 20px; 
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 380px;
+    pointer-events: none; 
+}
+
+.notification {
+    position: relative;
+    background-color: var(--secondary-bg);
+    color: var(--text-primary);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInRight 0.5s forwards;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(76, 114, 214, 0.3);
+    overflow: hidden;
+}
+
+.notification.success {
+    border-left: 5px solid var(--accent-green);
+    box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3);
+}
+
+.notification.error {
+    border-left: 5px solid var(--danger-red);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.notification.info {
+    border-left: 5px solid var(--accent-blue);
+    box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3);
+}
+
+.notification .icon {
+    font-size: 1.6em;
+    min-width: 25px; 
+}
+
+.notification.success .icon {
+    color: var(--accent-green);
+}
+
+.notification.error .icon {
+    color: var(--danger-red);
+}
+
+.notification.info .icon {
+    color: var(--accent-blue);
+}
+
+.notification .message {
+    flex-grow: 1;
+    text-align: left;
+    line-height: 1.4;
+    font-size: 0.95em;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    color: rgba(232, 232, 255, 0.7);
+    font-size: 1.5em;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+    padding: 0;
+}
+
+.notification .close-btn:hover {
+    color: var(--danger-red);
+    transform: scale(1.1);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+.notification.timed::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.notification.timed .progress-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: currentColor; 
+    animation: shrink-width var(--notification-duration) linear forwards;
+    width: 100%;
+}
+
+   .tv-frame {
+            width: 95%;
+            max-width: 700px;
+            height: 260px;
+            margin: 30px auto;
+            background: #1a1a1a; 
+            border: 12px solid #333;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+     
+        .tv-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+      
+        .stage {
+            position: absolute;
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            animation: tvSlide 28s infinite;
+        }
+
+        
+        .stage-1 { animation-delay: 0s; }
+       
+        .stage-2 { animation-delay: 7s; }
+        
+        .stage-3 { animation-delay: 14s; }
+        
+        .stage-4 { animation-delay: 21s; }
+
+        @keyframes tvSlide {
+            0%, 2% { opacity: 0; transform: scale(1.1); }
+            5%, 23% { opacity: 1; transform: scale(1); }
+            25%, 100% { opacity: 0; transform: scale(0.9); }
+        }
+
+        
+        .tv-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/KLDzIzl.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        
+        .tv-screen h2 {
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #007bff;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .tv-screen p {
+            font-family: Arial, sans-serif;
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .dial-code {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #fdf2f2;
+            border: 2px solid #d9534f;
+            border-radius: 50px;
+            color: #d9534f;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+       
+        .tv-indicator {
+            position: absolute;
+            bottom: 5px;
+            width: 40px;
+            height: 4px;
+            background: #555;
+            border-radius: 10px;
+        }
+        
+        .camera-controls {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    gap: 20px;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.verify-options {
+  display:flex;
+  gap:10px;
+  margin:15px 0;
+}
+
+.verify-options button {
+  flex:1;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:#4c72d6;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#imageViewer {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:20000;
+  flex-direction:column;
+}
+
+#imageViewer img {
+  max-width:90%;
+  max-height:80%;
+  border-radius:12px;
+}
+
+.closeViewer {
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:30px;
+  background:red;
+  border:none;
+  color:white;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+
+.viewer-actions button {
+  margin-top:15px;
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  background:#00ff99;
+  font-weight:bold;
+}
+
+
+.seller-form {
+  background:#2B2B47;
+  padding:22px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.face-section {
+  text-align:center;
+}
+
+.face-placeholder {
+  width:130px;
+  height:130px;
+  margin:0 auto 10px;
+  border-radius:50%;
+  border:3px dashed var(--accent-blue);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.face-placeholder img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.face-placeholder i {
+  font-size:40px;
+  color:var(--accent-blue);
+}
+
+.verify-options {
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.verify-options button {
+  flex:1;
+  background:#1f2a5a;
+  border:none;
+  color:white;
+  padding:10px 5px;
+  border-radius:12px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.verify-options i {
+  display:block;
+  font-size:18px;
+  margin-bottom:3px;
+}
+
+.input-box label {
+  font-size:13px;
+  font-weight:bold;
+  color:#9dff57;
+}
+
+.input-box input {
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:#0f1a36;
+  color:white;
+}
+
+.btn {
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  cursor:pointer;
+  border:none;
+}
+
+.btn-primary {
+  background:var(--accent-green);
+  color:black;
+}
+
+.btn-outline {
+  background:transparent;
+  color:white;
+  border:1px solid #555;
+}
+
+.scan-area.idcard {
+  width: 320px;
+  height: 200px;
+  border-radius: 12px;
+}
+
+
+.card-frame {
+  width: 100%;
+  max-width: 380px;        
+  margin: 0 auto;
+  background: #111;
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.5);
+}
+
+.card-frame img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+}
+
+#success-screen {
+  padding-bottom: 40px;
+}
+
+#success-screen * {
+  box-sizing: border-box;
+}
+
+
+#hidden-receipt {
+  position: absolute;
+  left: -9999px;
+  width: 800px;
+  background: #ffffff;
+}
+
+#hidden-receipt,
+#hidden-receipt * {
+  color: #000 !important;
+}
+
+#hidden-receipt b,
+#hidden-receipt strong,
+#hidden-receipt h1,
+#hidden-receipt h2,
+#hidden-receipt h3 {
+  font-weight: 800 !important;
+}
+
+#hidden-receipt {
+  position: fixed;
+  top: -9999px;
+  left: 0;
+  width: 800px;
+  background: #fff;
+  opacity: 1;
+  pointer-events: none;
+}
+
+#preHoverLoader{
+  position:fixed;
+  inset:0;
+  background: rgba(255, 255, 255, 0.15); 
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.pulse-circle{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#4c72d6;
+  animation:pulse 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse{
+  0%{transform:scale(.8);opacity:.6}
+  50%{transform:scale(1);opacity:1}
+  100%{transform:scale(.8);opacity:.6}
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="preHoverLoader">
+  <div class="pulse-circle"></div>
+</div>
+
+    <div id="processing-screen" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(10,17,40,.95);
+z-index:20000;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:20px;
+">
+  <i class="fa fa-spinner fa-spin" style="font-size:60px;color:#00ff99"></i>
+  <h2 style="color:#fff">Ana ƙirƙirar katin shaida...</h2>
+  <p style="opacity:.6">Don Allah a jira kaɗan</p>
+</div>
+
+
+<div id="card-overlay" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+z-index:30000;
+flex-direction:column;
+align-items:center;
+overflow-y:auto;
+padding:30px 0;
+">  
+  <button onclick="closeCardOverlay()"
+    style="position:absolute;top:20px;right:20px;background:red;color:white;border:none;width:50px;height:50px;border-radius:50%;font-size:24px;">❌</button>
+
+  <div id="card-holder"></div>
+
+  <div style="width:90%;max-width:400px;margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn btn-upload" onclick="downloadCard()">
+      <i class="fa fa-download"></i> SAVE TO GALLERY
+    </button>
+
+    <button class="btn btn-new" onclick="location.reload()">
+      <i class="fa fa-plus"></i> NEW REGISTER
+    </button>
+  </div>
+
+</div>
+
+    <div id="main-ui">
+        <div style="text-align:center; margin-bottom:15px;">
+            <img src="https://i.imgur.com/MNooQYo.png" style="width:70px;">
+            <h1 id="bizNameDisplay" style="color:var(--accent-green); margin:0;">BUSINESS NAME</h1>
+            <p id="user-welcome" style="color:var(--accent-blue); font-weight:bold;"></p>
+        </div>
+
+        <div class="warning-text" id="legal-warning"></div>
+
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+            <button id="btn-ha" class="lang-btn" onclick="setLang('ha')">HAUSA</button>
+            <button id="btn-en" class="lang-btn" onclick="setLang('en')">ENGLISH</button>
+        </div>
+        
+        <div class="tv-frame">
+    <div class="tv-screen">
+        
+        <div class="stage stage-1">
+            <h2>Duba IMEI/Serial Code</h2>
+            <p>Shiga wurin kiran waya sannan ka danna:</p>
+            <div class="dial-code">*#06#</div>
+        </div>
+
+        <div class="stage stage-2" style="height: 100%; width: 100%;">
+            <div class="tv-image"></div>
+        </div>
+
+        <div class="stage stage-3">
+            <h2>Get IMEI/Serial Code</h2>
+            <p>Open your phone dialer and type:</p>
+            <div class="dial-code">*#06#</div>
+        </div>
+
+        <div class="stage stage-4" style="height: 100%; width: 100%;">
+            <div class="tv-image"></div>
+        </div>
+
+    </div>
+    <div class="tv-indicator"></div>
+</div>
+
+
+<div id="imageViewer">
+  <button class="closeViewer" onclick="closeViewer()">❌</button>
+  <img id="viewerImg">
+  <div class="viewer-actions">
+    <button onclick="downloadViewed()">
+      <i class="fa fa-download"></i>
+    </button>
+  </div>
+</div>
+
+
+       <div class="seller-form">
+
+  <div class="face-section">
+    <div class="face-placeholder" onclick="openOption('selfie')">
+      <i class="fas fa-user" id="avatar-icon"></i>
+      <img id="face-captured" />
+    </div>
+
+    <div class="verify-options">
+      <button type="button" onclick="openOption('selfie')">
+        <i class="fa fa-camera"></i>
+        <span>Live Selfie</span>
+      </button>
+
+      <button type="button" onclick="openOption('idcard')">
+        <i class="fa fa-id-card"></i>
+        <span>ID Card</span>
+      </button>
+<button type="button" id="openFingerprintBtn" class="finger-btn">
+   <i class="fa fa-fingerprint"></i> Fingerprint
+</button>
+
+     
+    </div>
+  </div>
+  <div class="input-box">
+    <label>Full Name</label>
+    <input type="text" id="sellerName" placeholder="Cikakken suna">
+  </div>
+
+  <div class="input-box">
+    <label>Email</label>
+    <input type="email" id="sellerEmail" placeholder="example@mail.com">
+  </div>
+
+  <div class="input-box">
+    <label>Phone Number</label>
+    <input type="tel" id="sellerPhone" placeholder="080xxxxxxxx">
+  </div>
+
+  <div class="input-box">
+    <label>Device Model</label>
+    <input type="text" id="devName" placeholder="iPhone 11 / Samsung A12">
+  </div>
+
+  <div class="input-box">
+    <label>Device IMEI / Serial</label>
+    <input type="text" id="devImei" placeholder="*#06#">
+  </div>
+
+  <div class="input-box">
+    <label>Purchase Price (₦)</label>
+    <input type="number" id="buyPrice" placeholder="₦">
+  </div>
+
+ <button id="submitBtn" class="btn btn-primary" onclick="finalizeSale()">
+  <i class="fa fa-file-contract"></i> GENERATE AGREEMENT
+</button>
+
+
+  <button class="btn btn-outline" onclick="openGallery()">
+    <i class="fa fa-history"></i> HISTORY / SEARCH
+  </button>
+</div> 
+     
+    <div id="camera-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; align-items:center; justify-content:center; z-index:10000;">
+    <div class="scan-area" style="width:300px; height:300px; border:2px solid #4c72d6; border-radius:15px; overflow:hidden;">
+        <video id="video" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+    </div>
+    
+    <div style="display:flex; gap:15px; margin-top:20px;">
+        <button class="btn" style="width:60px; height:60px; border-radius:50%; background:#4c72d6; color:white; border:none; cursor:pointer; font-size:20px;" onclick="switchCamera()">🔄</button>
+        
+        <button class="btn-new btn" style="width:150px;" onclick="takePhoto()">CAPTURE PHOTO</button>
+        
+        <button class="btn" style="width:60px; height:60px; border-radius:50%; background:red; color:white; border:none; cursor:pointer; font-size:20px;" onclick="stopCamera()">❌</button>
+    </div>
+</div>    
+
+    <div id="gallery-overlay">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="color:white;">Recent Cards</h2>
+            <button onclick="document.getElementById('gallery-overlay').style.display='none'" style="background:red; color:white; border:none; padding:10px 20px; border-radius:5px;">CLOSE</button>
+        </div>
+        <input type="text" id="imeiSearch" placeholder="Search IMEI..." onkeyup="filterGallery()" style="margin: 20px 0;">
+        <div class="gallery-grid" id="gallery-list"></div>
+    </div>
+
+    <div id="hidden-receipt">
+        <div class="receipt-header">
+            <img src="https://i.imgur.com/MNooQYo.png" class="receipt-logo"
+     crossorigin="anonymous">
+            <h1 style="margin:0; font-size:32px;">BEBEJI PLAZA PHONE'S CENTER</h1>
+            <p style="margin:5px 0; font-weight:bold; font-size:18px;">Sabon Gari Tankin Ruwa Gusau Zamfara state</p>
+            <h2 id="r-biz-name" style="margin:5px 0; color:#4c72d6;">(Business Name)</h2>
+            <div style="display:flex; justify-content:space-around; font-size:16px; margin-top:10px; font-weight:bold;">
+                <span>Shop No: <span id="r-shop"></span></span>
+                <span>Call: <span id="r-call"></span></span>
+                <span>Card ID: #<span id="r-id"></span></span>
+            </div>
+        </div>
+
+        <div style="display:flex; margin-top:30px;">
+            <div style="flex:1; font-size:18px; line-height:2;">
+                <h3 style="text-decoration:underline; margin-top:0;">Seller Information</h3>
+                <div><b>Full Name:</b> <span id="r-name"></span></div>
+                <div><b>Email:</b> <span id="r-email"></span></div>
+                <div><b>Phone Number:</b> <span id="r-phone"></span></div>
+                <div><b>NIN Number:</b> <span id="r-nin"></span></div>
+                <div><b>Date:</b> <span id="r-date"></span></div>
+                <div><b>Device IMEI:</b> <span id="r-imei"></span></div>
+            </div>
+            <div style="width:200px; display:flex; flex-direction:column; align-items:center;">
+                <img id="r-face" style="width:200px; height:200px; border-radius:50%; border:6px solid #0a1128; object-fit:cover;">
+                <p style="font-weight:bold; margin-top:10px;">SELLER PHOTO</p>
+            </div>
+        </div>
+        <div id="r-extra-proof" style="margin-top:15px; text-align:center;">
+ 
+</div>
+
+        <div id="r-legal-box" style="margin-top:30px; padding:20px; background:#f4f4f4; border:1px solid #ccc; font-size:16px; text-align:justify; line-height:1.6;"></div>
+
+
+        <div style="margin-top:50px; display:flex; justify-content:space-between;">
+            <div class="sig-box">
+                <img src="https://i.imgur.com/LRBSj1U.png" class="sig-img" crossorigin="anonymous" >
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Bebeji Chairman Sig</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/ksZQtgb.png" class="sig-img" crossorigin="anonymous">
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Police DPO Sig</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/v9S9tmf.png" class="sig-img" crossorigin="anonymous">
+                <div style="border-top:2px solid black; padding-top:5px;"><b id="r-owner-sig">NGOs, Human Rights sin</b></div>
+            </div>
+            <div class="sig-box">
+                <img src="https://i.imgur.com/DddZCm3.png" class="sig-img" crossorigin="anonymous" >
+                <div style="border-top:2px solid black; padding-top:5px;"><b>Dev: Haruna Lawali</b></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notificationContainer"></div>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div id="biometric-suite" style="display:none; position:fixed; inset:0; background:#000; z-index:999999; font-family:'Segoe UI',system-ui,sans-serif; color:#fff; flex-direction:column; align-items:center; justify-content:space-between; padding:40px 0; overflow:hidden;">
+    
+    <div style="text-align:center; width:90%;">
+        <h1 id="status-header" style="font-size:28px; letter-spacing:4px; margin:0; font-weight:300;">DAMA (RIGHT THUMB)</h1>
+        <div id="progress-container" style="width:100%; height:4px; background:#222; margin-top:15px; border-radius:10px; overflow:hidden;">
+            <div id="progress-bar" style="width:0%; height:100%; background:#fff; transition:0.3s;"></div>
+        </div>
+    </div>
+
+    <div style="position:relative; width:85vw; height:55vh; max-width:450px; border:1px solid #333; border-radius:30px; overflow:hidden; background:#050505; box-shadow:0 0 100px rgba(255,255,255,0.03);">
+        <video id="webcam" autoplay playsinline style="width:100%; height:100%; object-fit:cover; filter:brightness(1.1) contrast(1.1);"></video>
+        
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
+            <div style="width:70%; height:75%; border:1px solid rgba(255,255,255,0.2); border-radius:120px; box-shadow:0 0 0 2000px rgba(0,0,0,0.7);"></div>
+            <i class="fas fa-fingerprint" style="position:absolute; font-size:120px; color:rgba(255,255,255,0.1);"></i>
+        </div>
+
+        <div id="scanner-line" style="position:absolute; width:100%; height:3px; background:linear-gradient(to right, transparent, #fff, transparent); top:0; display:none; z-index:20;"></div>
+    </div>
+
+    <div id="preview-shelf" style="display:flex; gap:30px; width:90%; justify-content:center;">
+        <div style="text-align:center;">
+            <div id="slot-1" style="width:120px; height:150px; background:#111; border:1px solid #222; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                <i class="fas fa-fingerprint" style="color:#222; font-size:40px;"></i>
+            </div>
+            <span style="font-size:12px; color:#555; display:block; margin-top:8px;">ID_01_RIGHT</span>
+        </div>
+        <div style="text-align:center;">
+            <div id="slot-2" style="width:120px; height:150px; background:#111; border:1px solid #222; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                <i class="fas fa-fingerprint" style="color:#222; font-size:40px;"></i>
+            </div>
+            <span style="font-size:12px; color:#555; display:block; margin-top:8px;">ID_02_LEFT</span>
+        </div>
+    </div>
+
+    <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:20px;">
+        <div id="shutter-frame" style="width:90px; height:90px; border-radius:50%; border:3px solid #fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.2s;" onclick="initiateCapture()">
+            <div style="width:70px; height:70px; background:#fff; border-radius:50%;"></div>
+        </div>
+        
+        <button id="push-data" style="display:none; padding:18px 80px; background:#fff; color:#000; font-weight:bold; border:none; border-radius:5px; cursor:pointer; font-size:18px; letter-spacing:2px;">SUBMIT DATA</button>
+        <span onclick="exitScanner()" style="color:#444; cursor:pointer; font-size:14px; letter-spacing:1px;">CANCEL REGISTRATION</span>
+    </div>
+</div>
+
+<canvas id="processing-canvas" width="800" height="1000" style="display:none;"></canvas>
+<audio id="tone" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+
+<script type="module">
+        import { app } from './firebase.js';
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+        
+        const faceImg = document.getElementById('face-captured');
+const avatarIcon = document.getElementById('avatar-icon');
+
+const videoFeed = document.getElementById('webcam');
+const mainSuite = document.getElementById('biometric-suite');
+const scanLaser = document.getElementById('scanner-line');
+const procCanvas = document.getElementById('processing-canvas');
+const procCtx = procCanvas.getContext('2d');
+const stepLabel = document.getElementById('status-header'); 
+
+function applyShopData() {
+  if (!shopData) return;
+ document.getElementById("bizNameDisplay").textContent =
+    shopData.businesName || "BUSINESS NAME";
+  document.getElementById("r-biz-name").textContent =
+    shopData.businesName || "";
+
+  document.getElementById("r-shop").textContent =
+    shopData.bebejiShopNumber || "";
+
+  document.getElementById("r-call").textContent =
+    shopData.phoneNumber || "";
+}
+
+
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        let shopData = null;
+        let capturedImg = null;
+        let currentLang = 'ha';
+        
+          let verificationType = 'selfie';
+
+let capturedFace = null;
+let capturedID = null;
+
+
+window.capturedFingerprint = {
+  left: null,
+  right: null
+};
+
+function showPreHoverLoader(){
+  const el = document.getElementById("preHoverLoader");
+  if (el) el.style.display = "flex";
+}
+
+function hidePreHoverLoader(){
+  const el = document.getElementById("preHoverLoader");
+  if (el){
+    el.style.opacity = "0";
+    setTimeout(()=> el.remove(), 400);
+  }
+}
+
+
+        window.showNotify = (msg) => {
+            const container = document.getElementById('notificationContainer');
+            const div = document.createElement('div');
+            div.style = "background:#16213e; color:white; padding:15px; border-radius:8px; margin-bottom:10px; border-left:5px solid #4c72d6; box-shadow:0 4px 10px rgba(0,0,0,0.3);";
+            div.innerHTML = msg;
+            container.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
+        };
+
+        const translations = {
+            ha: {
+                welcome: (name) => `Barka da zuwa, ${name}`,
+                warning: (name) => `Barka <b>${name}</b>, hadin gwiwa da police, NGOs, Human Rights, Bisa dokokin kasuwanci da kare haikin mai Saye da mai sayarwa, da kare ka da sayan kayan sata, wannan shafin zai taimaka maka ka yi ma duk wanda zaka sayi waya a hanunsa register, hoton fuskarsa, hoton NIN number ko hoton sawun yatsu da number waya Verify. Idan ka sayi device ka cika wannan register, koda wani abu ya taso kai ba wanda ake zargi bane.`,
+                nin: "Lambar NIN (Tabbatarwa)",
+                name: "Cikakken Suna",
+                email: "Email na Mai Siyarwa",
+                phone: "Lambar Waya",
+                model: "Irin Wayar (Model)",
+                imei: "IMEI / Serial Number",
+                price: "Farashin Sayayya (₦)",
+                generate: "SAMAR DA YARJEJENIYA",
+               legal: (date, sName, shopName, dName, price) => `Wannan cinikin da aka yi yau ${date} ${sName} da ${shopName}  na ${dName} akan kudi ₦${price} an Kammala shi bisa cika dokokin kasuwanci na Nigeria, da police, human rights, NGOs, idan an Samu matsala a tuntubi ciyaman da katin sheda ko human rights.`
+            },
+            en: {
+                welcome: (name) => `Welcome, ${name}`,
+                warning: (name) => `Hello <b>${name}</b>, in partnership with Police, NGOs, Human Rights, and under business laws to protect buyers and sellers from stolen goods. This page helps you register anyone you buy a phone from, including their face, NIN image or fingers scanner, and phone number. Once registered, you are legally protected from suspicion.`,
+                nin: "NIN Number (Verify)",
+                name: "Full Name",
+                email: "Seller's Email",
+                phone: "Phone Number",
+                model: "Device Model",
+                imei: "IMEI / Serial Number",
+                price: "Purchase Price (₦)",
+                generate: "GENERATE AGREEMENT",
+                legal: (date, sName, shopName, dName, price) => `This transaction made today ${date} between ${sName} and ${shopName} for the device ${dName} at the sum of ₦${price}, has been completed in accordance with Nigerian commercial laws, the Police, Human Rights, and NGOs. In case of any issues, please contact the Chairman with this identification card or Human Rights.`
+            }
+        };
+
+                                
+       window.setLang = (lang) => {
+  currentLang = lang;
+ document.getElementById("btn-ha").classList.toggle("active", lang === "ha");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+
+  const t = translations[lang];
+  const name = shopData?.fullName || "User";
+  document.getElementById("legal-warning").innerHTML = t.warning(name);
+   document.getElementById("sellerName").placeholder = t.name;
+  document.getElementById("sellerEmail").placeholder = t.email;
+  document.getElementById("sellerPhone").placeholder = t.phone;
+  document.getElementById("devName").placeholder = t.model;
+  document.getElementById("devImei").placeholder = t.imei;
+  document.getElementById("buyPrice").placeholder = t.price;
+
+  pushNotify("info", lang === "ha" ? "An koma Hausa" : "Language switched to English");
+};
+
+        let currentFacingMode = 'user';
+        
+window.startCamera = async () => {
+    document.getElementById('camera-overlay').style.display = 'flex';
+
+    if (window.stream) {
+        window.stream.getTracks().forEach(t => t.stop());
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: currentFacingMode }
+    });
+
+    window.stream = stream;
+    const v = document.getElementById('video');
+    v.srcObject = stream;
+    v.style.transform = currentFacingMode === 'user' ? "scaleX(-1)" : "scaleX(1)";
+};
+
+window.stopCamera = () => {
+    if (window.stream) {
+        window.stream.getTracks().forEach(t => t.stop());
+    }
+    document.getElementById('camera-overlay').style.display = 'none';
+};
+
+
+window.switchCamera = () => {
+    currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+    window.startCamera();
+};
+ 
+
+let camStream = null;
+let currentPhase = 'DAMA';
+
+async function openScannerSuite() {
+    try {
+        camStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "environment", width: { ideal: 1080 } }, 
+            audio: false 
+        });
+        videoFeed.srcObject = camStream;
+        mainSuite.style.display = 'flex';
+    } catch (e) {
+       pushNotify("Kyamara ta ki budewa. Tabbatar ka ba da izini.");
+    }
+}
+
+function exitScanner() {
+    if (camStream) camStream.getTracks().forEach(t => t.stop());
+    mainSuite.style.display = 'none';
+}
+
+window.initiateCapture = function () {
+    scanLaser.style.display = 'block';
+    let anim = scanLaser.animate([{top: '0%'}, {top: '100%'}], {duration: 1500, iterations: 1});
+    
+    anim.onfinish = () => {
+        scanLaser.style.display = 'none';
+        processBiometric();
+    };
+}
+
+
+function processBiometric() {
+    document.getElementById('tone').play();
+
+    procCtx.drawImage(videoFeed, 0, 0, procCanvas.width, procCanvas.height);
+    const imgData = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
+    const d = imgData.data;
+
+    for (let i = 0; i < d.length; i += 4) {
+        const avg = (d[i] + d[i+1] + d[i+2]) / 3;
+        const v = avg > 120 ? 255 : 0;
+        d[i] = d[i+1] = d[i+2] = v;
+    }
+    procCtx.putImageData(imgData, 0, 0);
+
+    const img = procCanvas.toDataURL("image/png");
+
+    if (currentPhase === "DAMA") {
+        capturedFingerprint.right = img;
+        document.getElementById("slot-1").innerHTML =
+          `<img src="${img}" style="width:100%;height:100%;object-fit:cover;filter:invert(1)">`;
+
+        currentPhase = "HAGU";
+        document.getElementById("status-header").innerText = "HAGU (LEFT THUMB)";
+        document.getElementById("progress-bar").style.width = "50%";
+    } 
+    else {
+        capturedFingerprint.left = img;
+        document.getElementById("slot-2").innerHTML =
+          `<img src="${img}" style="width:100%;height:100%;object-fit:cover;filter:invert(1)">`;
+
+        document.getElementById("progress-bar").style.width = "100%";
+        document.getElementById("shutter-frame").style.display = "none";
+        document.getElementById("push-data").style.display = "block";
+        document.getElementById("status-header").innerText = "AN KAMMALA";
+    }
+}
+
+document.getElementById("push-data").onclick = () => {
+
+    if (!capturedFingerprint.left || !capturedFingerprint.right) {
+        pushNotify("Dole sai an dauki yatsu guda biyu");
+        return;
+    }
+
+    exitScanner();
+    pushNotify("success","An kammala daukar fingerprint");
+};
+
+document.getElementById("openFingerprintBtn")
+  .addEventListener("click", () => {
+    openScannerSuite();
+});
+
+
+window.takePhoto = () => {
+  const v = document.getElementById('video');
+  const c = document.createElement('canvas');
+  c.width = v.videoWidth;
+  c.height = v.videoHeight;
+
+  const ctx = c.getContext('2d');
+  if (currentFacingMode === 'user') {
+    ctx.translate(c.width, 0);
+    ctx.scale(-1, 1);
+  }
+  ctx.drawImage(v, 0, 0);
+
+  const img = c.toDataURL('image/jpeg');
+
+  if (verificationType === 'selfie') {
+    capturedFace = img;
+    faceImg.src = img;
+    faceImg.style.display = 'block';
+    avatarIcon.style.display = 'none';
+    pushNotify("success", "Selfie an dauka");
+  }
+
+  if (verificationType === 'idcard') {
+    capturedID = img;
+    pushNotify("success", "ID Card an dauka");
+  }
+
+  stopCamera();
+};     
+     
+     function pushNotify(type, message, duration = 4000) {
+  const container = document.getElementById("notificationContainer");
+  const note = document.createElement("div");
+  note.className = `notification ${type} timed`;
+  note.style.setProperty("--notification-duration", duration + "ms");
+
+  note.innerHTML = `
+    <div class="icon">
+      ${type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️"}
+    </div>
+    <div class="message">${message}</div>
+    <button class="close-btn">×</button>
+    <div class="progress-bar"></div>
+  `;
+
+  note.querySelector(".close-btn").onclick = () => note.remove();
+  container.appendChild(note);
+
+  setTimeout(() => {
+    note.style.animation = "fadeOut .4s forwards";
+    setTimeout(() => note.remove(), 400);
+  }, duration);
+}
+   
+
+window.finalizeSale = async () => {
+
+  if (!capturedFace) {
+    pushNotify("error","Dole sai an dauki selfie");
+    return;
+  }
+
+  if (!capturedID && (!capturedFingerprint.left || !capturedFingerprint.right)) {
+    pushNotify("error","Sai ID Card ko Fingerprint");
+    return;
+  }
+
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Processing...`;
+
+  document.getElementById("processing-screen").style.display = "flex";
+
+  await new Promise(r => setTimeout(r, 300));
+
+  const date = new Date().toLocaleString();
+  const cid = Math.floor(10000 + Math.random() * 90000);
+
+  document.getElementById("r-biz-name").textContent =
+  shopData?.businesName || "";
+
+ document.getElementById("r-shop").textContent = shopData?.bebejiShopNumber || "";
+  document.getElementById("r-call").textContent = shopData?.phoneNumber || "";
+  document.getElementById("r-id").textContent = cid;
+
+  document.getElementById("r-name").textContent = sellerName.value;
+  document.getElementById("r-email").textContent = sellerEmail.value;
+  document.getElementById("r-phone").textContent = sellerPhone.value;
+  document.getElementById("r-date").textContent = date;
+  document.getElementById("r-imei").textContent = devImei.value;
+
+  document.getElementById("r-face").src = capturedFace;
+
+ const extra = document.getElementById("r-extra-proof");
+extra.innerHTML = "";
+
+if (capturedID) {
+  const img = document.createElement("img");
+  img.src = capturedID;  
+ 
+ img.style.cssText = `
+    width:90%;
+    max-width:420px;
+    border-radius:14px;
+    margin:10px auto;
+    height:250px;
+    display:block;
+  `;
+  extra.appendChild(img);
+}
+
+if (capturedFingerprint.left && capturedFingerprint.right) {
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;gap:20px;justify-content:center";
+
+  ["left","right"].forEach(k=>{
+    const img = document.createElement("img");
+    img.src = capturedFingerprint[k];
+    img.style.cssText = "width:160px;border-radius:12px";
+    wrap.appendChild(img);
+  });
+
+  extra.appendChild(wrap);
+}
+  
+  document.getElementById("r-legal-box").innerHTML =
+  translations[currentLang].legal(
+    date,
+    sellerName.value,
+    shopData?.businesName || "",
+    devName.value,
+    buyPrice.value
+  );
+
+
+  const receipt = document.getElementById("hidden-receipt");
+  receipt.style.display = "block";
+  await waitForImages(receipt);
+
+  const canvas = await html2canvas(receipt,{scale:2,backgroundColor:"#fff",useCORS:true});
+  receipt.style.display = "none";
+
+  const img = canvas.toDataURL("image/jpeg",0.95);
+  window.finalCard = img;
+
+  document.getElementById("processing-screen").style.display = "none";
+  document.getElementById("card-overlay").style.display = "flex";
+document.getElementById("card-holder").innerHTML = `
+  <div class="card-frame">
+    <img src="${img}">
+  </div>
+`;
+
+saveToHistory(img);
+filterGallery();
+  sendEmail(img);
+};
+
+ window.closeCardOverlay = () => {
+  document.getElementById("card-overlay").style.display = "none";
+
+  document.querySelectorAll("input").forEach(i => i.value = "");
+
+  capturedFace = null;
+  capturedID = null;
+  capturedFingerprint = { left:null, right:null };
+
+  faceImg.style.display = "none";
+  avatarIcon.style.display = "block";
+ 
+const btn = document.getElementById("submitBtn");
+if (btn) {
+  btn.disabled = false;
+  btn.innerHTML = "SAMAR DA YARJEJENIYA";
+  btn.innerHTML = translations[currentLang].generate;
+
+}
+
+};
+
+
+function waitForImages(container) {
+  const images = container.querySelectorAll("img");
+  return Promise.all(
+    [...images].map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(res => {
+        img.onload = img.onerror = res;
+      });
+    })
+  );
+}
+
+  async function sendEmail(img) {
+  try {
+    const res = await fetch("https://bebejiplaza.pages.dev/api/myCard", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        apiKey: "@haruna66",
+        adminEmail: shopData?.email || "",
+        sellerEmail: sellerEmail.value,
+        cardImage: img,
+        subject: `New Receipt: ${devImei.value}`
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("Email failed");
+    }
+
+    pushNotify("success", "An tura katin zuwa email");
+
+  } catch (e) {
+  pushNotify("error","Email bai tafi ba");
+
+  const holder = document.getElementById("card-holder");
+  if (!holder.querySelector(".retry-mail")) {
+    const btn = document.createElement("button");
+    btn.className = "btn btn-upload retry-mail";
+    btn.innerHTML = "🔁 SAKE TURAWA EMAIL";
+    btn.onclick = () => sendEmail(window.finalCard);
+    holder.appendChild(btn);
+  }
+}
+}
+
+function saveToHistory(img){
+  const hist = JSON.parse(localStorage.getItem("bebeji_cards") || "[]");
+
+  hist.unshift({
+    img,
+    imei: devImei.value,
+    seller: sellerName.value,
+    phone: sellerPhone.value,
+    date: Date.now()
+  });
+
+  localStorage.setItem("bebeji_cards", JSON.stringify(hist));
+}
+
+      
+        window.downloadCard = () => {
+            const a = document.createElement('a');
+            a.download = "Bebeji_Receipt.jpg"; a.href = window.finalCard; a.click();
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if(user) {
+                const s = await get(ref(db, `users/${user.uid}`));
+                if(s.exists()) {
+                    shopData = s.val();
+                    document.getElementById('bizNameDisplay').textContent = shopData.businessName;
+                    window.setLang('ha');
+                }
+            }
+            hidePreHoverLoader();
+        });
+        
+                       
+window.openOption = (type) => {
+  verificationType = type;
+
+  const scan = document.querySelector(".scan-area");
+
+  if (type === "selfie") {
+    scan.classList.remove("idcard");
+    currentFacingMode = "user";
+    startCamera();
+    pushNotify("info","Saita fuskarka cikin da'ira");
+  }
+
+  if (type === "idcard") {
+    scan.classList.add("idcard");
+    currentFacingMode = "environment";
+    startCamera();
+    pushNotify("info","Saita ID Card cikin frame (fadi)");
+  }
+};
+
+
+let fingerStep = "LEFT";
+let fingerprints = {};
+
+function startFingerprintDraw() {
+  const canvas = document.getElementById("fingerCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    progress += 5;
+
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  
+    ctx.fillStyle = "#00ff99";
+    ctx.fillRect(
+      0,
+      canvas.height - (progress / 100) * canvas.height,
+      canvas.width,
+      (progress / 100) * canvas.height
+    );
+
+   
+    if (progress >= 100) {
+      clearInterval(interval);
+
+      try {
+        new Audio("bell.mp3").play().catch(() => {});
+      } catch (e) {}
+
+      
+      const img = canvas.toDataURL("image/png");
+      fingerprints[fingerStep] = img;
+
+     
+      if (fingerStep === "LEFT") {
+        fingerStep = "RIGHT";
+        pushNotify("success", "An dauki yatsan hagu");
+
+       
+        setTimeout(() => {
+          
+        }, 500);
+
+      } else {
+      
+        capturedFingerprint = {
+          left: fingerprints.LEFT,
+          right: fingerprints.RIGHT
+        };
+
+        pushNotify("success", "Fingerprint an kammala");
+
+        document.getElementById("fingerprintOverlay").style.display = "none";
+      }
+    }
+  }, 80);
+}
+
+window.deleteCard = (index)=>{
+  let data = JSON.parse(localStorage.getItem('bebeji_cards')||'[]');
+  data.splice(index,1);
+  localStorage.setItem('bebeji_cards',JSON.stringify(data));
+  pushNotify("success","An goge card din");
+  filterGallery();
+};
+
+window.viewFull = (src)=>{
+  document.getElementById('viewerImg').src = src;
+  document.getElementById('imageViewer').style.display='flex';
+};
+
+window.closeViewer = ()=>{
+  document.getElementById('imageViewer').style.display='none';
+};
+
+window.downloadImage = (src)=>{
+  const a=document.createElement("a");
+  a.href=src;
+  a.download="Bebeji_Card.jpg";
+  a.click();
+};
+
+
+        window.openGallery = () => {
+            document.getElementById('gallery-overlay').style.display = 'block';
+            window.filterGallery();
+        };
+
+       window.filterGallery = () => {
+  const q = document.getElementById('imeiSearch').value;
+  const hist = JSON.parse(localStorage.getItem('bebeji_cards') || '[]');
+  const list = document.getElementById('gallery-list');
+  list.innerHTML = "";
+
+  hist
+    .filter(i => i.imei.includes(q))
+    .forEach((item, index) => {
+
+      const wrap = document.createElement('div');
+      wrap.style.position = "relative";
+
+      const img = document.createElement('img');
+      img.src = item.img;
+      img.style = "width:100%;border-radius:8px;cursor:pointer;";
+      img.onclick = () => viewFull(item.img);
+
+      const del = document.createElement('button');
+      del.innerHTML = "🗑️";
+      del.style = `
+        position:absolute;
+        top:5px;
+        right:5px;
+        background:red;
+        color:white;
+        border:none;
+        border-radius:50%;
+        width:30px;
+        height:30px;
+        cursor:pointer;
+      `;
+      del.onclick = (e) => {
+        e.stopPropagation();
+        deleteCard(index);
+      };
+
+      wrap.appendChild(img);
+      wrap.appendChild(del);
+      list.appendChild(wrap);
+    });
+       };
+window.addEventListener("DOMContentLoaded", () => {
+  filterGallery();
+});
+
+    </script>
+    
+</body>
+</html>
