@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Bebeji Plaza Market: Sayar da Wayoyi, Kayan Wayoyi, da Gyara Daga Zamfara.</title>
+
+<meta name="description" content="Kasuwar Wayoyi da Kayan Komfuta ta Bebeji Plaza. Shiga app din mu kai tsaye don duba shafuka, farashi, hira da masu shago (chat page /WhatsApp), da kuma sayayya cikin sauki daga gida." />
+
+<meta property="og:title" content="Bebeji Plaza Market: Sayen Waya Cikin Sauƙi Daga Gida" />
+<meta property="og:description" content="Kasuwar Wayoyi da Kayan Komfuta ta Bebeji Plaza. Shiga app din mu kai tsaye don duba shafuka, farashi, hira da masu shago (chat page/WhatsApp), da kuma sayayya cikin sauki daga gida." />
+
+<meta property="og:image" content="https://i.imgur.com/zDhBxkR.png" />
+<meta property="og:image:secure_url" content="https://i.imgur.com/zDhBxkR.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="[Saka Cikakken URL na Shafinka Anan]" />
+<meta property="og:image:alt" content="Hoton Kasuwar Bebeji Plaza" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bebeji Plaza Market: Sayen Waya Cikin Sauƙi Daga Gida">
+<meta name="twitter:description" content="Kasuwar Wayoyi da Kayan Komfuta ta Bebeji Plaza. Shiga app din mu kai tsaye don duba shafuka, farashi, hira da masu shago (chat page/WhatsApp), da kuma sayayya cikin sauki daga gida.">
+<meta name="twitter:image" content="https://i.imgur.com/mmiXbDo.png">
+
+
+<link rel="icon" type="image/png" href="https://i.imgur.com/MNooQYo.png" />
+
+<link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="manifest" href="./manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+      
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --fab-bottom: 150px;
+            --fab-right: 3px;
+            --distance: 80px;
+            --diagonalDistance: 56.56px;
+            --item-size: 50px;
+            --glass-bg: rgba(255, 255, 255, 0.15); 
+            --buy-color: #ffc107; 
+              --primary-bg: #1A1A2E;      
+    --secondary-bg: #1B263B;    
+    --text-primary: #e6e6ff;    
+    --book-spine-color: #A0522D; 
+    --book-glow-color: #6A5ACD;
+      --primary-bg: #1A1A2E;      
+            --secondary-bg: #1B263B;    
+            --text-primary: #e6e6ff;                        
+            --style-border: #FFD700;   
+            --style-shadow: #00A8E8;    
+            --accent-green: #00ff99;
+        }
+
+      
+        * {
+    box-sizing: border-box;
+}
+
+body {
+  
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden; 
+  
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--primary-bg);
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+
+  
+    background-image:
+        linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);
+
+    background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+    background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-attachment: scroll;
+}
+               
+       
+        
+       header {
+    background: linear-gradient(135deg, #1A1A2E 0%, #0F0F24 50%, #aaf4ff2f 100%);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);
+    color: var(--accent-blue);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    border-bottom: 3px solid #007bff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    height: 60px; 
+    box-sizing: border-box;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+
+.header-left i.t {
+    font-style: italic;
+    font-size: 12px;
+    margin-left: 10px;
+    white-space: nowrap; 
+    display: block;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.animated-text {
+    
+    font-size: clamp(14px, 4vw, 16px); 
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+    background-size: 400%;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: colorChange 10s infinite;
+    white-space: nowrap;
+    margin: 0;
+}
+
+@keyframes colorChange {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 400% 50%; }
+}
+
+
+        .icon {
+            width: 45px; 
+            height: 45px;
+            object-fit: contain;
+            border-radius: 50%;
+            
+            padding: 3px;
+            box-shadow: 0 0 5px var(--accent-blue);
+            margin-left: 10px;
+        }
+        
+                                                   
+        .chat-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chat-bell .fas {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            text-shadow: 0 0 8px rgba(0, 255, 153, 0.5);
+            animation: bellShake 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes bellShake {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+            100% { transform: rotate(-10deg); }
+        }
+
+        .chat-badge {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: var(--danger-red);
+            color: white;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+            min-width: 20px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+            display: none; 
+        }
+
+      
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+            background-size: 400% 400%;
+            animation: gradientMove 7s ease infinite;
+            z-index: 999999;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pulse {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid #00eaff;
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        @keyframes pulseAnim {
+            0% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.6); opacity: 0.4; }
+        }
+
+        .logo-wrapper {
+            width: 80px;
+            height: auto;
+            border-radius: 10px;
+            animation: floatLogo 3s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        .orbit {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px dashed #00eaff;
+            animation: spin 5s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: #00eaff;
+            letter-spacing: 2px;
+            animation: fadeText 2s infinite;
+        }
+
+        @keyframes fadeText {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+  
+        #notificationContainer {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        
+        .notification {
+            position: relative;
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideInRight 0.5s forwards;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 114, 214, 0.3);
+            overflow: hidden;
+        }
+        
+        .notification.success { border-left: 5px solid var(--accent-green); box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3); }
+        .notification.error { border-left: 5px solid var(--danger-red); box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+        .notification.info { border-left: 5px solid var(--accent-blue); box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3); }
+        .notification .icon { font-size: 1.6em; min-width: 25px; }
+        .notification.success .icon { color: var(--accent-green); }
+        .notification.error .icon { color: var(--danger-red); }
+        .notification.info .icon { color: var(--accent-blue); }
+        .notification .message { flex-grow: 1; text-align: left; line-height: 1.4; font-size: 0.95em; }
+        .notification .close-btn { background: none; border: none; color: rgba(232, 232, 255, 0.7); font-size: 1.5em; cursor: pointer; line-height: 1; transition: color 0.3s ease; padding: 0; }
+        .notification .close-btn:hover { color: var(--danger-red); transform: scale(1.1); }
+        .notification.timed .progress-bar { position: absolute; left: 0; bottom: 0; height: 3px; background-color: currentColor; width: 100%; }
+
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100%); } }
+        @keyframes shrink-width { from { width: 100%; } to { width: 0%; } }
+
+        @media (max-width: 600px) {
+            #notificationContainer { top: 75px; left: 10px; right: 10px; max-width: none; }
+            .ty { display: none; }
+        }
+                    
+
+.fab-menu-container {    
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    z-index: 0;      
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1px;   
+
+    background-image: url('https://i.imgur.com/kNA7sBZ.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.4);  
+    transform: translateY(-16px); 
+}
+
+       .fab-main {
+            width: 57px;
+            height: 57px;
+            border-radius: 50%;
+            background-color: #333; 
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+             box-shadow: 
+                0 20px 0 0 none, 
+                0 8px 150px rgba(40, 0, 0, 0.30);
+            border: 1px solid #a5ff80;  
+        }
+       
+        .fab-main:hover {
+            background-color: #555;
+            transform: rotate(180deg);
+          
+        }
+
+      
+        .fab-menu-container.open .fab-main {
+            background-color: #dc3545; 
+            transform: rotate(45deg); 
+        }
+
+      
+        .fab-menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: row; 
+            gap: 10px;           
+            pointer-events: none; 
+            
+            
+        }
+        
+        .fab-menu-container.open .fab-menu-list {
+            pointer-events: auto;
+        }
+        
+        .fab-menu-list li {
+            opacity: 0;
+            transform: translateX(-50px) scale(0.8); 
+                        transition: opacity 0.3s ease, transform 0.3s ease;
+            transition-delay: calc(var(--i) * 0.08s); 
+        }
+
+        
+        .fab-menu-container.open .fab-menu-list li {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            transition-delay: calc(var(--i) * 0.1s);
+        }
+        
+        .fab-menu-container.closing .fab-menu-list li {
+            opacity: 0;
+            transform: translateX(-50px) scale(0.8);
+            transition-delay: calc((var(--total) - var(--i)) * 0.05s); 
+        }
+     
+        .fab-item {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            width: 57px; 
+            height: 57px; 
+            border-radius: 50%; 
+            background-color: var(--color); 
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            overflow: visible; 
+            position: relative;
+            text-align: center;    
+        box-shadow: 
+                0 20px 0 0 none, 
+                0 8px 150px rgba(40, 0, 0, 0.30);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                border: 1px solid #a5ff80; 
+                }
+
+        .fab-item i {
+            font-size: 1.2rem; 
+            margin-bottom: 5px; 
+            transition: transform 0.2s ease;
+        }
+
+       
+        .fab-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);  
+                   
+        }
+
+        .fab-item:hover i {
+            transform: rotate(360deg); 
+            border-radius: 50%; 
+        }
+        
+        .fab-label {
+            position: static; 
+            font-size: 0.65rem; 
+            font-weight: 500;
+            white-space: nowrap;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4); 
+            line-height: 1;
+        }
+        
+       
+            .rm_container {
+            position: fixed;
+            bottom: var(--fab-bottom); 
+            right: var(--fab-right); 
+            z-index: 1000;
+            top: 70%;            
+                 
+        }
+      
+        .rm_main_btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #007bff; 
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+            transition: all 0.3s ease-in-out;
+            font-size: 1.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1001;
+            border: 1px solid #a5ff80;
+            
+            
+        }
+       
+        .rm_container.open .rm_main_btn {
+            background-color: #dc3545; 
+            transform: rotate(45deg); 
+        }
+       
+       
+        .rm_menu_list {
+            list-style: none;
+            padding: 20px; 
+            margin: 40px;
+            position: absolute;
+            bottom: 50px;
+            right: 0px;
+            pointer-events: none; 
+        }
+
+        .rm_container.open .rm_menu_list {
+            pointer-events: auto;
+        }
+
+        .rm_menu_list li {
+            position: absolute;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform: translate(0, 0) scale(0); 
+        }        
+                
+     
+.rm_container.open li:nth-child(1) {   
+    transform: translate(0, calc(-1 * var(--distance))) scale(1); 
+}
+
+.rm_container.open li:nth-child(2) {    
+    transform: translate(calc(-1 * var(--diagonalDistance)), calc(-1 * var(--diagonalDistance))) scale(1); 
+}
+
+.rm_container.open li:nth-child(3) {   
+    transform: translate(calc(-1 * var(--distance)), 0) scale(1); 
+}
+
+.rm_container.open li:nth-child(4) {   
+    transform: translate(calc(-1 * var(--diagonalDistance)), var(--diagonalDistance)) scale(1); 
+}
+
+.rm_container.open li:nth-child(5) {   
+    transform: translate(0, var(--distance)) scale(1); 
+}
+              
+        .rm_item_link {
+            width: var(--item-size);
+            height: var(--item-size);
+            border-radius: 50%;
+            background-color: var(--color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid #a5ff80;
+        }
+        
+        .rm_item_link:hover {
+            transform: scale(1.15); 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            filter: brightness(1.1); 
+        }
+        
+        
+ 
+@keyframes downloadPulse {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(3px); opacity: 0.8; } 
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+#uploadapp .fas {
+    animation: downloadPulse 1.5s infinite ease-in-out;  
+    text-shadow: 0 0 5px rgba(0, 188, 212, 0.9); 
+}
+               
+
+         * { box-sizing: border-box; }
+ 
+        .shop-status-strip {
+            padding: 15px 1px;
+            Top: 34px;
+            margin-top: 0px; 
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            gap: 25px;
+            scroll-snap-type: x mandatory;
+            align-items: flex-start;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+      
+        .shop-status-strip::-webkit-scrollbar { display: none; }
+
+        
+        .shop-status-container {
+            width: 140px;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .shop-status-container:hover {
+            transform: scale(1.03); 
+        }
+.status-shop-text-bottom {
+            font-size: 10px;
+            margin-top: 8px;
+            font-weight: 500;
+            white-space: normal;
+        }
+        
+         
+        .status-image-wrapper {
+            position: relative;
+            width: 240px; 
+            height: 320px;
+                      
+            border-radius: 5px; 
+            transform: skewX(-10deg); 
+            box-shadow: 6px 6px 0 var(--style-shadow); 
+            border: 3px solid var(--style-border); 
+            
+            overflow: hidden;
+            background-color: var(--secondary-bg);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s ease;
+            
+             border-top: 2px solid transparent;
+border-image: linear-gradient(
+    to right, 
+    #FF5733 0%, 
+    #00A8E8 50%, 
+    #00ff99 100%
+) 1; 
+        }
+
+
+        .status-product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            margin: 0;                       
+            border-radius: 0;
+            transform: none; 
+            box-shadow: none; 
+            border: none;
+        }
+        
+        
+        .status-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+            z-index: 5;      
+            transform: none; 
+            border-radius: 0; 
+        }
+
+        .status-shop-info {
+            position: absolute;
+            bottom: 10px; 
+            left: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .status-shop-img {
+            width: 40px; 
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-green);
+            object-fit: cover;
+            filter: drop-shadow(0 0 5px var(--style-shadow));
+        }
+
+        .status-shop-text {
+            line-height: 1.0;
+            font-size: 10px;
+            font-weight: 500;           
+            transform: skewX(10deg); 
+        }
+
+        
+                          
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+* { 
+    box-sizing: border-box; 
+}
+
+.shop-status-books-strip {
+    width: 100%;
+    overflow: hidden;
+    padding: 5px 0;
+    background: transparent;
+}
+
+.status-header-text {
+    text-align: center;
+    color: var(--book-glow-color);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 15px 0 5px;
+}
+
+
+.status-books-wrapper::-webkit-scrollbar { 
+    display: none; 
+}
+
+
+.status-books-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 10px;
+    padding: 10px 15px;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+}
+
+.status-books-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.status-book-container {
+    flex: 0 0 auto !important; 
+    width: 130px; 
+    scroll-snap-align: start;
+    text-decoration: none;
+    display: block;
+}
+
+.book-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    background: #222;
+    transform: rotateY(-15deg);
+    transform-style: preserve-3d;
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+    border-left: 3px solid rgba(255,255,255,0.2);
+}
+
+.status-book-container:hover .book-image-wrapper {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.book-shop-name {
+    position: absolute;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    padding: 20px 5px 8px;
+    background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-align: center;
+    z-index: 20;
+    text-transform: uppercase;
+    backdrop-filter: blur(1px);
+}
+
+.book-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9);
+}
+
+.book-image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 4px 0 8px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+
+.ad-post-card {
+    width: 94%;  
+    max-width: 500px;
+    height: auto;
+    border-radius: 15px;
+    padding: 12px; 
+    border: 1px solid rgba(76, 114, 214, 0.3);
+    margin: 10px auto; 
+    position: relative;
+    
+    box-shadow: 0 4px 12px var(--shadow-color);
+    overflow: hidden;
+    
+    background: conic-gradient(
+          transparent, 
+                rgba(255, 0, 170, 0.6) 45%, 
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;                                  
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid rgba(76, 114, 214, 0.3);
+        }
+        .post-card:hover {
+             box-shadow: 0 8px 20px rgba(0, 255, 153, 0.2);
+             transform: translateY(-2px);
+        }
+         
+
+.ad-header {
+    font-size: 1.1em;
+    font-weight: 900;
+    color: var(--danger-red);
+    text-align: center;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    text-shadow: 0 0 3px rgba(231, 76, 60, 0.3);
+}
+
+.ad-media-container {
+    position: relative;
+    width: 100%;           
+    height: auto; 
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f8f8f8; 
+    margin: 5px 0 10px;   
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.ad-media {
+    width: 100%;          
+    height: auto; 
+    display: block;
+    object-fit: cover;    
+}
+
+.ad-text-preview {
+    font-size: 0.95em;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin: 5px 0; 
+}
+
+.ad-see-count {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #333;
+    font-size: 0.8em;
+    z-index: 5;
+}
+
+
+   .post-feed {
+   display: grid;
+    gap: 30px;
+    padding: 2px 0;
+    margin-top: 30px;
+}
+      
+    
+.post-card {
+    padding: 0;
+    border-radius: 15px;
+    overflow: hidden;    
+    box-shadow: 0 4px 12px var(--shadow-color);    
+    transition: all 0.3s;
+      border: 1px solid rgba(76, 114, 214, 0.3);   
+    Pending: 10px;   
+    opacity: 0;
+    transform: translateY(20px);    
+    position: relative;
+    z-index: 1;    
+    
+}      
+  
+.post-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent,
+      rgba(255, 0, 170, 0.6) 45%,
+      transparent 50%,
+      transparent 95%
+    );
+    z-index: 0;
+    
+}
+
+    .post-content-wrapper {
+            padding: 20px;
+            position: relative;
+        }
+
+
+.post-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 255, 153, 0.2);
+    transform: translateY(-2px);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; 
+    cursor: pointer;
+}
+
+.post-shop-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-green);
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.post-header:hover .post-shop-img {
+    transform: scale(1.05) rotate(5deg);
+}
+
+.post-shop-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-business-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--text-primary);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.post-time {
+    font-size: 0.8em;
+    color: rgba(232, 232, 255, 0.6);
+}
+
+.post-text {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: rgba(232, 232, 255, 0.9);
+    white-space: pre-wrap;
+}
+
+  .post-media-container {
+            position: relative;
+            width: 100%;
+           aspect-ratio: 13 / 13;            
+            border-radius: 10px;                    
+           
+        }
+
+        .post-media {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            display: block;
+            Border-radius: 8px;
+        }
+
+.post-video {
+    object-fit: contain;
+}
+
+
+.price-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: #040305;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.image-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    z-index: 10;
+}
+
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-group-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.1em;
+    color: rgba(232, 232, 255, 0.8);
+}
+
+.action-item i {
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.action-item i.fa-eye { color: var(--accent-blue); }
+.action-item i.fa-heart { color: var(--danger-red); }
+
+.action-item i:hover {
+    transform: scale(1.1);
+}
+
+.action-item i.liked {
+    animation: likePulse 0.5s ease;
+    color: var(--danger-red);
+}
+
+.buy-button {
+    background-color: var(--buy-color);
+    color: var(--primary-bg);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+}
+
+.buy-button:hover { background-color: #e0ac08; transform: translateY(-1px); }
+
+.buy-options-container { position: relative; }
+
+.buy-options-flyout {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--secondary-bg);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 100;
+    border: 1px solid rgba(76, 114, 214, 0.5);
+}
+
+.buy-options-flyout.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.buy-option-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: opacity 0.2s;
+    line-height: 1;
+}
+
+.buy-option-item:hover { opacity: 0.8; }
+
+.buy-option-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 1.3em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+    margin-bottom: 3px;
+}
+
+.buy-option-circle:hover { transform: scale(1.05); }
+
+.option-chat { background-color: var(--accent-blue); }
+.option-whatsapp { background-color: #25D366; }
+
+#mediaViewerOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.viewer-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.5em;
+    cursor: pointer;
+    z-index: 10001;
+    transition: color 0.2s;
+}
+
+.viewer-close-btn:hover {
+    color: var(--danger-red);
+}
+
+.viewer-content {
+    max-width: 90vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.viewer-details {
+    position: absolute;
+    top: 60px;
+    width: 90vw;
+    max-width: 600px;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+.viewer-price {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: var(--accent-green);
+    font-weight: bold;
+    font-size: 1.2em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+z-index: 10001;
+}
+
+.viewer-text {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    z-index: 100000;
+    background: var(--glass-bg);
+    
+}
+
+.viewer-media-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewer-video-container {
+    padding-top: 56.25%;
+    width: 90vw;
+    max-width: 600px;
+    position: relative;
+}
+
+.viewer-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.loading-more-posts {
+    text-align: center;
+    padding: 20px;
+    color: var(--accent-blue);
+    font-size: 1.2em;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--accent-blue);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+.no-more-posts {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+        @media (max-width: 480px) {
+            .animated-text { font-size: 20px; }
+            .header-right { gap: 10px; }
+            .chat-bell . { font-size: 1.5rem; }
+            
+            .fab-menu-container {
+                top: 60px;
+                height: 70px;
+            }
+            body {
+                padding-top: 70px;
+            }
+            .shop-status-strip {
+                margin-top: 0px;
+            }
+            
+            .shop-status-container {
+                width: 130px;
+               
+            }
+            
+            .status-image-wrapper {
+                width: 136px;
+                height: 200px;
+            }
+            
+            .post-card {
+                padding: 2px;
+                margin: 0 -0px; 
+                border-radius: 8px;                
+                 
+            }
+            .post-media-container {
+                border-radius: 8px;
+            }
+            
+            .buy-button {
+                padding: 8px 17px;
+                font-size: 0.9em;
+            }
+            
+            .buy-options-flyout {
+                bottom: 40px;
+                right: -5px;
+            }
+            
+            .rm_container {
+                bottom: 100px; 
+            }
+        }
+        
+         .t{
+            color: green;
+            font-size: 14px;
+            padding: 4px;
+            
+        }
+        
+       
+.status-image-wrapper, .book-image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.viewer-price2 {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 5px 12px;
+    border-radius: 15px;
+    color: black;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none; 
+}
+
+
+.status-book-container .viewer-price2 {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    top: 5px;
+    right: 5px;
+}
+
+
+.like-action i {
+    color: #65676b;
+    transition: color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.like-action i.liked {
+    color: #007bff !important; 
+    transform: scale(1.2);
+}
+
+
+.like-action:active i {
+    transform: scale(0.9);
+}
+
+.like-count {
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #65676b;
+}
+        
+.status-scroll-wrapper, 
+.status-books-wrapper {
+    display: flex !important;
+    flex-direction: row !important; 
+    flex-wrap: nowrap !important; 
+    overflow-x: auto !important; 
+    overflow-y: hidden !important;
+    width: 100% !important;
+    gap: 15px;
+    padding: 10px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.status-scroll-wrapper::-webkit-scrollbar, 
+.status-books-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-status-container, 
+.status-book-container {
+    flex: 0 0 130px !important;
+    width: 130px !important;
+    display: block !important;
+}
+
+.post-feed {
+    width: 100% !important;
+    display: block !important;
+    clear: both !important; 
+}
+
+.ad-post-card {
+    width: 94% !important;
+    max-width: 500px;
+    margin: 20px auto !important;
+    display: block !important;
+    clear: both;
+}
+
+#chairmanModal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+
+#chairmanModal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+.chairman-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 10, 20, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+
+.chairman-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  background: var(--secondary-bg, #0f172a);
+  border-radius: 20px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.65);
+  padding: 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  animation: chairmanScaleIn .25s ease;
+}
+
+@keyframes chairmanScaleIn {
+  from {
+    transform: scale(.94) translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.chairman-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-green, #22c55e);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.chairman-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-primary, #e5e7eb);
+  scrollbar-width: thin;
+}
+
+.chairman-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chairman-body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.15);
+  border-radius: 10px;
+}
+
+
+.chairman-body img,
+.chairman-body video,
+.chairman-body iframe {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  margin-top: 12px;
+  border-radius: 12px;
+}
+
+
+.chairman-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+
+#chairmanOkBtn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  padding: 11px 36px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 999px;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    opacity .15s ease;
+}
+
+#chairmanOkBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(37,99,235,.45);
+}
+
+#chairmanOkBtn:active {
+  transform: scale(.96);
+  opacity: .9;
+}
+
+
+@media (max-width: 420px) {
+  .chairman-card {
+    max-width: 92vw;
+    padding: 18px 16px 16px;
+  }
+
+  .chairman-header {
+    font-size: 1rem;
+  }
+
+  .chairman-body {
+    font-size: 14px;
+  }
+}
+
+    </style>
+    
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="loader-container">
+            <div class="orbit"></div>
+            <div class="pulse"></div>
+            <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1 class="animated-text">BEBEJI PLAZA</h1>  <i class="t">    Phone Center Gusau </i>
+        </div>
+        <div class="header-right">
+            <a href="chatNotifications.html" id="headerChatBell" class="chat-bell" style="display:none;" title="Chat Notifications">
+                <i class="fas fa-bell"></i>
+                <span id="headerChatBadge" class="chat-badge">0</span>
+            </a>
+            <img class="icon" src="https://i.imgur.com/MNooQYo.png" alt="Logo">
+        </div>
+    </header>
+    
+    <div class="main-content">
+        
+        <div id="fabMenuContainer" class="fab-menu-container">
+            <button id="mainFab" class="fab-main" aria-expanded="false" aria-controls="fab-menu-list">
+                <i class="fas fa-meteor"></i>
+            </button>
+            <ul id="fab-menu-list" class="fab-menu-list">
+                <li style="--i: 1; --color: #4CAF50;">
+                    <a href="about.html" class="fab-item" title="About Us">
+                        <i class="fas fa-users"></i>
+                        <span class="fab-label">About Us</span>
+                    </a>
+                </li>
+                <li style="--i: 2; --color: #2196F3;">
+                    <a href="search.html" class="fab-item" title="Search">
+                        <i class="fas fa-magnifying-glass"></i>
+                        <span class="fab-label">Search</span>
+                    </a>
+                </li>
+                <li style="--i: 3; --color: #FF9800;">
+                    <a href="report.html" class="fab-item" title="Report">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="fab-label">Report</span>
+                    </a>
+                </li>
+                <li id="fabLoginSho" style="--i: 4; --color: #E91E63;">
+                    <a href="login.html" class="fab-item" title="Login">
+                        <i class="fas fa-lock"></i>
+                        <span class="fab-label">Shop</span>
+                    </a>
+                </li>
+                <li id="fabUploadApp" style="--i: 5; --color: #00BCD4;">
+                    <a href="#" class="fab-item" title="App">
+                        <i class="fas fa-cloud-arrow-down"></i>
+                        <span class="fab-label">Instal App</span>
+                    </a>
+                </li>                
+               </div>
+            </ul>                
+        
+        
+      <div id="shopStatusStrip" class="shop-status-strip">
+    <div class="status-scroll-wrapper"></div>
+</div>
+
+<div id="postFeed" class="post-feed">
+    </div>
+
+<div id="shopStatusBooksStrip" class="shop-status-books-strip" style="display:none;">
+    <div class="status-books-wrapper">
+        </div>
+</div>
+
+
+        
+    </div> <div id="rm_main_wrap" class="rm_container">
+        <button id="rm_trigger" class="rm_main_btn" aria-expanded="false" aria-controls="rm_list_id">
+            <i class="fas fa-plus" id="rm_main_icon"></i>
+        </button>
+        <ul id="rm_list_id" class="rm_menu_list">
+            <li style="--color: #ffc107;">
+                <a href="product.html" id="rm_post_product" data-action="post-product" class="rm_item_link" title="Post Product">
+                    <i class="fas fa-camera"></i>
+                </a>
+            </li>
+                             
+                   <li style="--color: #00BCD4;">
+    <a href="device.html" id="rm_register" class="rm_item_link" title="Register Card">
+        <i class="fas fa-id-card"></i>
+    
+                </a>
+            </li>
+            <li style="--color: #28a745;">
+                <a href="shop.html" id="rm_my_shop" class="rm_item_link" title="My Shop/Profile">
+                    <i class="fas fa-store"></i>
+                </a>
+                 <span id="rm_notif_badge" class="chat-badge">0</span>
+            </li>
+            <li style="--color: #6f42c1;">
+                <a href="product.html" id="rm_my_product" data-action="my-product" class="rm_item_link" title="My Product">
+                    <i class="fas fa-box-open"></i>
+                </a>
+            </li>
+            <li style="--color: #dc3545;">
+                <a href="#" id="rm_logout" data-action="logout" class="rm_item_link" title="Log Out">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div id="notificationContainer"></div>
+    
+
+    
+    
+    <div class="notif-body">
+        <div id="notifContentWrapper">
+            </div>
+    </div>
+    <div class="notif-footer">
+        <button id="pushNotifOKBtn" class="notif-action-btn">Dismiss</button>
+    </div>
+</div>
+
+
+<div id="chairmanModal" class="chairman-modal">
+  <div class="chairman-backdrop"></div>
+
+  <div class="chairman-card">
+    <div class="chairman-header" id="chairmanHeader"></div>
+    <div class="chairman-body" id="chairmanBody"></div>
+    <div class="chairman-footer">
+      <button id="chairmanOkBtn">OK, Got it</button>
+    </div>
+  </div>
+</div>
+
+
+  
+    <div id="mediaViewerOverlay">
+        <button id="viewerCloseBtn" class="viewer-close-btn">&times;</button>
+        <div id="viewerDetails" class="viewer-details">
+            <span id="viewerPrice" class="viewer-price"></span>
+            <div id="viewerText" class="viewer-text"></div>
+        </div>
+        <div id="viewerMediaWrapper" class="viewer-media-wrapper">
+            </div>
+    </div>
+    
+ 
+
+ <script type="module" >
+ import { app } from './firebase.js'; 
+import { 
+    getAuth, 
+    onAuthStateChanged, 
+    signOut, 
+    browserSessionPersistence, 
+    browserLocalPersistence,
+    setPersistence 
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+import { 
+    getDatabase, 
+    ref, 
+    get, 
+    query, 
+    limitToFirst, 
+    orderByChild, 
+    onValue, 
+    off, 
+    endBefore, 
+    startAfter, 
+    update,
+    limitToLast, 
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+
+
+const auth = getAuth(app);
+const db = getDatabase(app);
+let currentLoggedInUserUID = null;
+let isUserRegistered = false;
+let isLoadingPosts = false;
+let postContainerIndex = 0; 
+let allShopUIDs = [];
+
+let recentSeenPostsStack = [];
+const RECENT_STACK_LIMIT = 5;
+let seenPostIDs = new Set(); 
+let userNextPostPointer = {}; 
+
+const POSTS_PER_LOAD = 10; 
+let adDisplayCounter = 0; 
+let seenStatusUIDs = new Set();
+let globalPostCounter = 0;
+
+let postsSinceLastAd = 0; 
+
+
+const loaderOverlay = document.getElementById('loaderOverlay');
+const headerChatBell = document.getElementById('headerChatBell');
+const headerChatBadge = document.getElementById('headerChatBadge');
+const rmContainer = document.getElementById('rm_main_wrap');
+const rmTrigger = document.getElementById('rm_trigger');
+const rmNotifBadge = document.getElementById('rm_notif_badge');
+const rmLogoutBtn = document.getElementById('rm_logout');
+const postFeed = document.getElementById('postFeed');
+const shopStatusStrip = document.getElementById('shopStatusStrip');
+const shopStatusBooksStrip = document.getElementById('shopStatusBooksStrip');
+const fabMenuContainer = document.getElementById('fabMenuContainer');
+const mainFab = document.getElementById('mainFab');
+const pushNotificationContainer = document.getElementById('pushNotificationContainer');
+const notifContentWrapper = document.getElementById('notifContentWrapper');
+const pushNotifHeader = document.getElementById('pushNotifHeader');
+const pushNotifOKBtn = document.getElementById('pushNotifOKBtn');
+const viewerCloseBtn = document.getElementById('viewerCloseBtn');
+
+const notificationSound = new Audio('bell.mp3');
+
+const chairmanModal = document.getElementById('chairmanModal');
+const chairmanHeader = document.getElementById('chairmanHeader');
+const chairmanBody = document.getElementById('chairmanBody');
+
+let currentChairmanPostMeta = null;
+
+let isChairmanNotifShowing = false;
+
+
+
+function getCustomerUIDIndex() {
+    let customerUID = localStorage.getItem('bebeji_customer_uid');
+    if (!customerUID) {
+        customerUID = `GUEST_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+        localStorage.setItem('bebeji_customer_uid', customerUID);
+    }
+    return customerUID;
+}
+
+
+window.showNotification = (title, message, type = 'info', duration = 4000) => {
+    const container = document.getElementById('notificationContainer');
+    if (!container) { 
+        return; 
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `notification ${type} timed`;
+    notification.style.setProperty('--notification-duration', `${duration}ms`);
+    
+    const iconClass = type === 'success' ? 'fas fa-check-circle' : 
+                      type === 'error' ? 'fas fa-times-circle' : 'fas fa-info-circle';
+    notification.innerHTML = `
+        <i class="icon ${iconClass}"></i>
+        <div class="message"><strong>${title}</strong><br>${message}</div>
+        <button class="close-btn" onclick="this.closest('.notification').remove()"><i class="fas fa-times"></i></button>
+        <div class="progress-bar" style="background-color: var(--${type === 'success' ? 'accent-green' : type === 'error' ? 'danger-red' : 'accent-blue'});"></div>
+    `;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.5s forwards';
+        setTimeout(() => notification.remove(), 500);
+    }, duration);
+};
+
+async function handleLogout() {
+    try {
+        await signOut(auth);
+       
+        window.location.reload(); 
+    } catch (error) {
+        console.error("Logout Error:", error);
+        
+    }
+}
+
+function updateUIVisibility(isRegistered) {
+    isUserRegistered = isRegistered;   
+    rmContainer.style.display = isRegistered ? 'block' : 'none';
+    if (isRegistered) {
+        rmContainer.classList.add('registered-user');
+    } else {
+        rmContainer.classList.remove('registered-user');
+    }
+ 
+}
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        authStateHandled = false;
+    }
+});
+
+
+async function setupAuthPersistence() {
+    try {
+      
+        await setPersistence(auth, browserLocalPersistence); 
+       
+    } catch(e) {
+        
+    }
+}
+setupAuthPersistence(); 
+
+function checkAndHandleShopLink(uid) {
+    const url = new URL(window.location.href);
+    const pathSegments = url.pathname.split('/').filter(s => s.length > 0);
+    
+    if (pathSegments.length >= 2 && pathSegments[0] === 'shop') {
+        const shopIdentifier = pathSegments[1];
+        const marketId = pathSegments.length >= 3 ? pathSegments[2] : '';
+        
+        window.location.replace(`shop.html?shopuid=${shopIdentifier}&marketid=${marketId}`);
+        return true;
+    }
+    return false;
+}
+ 
+function playNotificationSound(newCount) {
+    if (newCount > 0) {
+        notificationSound.play().catch(e => console.log("", e));
+    }
+}
+
+function updateNotificationUI(count, isRegistered, lastMessageShopName) {    
+    if (headerChatBell) {                
+        headerChatBell.style.display = 'flex'; 
+    }
+    
+    if (headerChatBadge) {
+        headerChatBadge.textContent = count;
+      
+        headerChatBadge.style.display = count > 0 ? 'block' : 'none'; 
+    }
+         
+    if (rmNotifBadge && rmTrigger) {
+        rmNotifBadge.textContent = count;
+        rmNotifBadge.style.display = count > 0 ? 'block' : 'none';
+        
+        if (count > 0) {
+                    rmTrigger.classList.add('has-notification');
+        } else {
+            rmTrigger.classList.remove('has-notification');
+        }
+    }
+
+  
+    if (count > 0) {
+        playNotificationSound(count); 
+        
+        const shopName = isRegistered ? lastMessageShopName : 'a Shop'; 
+        
+        window.showNotification(
+            `New Message From ${shopName}`, 
+            `You have ${count} unread chat message(s).`,
+            'info',
+            6000
+        );
+    }
+}
+
+
+function listenForChatNotifications(userUID) {
+    const notificationsRef = ref(db, `users/${userUID}/chatNotifications`);
+    off(notificationsRef);    
+  
+    onValue(notificationsRef, (snapshot) => { 
+        const notifications = [];
+        snapshot.forEach((childSnapshot) => {
+            notifications.push({ ...childSnapshot.val(), shopUID: childSnapshot.key });
+        });
+
+        const count = notifications.length;
+        
+        let lastMessageShopName = 'BEBEJI Shop'; 
+      
+        updateNotificationUI(count, true, lastMessageShopName);
+    });
+}
+
+
+function getGuestUIDForNotification() {
+    const uid = localStorage.getItem('bebeji_customer_uid'); 
+    return uid && uid.startsWith('GUEST_') ? uid : null; 
+}
+
+function listenForGuestNotifications() {
+    const guestUID = getGuestUIDForNotification();
+    if (!guestUID) return; 
+  
+    const notificationsRef = ref(db, `guestNotifications/${guestUID}`);   
+    off(notificationsRef);
+    onValue(notificationsRef, (snapshot) => {      
+        let totalUnreadChats = 0;       
+        if (snapshot.exists()) {            
+            snapshot.forEach((childSnap) => {
+                 const data = childSnap.val();                                
+                 if (data && data.timestamp) {
+                     totalUnreadChats += 1;
+                 }
+            });
+        }
+        
+        const count = totalUnreadChats > 0 ? 1 : 0;                
+        updateNotificationUI(count, false, 'a Shop');
+    });
+}
+
+
+let authStateHandled = false;
+let chairmanNotifTriggered = false;
+
+onAuthStateChanged(auth, async (user) => {
+
+    
+    if (authStateHandled) return;
+    authStateHandled = true;
+
+    let currentUID = user ? user.uid : getCustomerUIDIndex();
+    currentLoggedInUserUID = user ? user.uid : null;
+    isUserRegistered = !!user;
+
+    updateUIVisibility(isUserRegistered);
+
+    if (user) {
+        listenForChatNotifications(user.uid);
+    } else {
+        listenForGuestNotifications();
+    }
+
+    checkAndHandleShopLink(currentUID);
+
+    if (!isLoadingPosts) {
+
+        allShopUIDs = await getAllShopOwnerUIDs();
+        loadShopStatus(shopStatusStrip);
+        
+        
+
+       let initialLoadSuccess = false;
+try {
+    initialLoadSuccess = await loadProductPosts();
+} catch (e) {
+    console.error("Post load error:", e);
+} finally {
+    if (loaderOverlay) {
+        loaderOverlay.style.display = 'none';
+        loaderOverlay.style.opacity = '0';
+    }
+}
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        authStateHandled = false;
+    }
+});
+
+
+        if (loaderOverlay && (initialLoadSuccess || allShopUIDs.length === 0)) {
+            loaderOverlay.style.opacity = '0';
+
+            setTimeout(() => {
+                loaderOverlay.style.display = 'none';
+                animateVisiblePosts();
+
+                fabMenuContainer.classList.add('open');
+                mainFab.setAttribute('aria-expanded', 'true');
+
+                setTimeout(() => {
+                    fabMenuContainer.classList.remove('open');
+                    mainFab.setAttribute('aria-expanded', 'false');
+                }, 5000);
+
+            }, 500);
+        }
+    }
+
+  
+    if (!chairmanNotifTriggered) {
+        chairmanNotifTriggered = true;
+
+        
+        setTimeout(async () => {
+            try {
+                if (!isUserRegistered) {
+                    await checkAndShowCustomerPostNotification();
+                } else {
+                    await checkAndShowLeaderPostNotification();
+                }
+            } catch (err) {
+                console.error("Chairman notification error:", err);
+            }
+        }, 800);
+    }
+});
+
+
+
+window.addEventListener('pageshow', (event) => {
+    // Idan shafin ya dawo daga back/forward cache
+    if (event.persisted) {
+        console.log('Page restored from bfcache, reinitializing...');
+
+        // Reset critical states
+        authStateHandled = false;
+        isLoadingPosts = false;
+        chairmanNotifTriggered = false;
+
+        // Cire loaders
+        if (loaderOverlay) {
+            loaderOverlay.style.display = 'none';
+            loaderOverlay.style.opacity = '0';
+        }
+
+        // Sake kunna auth flow
+        const auth = getAuth();
+        onAuthStateChanged(auth, () => {});
+    }
+});
+
+
+
+
+async function checkAndShowCustomerPostNotification() {
+    try {
+        const seenPostId = localStorage.getItem('customerPostIdSeen');
+        const postRef = ref(db, 'BebejiCustomerPostNotis');
+
+        const snapshot = await get(query(postRef, limitToLast(1)));
+
+        if (!snapshot.exists()) return;
+
+        let latestPost = null;
+
+        snapshot.forEach(child => {
+            latestPost = {
+                ...child.val(),
+                customerPostId: child.key
+            };
+        });
+
+        if (!latestPost || !latestPost.customerPostId) return;
+
+        if (latestPost.customerPostId === seenPostId) return;
+
+        showChairmanNotification({
+            headerText:
+                "Announcement from the Chairman of Bebeji Plaza Market, for all buyers and business partners.",
+            postData: latestPost,
+            storageKey: "customerPostIdSeen",
+            postId: latestPost.customerPostId
+        });
+
+    } catch (error) {
+        console.error("Customer notification error:", error);
+    }
+}
+
+async function checkAndShowLeaderPostNotification() {
+    try {
+        const seenPostId = localStorage.getItem('leaderPostIdSeen');
+        const postRef = ref(db, 'BebejiLeaderPostNotis');
+
+        const snapshot = await get(query(postRef, limitToLast(1)));
+
+        if (!snapshot.exists()) return;
+
+        let latestPost = null;
+
+        snapshot.forEach(child => {
+            latestPost = {
+                ...child.val(),
+                leaderPostId: child.key
+            };
+        });
+
+        if (!latestPost || !latestPost.leaderPostId) return;
+
+        if (latestPost.leaderPostId === seenPostId) return;
+
+        showChairmanNotification({
+            headerText:
+                "Market Leader's Announcement Message for all Market Members.",
+            postData: latestPost,
+            storageKey: "leaderPostIdSeen",
+            postId: latestPost.leaderPostId
+        });
+
+    } catch (error) {
+        console.error("Leader notification error:", error);
+    }
+}
+
+
+window.showChairmanNotification = function ({
+    headerText,
+    postData,
+    storageKey,
+    postId
+}) {
+    if (!postData || !postId || !storageKey) return;
+
+    const modal = document.getElementById('chairmanModal');
+    const header = document.getElementById('chairmanHeader');
+    const body = document.getElementById('chairmanBody');
+    const okBtn = document.getElementById('chairmanOkBtn');
+
+    if (!modal || !header || !body || !okBtn) {
+        console.error("Chairman modal DOM missing");
+        return;
+    }
+
+   
+    body.innerHTML = '';
+    header.textContent = headerText;
+    if (postData.text) {
+        const p = document.createElement('div');
+        p.className = 'chairman-text';
+        p.innerHTML = postData.text;
+        body.appendChild(p);
+    }
+
+    
+    if (postData.imageLink) {
+        const img = document.createElement('img');
+        img.src = postData.imageLink;
+        img.className = 'chairman-media';
+        body.appendChild(img);
+    }
+
+   
+    if (postData.videoLink) {
+        const video = document.createElement('video');
+        video.src = postData.videoLink;
+        video.controls = true;
+        video.className = 'chairman-media';
+        body.appendChild(video);
+    }
+
+   
+    if (postData.audioLink) {
+        const audio = document.createElement('audio');
+        audio.src = postData.audioLink;
+        audio.controls = true;
+        body.appendChild(audio);
+    }
+
+   
+    modal.classList.add('show');    
+    okBtn.onclick = null;
+    okBtn.onclick = () => {
+        modal.classList.remove('show');
+        localStorage.setItem(storageKey, postId);
+    };
+};
+
+
+async function loadFilteredShopStatus(container) {
+    if (!container) return;      
+    if (allShopUIDs.length === 0) allShopUIDs = await getAllShopOwnerUIDs();      
+    let freshUsers = allShopUIDs.filter(uid => !globalSeenStatusUIDs.has(uid));
+    let pool = freshUsers.length > 5 ? freshUsers : allShopUIDs;   
+    let rands = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);  
+    let localSet = new Set();
+    for (const uid of rands) {
+        if (!localSet.has(uid)) {
+            localSet.add(uid);          
+            await renderShopStatusItem(uid, container);
+        }
+    }
+}
+
+let isStatusStripLoaded = false; 
+async function loadShopStatus(container) {
+    if (!container) return;   
+    container.innerHTML = '';     
+    if (allShopUIDs.length === 0) allShopUIDs = await getAllShopOwnerUIDs();
+    let currentBatchUIDs = new Set(); 
+    let rands = [...allShopUIDs].sort(() => Math.random() - 0.5);   
+    const limit = (container.id === 'shopStatusStrip') ? 10 : 15;
+    let count = 0;
+    for (const uid of rands) {
+        if (count >= limit) break;     
+        if (currentBatchUIDs.has(uid)) continue;                
+        currentBatchUIDs.add(uid);        
+        const success = await renderShopStatusItem(uid, container);
+        if (success) {
+            globalSeenStatusUIDs.add(uid); 
+            count++;
+        }
+    }
+}
+
+
+let globalSeenStatusUIDs = new Set();
+async function renderShopStatusItem(uid, container) {
+    if (container.querySelector(`[data-uid="${uid}"]`)) return false;
+    try {
+        const userSnap = await get(ref(db, `users/${uid}`));
+        if (!userSnap.exists()) return false;
+        const userData = userSnap.val();
+        const bName = userData.businesName || userData.businessName || "Bebeji Shop";
+        const pImg = userData.userImageLink || userData.profileImageLink || 'placeholder.png';
+        
+        const postSnap = await get(query(ref(db, `users/${uid}/Posting`), limitToLast(1)));
+        let postData = null;
+        postSnap.forEach(c => postData = c.val());
+        
+        const imageToShow = postData?.imageLink1 || userData.shopImageLink || pImg;
+        const priceHTML = postData?.price ? `<div class="viewer-price2">₦${postData.price}</div>` : '';
+        
+        let html = "";
+        if (container.id === 'shopStatusStrip') {
+            html = `
+                <a href="product.html?shopuid=${uid}" class="shop-status-container" data-uid="${uid}">
+                    <div class="status-image-wrapper">
+                        ${priceHTML}
+                        <img src="${imageToShow}" class="status-product-img">
+                        <div class="status-shop-info">
+                            <img src="${pImg}" class="status-shop-img">
+                            <div class="status-shop-text">${bName}</div>
+                        </div>
+                    </div>
+                </a>`;
+        } else {
+            html = `
+                <a href="shop.html?shopuid=${uid}" class="status-book-container" data-uid="${uid}">
+                    <div class="book-image-wrapper">
+                        ${priceHTML}
+                        <img src="${imageToShow}" class="book-product-img">
+                        <div class="book-shop-name">${bName}</div>
+                    </div>
+                </a>`;
+        }
+        
+        container.insertAdjacentHTML('beforeend', html);
+        return true;
+    } catch (e) { return false; }
+}
+
+
+async function recordPostView(uid, postId) {
+    if (!uid || !postId) return;
+    const viewKey = `viewed_${uid}_${postId}`;
+    
+    if (sessionStorage.getItem(viewKey)) return; 
+    
+    const postRef = ref(db, `users/${uid}/Posting/${postId}`);
+    try {
+        const snap = await get(postRef);
+        let currentCount = snap.exists() && snap.val().seeCount ? snap.val().seeCount : 0;
+        await update(postRef, { seeCount: currentCount + 1 });
+        
+        sessionStorage.setItem(viewKey, 'true'); 
+       
+        const seeCountEl = document.querySelector(`#post-${postId} .see-count`);
+        if (seeCountEl) seeCountEl.textContent = currentCount + 1;
+    } catch (e) {
+        
+    }
+}
+
+
+async function getAllShopOwnerUIDs() {
+    try {
+        const usersRef = ref(db, 'users'); 
+        const userSnap = await get(usersRef);
+        if (!userSnap.exists()) return [];
+        
+        let ownerUIDs = [];
+        userSnap.forEach(child => {
+            const userData = child.val();           
+            const nameToUse = userData.businesName || userData.businessName;
+          
+            if (nameToUse) { 
+                 ownerUIDs.push(child.key);
+            }
+        });
+        return ownerUIDs;
+    } catch (error) {
+        
+        return [];
+    }
+}
+
+
+async function loadProductPosts() {
+    if (isLoadingPosts) return false;
+    isLoadingPosts = true;
+
+    try {
+        if (allShopUIDs.length === 0) allShopUIDs = await getAllShopOwnerUIDs();
+        
+        let loadedInThisBatch = 0;
+        const TARGET_PER_LOAD = 6; 
+        let shuffledUIDs = [...allShopUIDs].sort(() => Math.random() - 0.5);
+
+        for (const uid of shuffledUIDs) {
+            if (loadedInThisBatch >= TARGET_PER_LOAD) break;
+
+            const postsRef = ref(db, `users/${uid}/Posting`);
+            const lastSeenKey = userNextPostPointer[uid];
+
+            let postQuery;
+            if (lastSeenKey) {
+                postQuery = query(postsRef, orderByChild('postTime'), endBefore(lastSeenKey), limitToLast(1));
+            } else {
+                postQuery = query(postsRef, orderByChild('postTime'), limitToLast(1));
+            }
+
+            const postSnap = await get(postQuery);
+
+            if (postSnap.exists()) {
+                let post = null;
+                postSnap.forEach(child => {
+                    post = { ...child.val(), postId: child.key, shopUID: uid };
+                });
+
+                if (post && !seenPostIDs.has(post.postId)) {
+                    await renderProductPost(post);
+                    seenPostIDs.add(post.postId);
+                    userNextPostPointer[uid] = post.postTime; 
+                    
+                    loadedInThisBatch++;
+                    postsSinceLastAd++;
+
+                   
+                    if (postsSinceLastAd >= 6) {
+                        await insertAdminAndStatus(); 
+                        postsSinceLastAd = 0;
+                    }
+                }
+            }
+        }
+
+      
+        if (loadedInThisBatch === 0 && postsSinceLastAd > 0) {
+            await insertAdminAndStatus();
+            postsSinceLastAd = 0; 
+        }
+
+        return loadedInThisBatch > 0;
+    } catch (error) {
+        
+        return false;
+    } finally {
+        isLoadingPosts = false;
+        if (typeof animateVisiblePosts === 'function') animateVisiblePosts();
+    }
+}
+
+async function insertAdminAndStatus() {
+    const postFeed = document.getElementById('postFeed');
+    if (!postFeed) return;
+  
+    const adLoaded = await checkAndRenderAdsPost();
+  
+    await new Promise(resolve => setTimeout(resolve, 500));
+   
+    const wrapper = document.createElement('div');
+    wrapper.className = 'dynamic-status-wrapper';
+    wrapper.style.cssText = "margin: 25px 0; width: 100%; display: block;";
+
+    const newContainer = document.createElement('div');
+    newContainer.className = 'shop-status-books-strip'; 
+    newContainer.style.cssText = "display: flex; overflow-x: auto; gap: 25px; padding: 0px;  border-radius: 8px;";
+    
+    wrapper.appendChild(newContainer);
+    postFeed.appendChild(wrapper);
+   
+    await loadShopStatus(newContainer);
+}
+
+
+function handleShopClick(shopUID) {
+    const currentUser = typeof currentLoggedInUserUID !== 'undefined' ? currentLoggedInUserUID : null;
+
+    if (currentUser && currentUser === shopUID) {
+        window.location.href = 'shop.html';
+    } 
+    else {
+        window.location.href = `shop.html?shopuid=${shopUID}`;
+    }
+}
+
+window.handleShopClick = handleShopClick;
+
+
+
+async function renderProductPost(post) {
+    const userRef = ref(db, `users/${post.shopUID}`);
+    const userSnap = await get(userRef);
+    const userData = userSnap.val() || {};
+   
+    const bName = userData.businesName || userData.businessName || 'BEBEJI Seller';
+    const shopImage = userData.userImageLink || 'placeholder.png';
+    const phoneNumber = userData.phoneNumber || '';
+    
+    let mediaHTML = '';
+    const isVideo = post.giftVideoLink && post.giftVideoLink.includes('http');
+    
+    if (isVideo) {
+        mediaHTML = `
+            <video id="media-${post.postId}" class="post-media post-video" src="${post.giftVideoLink}" loop muted playsinline data-media-type="video" style="max-width: 100%; height: auto; display: block;"></video>
+        `;
+    } else if (post.imageLink1) {
+        mediaHTML = `
+            <img id="media-${post.postId}" class="post-media post-image" src="${post.imageLink1}" alt="Product Image" loading="lazy" data-media-type="image" data-image2="${post.imageLink2 || ''}" style="max-width: 100%; height: auto; display: block;">
+            <div class="image-indicator">${post.imageLink2 ? '1/2' : '1/1'}</div>
+        `;
+    } else {
+        mediaHTML = `<div style="padding: 50px; text-align: center; background: #f9f9f9;">No Media Available</div>`;
+    }
+    
+    const postTimeText = post.postTime ? new Date(post.postTime).toLocaleDateString() : 'No Time';
+    
+    const html = `
+        <div class="post-card" id="post-${post.postId}" style="width: 100%; max-width: 100vw; overflow: hidden; box-sizing: border-box;">
+            <div class="post-content-wrapper" 
+                 data-post-id="${post.postId}" 
+                 data-shop-uid="${post.shopUID}" 
+                 data-price="${post.price || 'N/A'}"
+                 data-text="${post.text || ''}"
+                 data-phone-number="${phoneNumber}">
+                
+                <div class="post-header" onclick="event.stopPropagation(); window.handleShopClick('${post.shopUID}');">
+                    <img src="${shopImage}" alt="${bName}" class="post-shop-img">
+                    <div class="post-shop-details">
+                        <span class="post-business-name">${bName}</span>
+                        <span class="post-time">${postTimeText}</span>
+                    </div>
+                </div>
+                ${post.text ? `<p class="post-text">${post.text}</p>` : ''}
+                
+                <div class="post-media-container" data-price="${post.price || ''}" style="position: relative; width: 100%; overflow: hidden;">
+                    <span class="price-tag"><i class="fas fa-naira-sign"></i> ${post.price || 'Inquire'}</span>
+                    ${mediaHTML}
+                </div>
+                
+                <div class="post-actions">
+                    <div class="action-group-left">
+                        <div class="action-item">
+                            <i class="fas fa-eye"></i>
+                            <span class="see-count">${post.seeCount || 0}</span>
+                        </div>
+                        <div class="action-item like-action" data-post-id="${post.postId}" data-shop-uid="${post.shopUID}">
+                            <i class="fas fa-thumbs-up ${localStorage.getItem(`liked_${currentLoggedInUserUID}_${post.postId}`) ? 'liked' : ''}"></i>
+                            <span class="like-count">${post.likeCount || 0}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="buy-options-container">
+                        <button class="buy-button" data-post-id="${post.postId}">
+                            <i class="fas fa-shopping-cart"></i> Buy
+                        </button>
+                        <div id="buyOptions-${post.postId}" class="buy-options-flyout">
+                            <a href="#" class="buy-option-item" onclick="handleBuyOptionClick('${post.postId}', 'chat', event)">
+                                <div class="buy-option-circle option-chat">
+                                    <i class="fas fa-comment-dots"></i>
+                                </div>
+                                <span>Chat Now</span>
+                            </a>
+                            <a href="#" class="buy-option-item" onclick="handleBuyOptionClick('${post.postId}', 'whatsapp', event)">
+                                <div class="buy-option-circle option-whatsapp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </div>
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    postFeed.insertAdjacentHTML('beforeend', html);
+    setupPostInteractions(post.postId, post.shopUID, isVideo, post.imageLink2);
+}
+
+
+
+async function checkAndRenderAdsPost() {
+    const adsRef = ref(db, 'AdminPost');
+    try {
+        const adsQuery = query(adsRef, orderByChild('postTime'), limitToLast(20));
+        const adSnap = await get(adsQuery);
+        
+        if (!adSnap.exists()) return false;
+
+        let allAds = [];
+        adSnap.forEach(child => {
+            allAds.push({ ...child.val(), adId: child.key });
+        });
+
+        allAds.reverse();
+        let adToDisplay = allAds.find(ad => !seenPostIDs.has(ad.adId));
+        
+        if (!adToDisplay) {
+            adToDisplay = allAds[0]; 
+        }
+
+        if (adToDisplay) {
+            renderAdsPost(adToDisplay, adToDisplay.adId);
+            seenPostIDs.add(adToDisplay.adId);
+            return true;
+        }
+        return false;
+    } catch (e) { 
+        console.error("Ads Error:", e);
+        return false; 
+    }
+}
+
+
+function renderAdsPost(post, adId) {
+    const isVideo = post.videoLink && post.videoLink.includes('http');
+    const isAudio = post.audioLink && post.audioLink.includes('http');
+    let mediaHTML = '';
+    
+    if (isVideo) {
+        mediaHTML = `
+            <div class="ad-media-container">
+                <video id="ad-media-${adId}" class="ad-media post-video" src="${post.videoLink}" loop muted playsinline data-media-type="video" onclick="viewMediaHandler(this.parentElement)"></video>
+            </div>
+        `;
+    } else if (isAudio) {
+        mediaHTML = `<audio id="ad-media-${adId}" src="${post.audioLink}" controls style="width:100%; margin-top:15px;"></audio>`;
+    } else if (post.imageLink1) {
+        mediaHTML = `
+            <div class="ad-media-container">
+                <img id="ad-media-${adId}" class="ad-media post-image" src="${post.imageLink1}" alt="Ad Image" loading="lazy" data-media-type="image" data-image2="${post.imageLink2 || ''}" onclick="viewMediaHandler(this.parentElement)">
+            </div>
+        `;
+    }
+
+    const textPreview = post.text ? post.text.split('\n')[0] : '';
+    const fullText = post.text || '';
+    
+    const html = `
+        <div class="ad-post-card" id="ad-post-${adId}" data-ad-id="${adId}">
+            <div class="ad-header">⭐⭐⭐</div>
+            <div class="ad-content-wrapper" data-text="${fullText.replace(/"/g, '&quot;')}" data-post-id="${adId}">
+                ${fullText ? `
+                    <p class="ad-text-preview" id="ad-text-preview-${adId}">
+                        ${textPreview}
+                        ${fullText.length > textPreview.length ? `<span class="ad-read-more" style="color:blue; cursor:pointer;" onclick="toggleReadMore('${adId}')"> ...Read More</span>` : ''}
+                    </p>
+                ` : ''}
+                ${mediaHTML}
+                <div class="ad-footer-stats">
+                    <span class="ad-see-count"><i class="fas fa-eye"></i> <span id="count-val-${adId}">${post.seeCount || 0}</span> Views</span>
+                </div>
+            </div>
+        </div>
+    `;    
+  
+const postFeed = document.getElementById('postFeed');
+if (postFeed) {
+    postFeed.insertAdjacentHTML('beforeend', html); 
+}
+
+    const adPostEl = document.getElementById(`ad-post-${adId}`);
+    if (adPostEl) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    recordAdsView(adId);
+                    observer.unobserve(adPostEl);
+                }
+            });
+        }, { threshold: 0.5 }); 
+        observer.observe(adPostEl);
+    }
+}
+
+
+async function recordAdsView(adId) {
+    if (!adId) return;
+    const viewKey = `viewed_ad_${adId}`;
+    if (sessionStorage.getItem(viewKey)) return; 
+
+    const postRef = ref(db, `AdminPost/${adId}`);
+    
+    try {
+        const snap = await get(postRef);
+        if (snap.exists()) {
+            const currentData = snap.val();
+            const newCount = (currentData.seeCount || 0) + 1;
+         
+            await update(postRef, { seeCount: newCount });
+            
+            sessionStorage.setItem(viewKey, 'true'); 
+            
+            const countEl = document.getElementById(`count-val-${adId}`);
+            if (countEl) countEl.innerText = newCount;
+        }
+    } catch (e) {
+        
+    }
+}
+
+
+mainFab.addEventListener('click', () => {
+    const isOpen = fabMenuContainer.classList.toggle('open');
+    if (!isOpen) {
+        fabMenuContainer.classList.add('closing');
+        setTimeout(() => fabMenuContainer.classList.remove('closing'), 300);
+    }
+    mainFab.setAttribute('aria-expanded', isOpen);
+});
+
+rmTrigger.addEventListener('click', () => {
+    const isOpen = rmContainer.classList.toggle('open');
+    rmTrigger.setAttribute('aria-expanded', isOpen);
+    
+    if (isOpen) {
+        rmTrigger.classList.remove('has-notification');
+        if (rmNotifBadge.textContent !== '0') {
+            rmNotifBadge.style.display = 'block'; 
+        }
+    } else {
+        if (rmNotifBadge.textContent !== '0') {
+            rmTrigger.classList.add('has-notification');
+            rmNotifBadge.style.display = 'none'; 
+        }
+    }
+});
+
+
+document.addEventListener('click', (event) => {
+  
+    if (!event.target.closest('.buy-options-container')) {
+        document.querySelectorAll('.buy-options-flyout').forEach(flyout => {
+            flyout.classList.remove('show');
+        });
+    }
+   
+    if (event.target.closest('.buy-button')) {
+        const button = event.target.closest('.buy-button');
+        const postId = button.getAttribute('data-post-id');
+        const flyout = document.getElementById(`buyOptions-${postId}`);
+        
+        document.querySelectorAll('.buy-options-flyout').forEach(f => {
+            if (f.id !== flyout.id) f.classList.remove('show');
+        });
+        
+        flyout.classList.toggle('show');
+    }
+   
+    if (rmContainer.classList.contains('open') && !event.target.closest('.rm_container')) {
+        rmContainer.classList.remove('open');
+        rmTrigger.setAttribute('aria-expanded', 'false');
+    }
+});
+
+
+
+window.handleBuyOptionClick = async (postId, action, event) => {
+
+    event.preventDefault(); 
+    
+    const postWrapper = document.querySelector(`#post-${postId} .post-content-wrapper`);
+    if (!postWrapper) return;
+    
+    const shopUID = postWrapper.dataset.shopUid;
+    const phoneNumber = postWrapper.dataset.phoneNumber;
+    const price = postWrapper.dataset.price;
+    const text = postWrapper.dataset.text || 'Product Details';
+  
+    const mediaEl = document.getElementById(`media-${postId}`);
+    let productLink = '';
+    if (mediaEl) {
+        if (mediaEl.tagName === 'VIDEO' || mediaEl.tagName === 'IMG') {
+            productLink = mediaEl.src;
+        }
+    }
+    
+  
+    
+    let previewURL = '';
+    let message = '';
+    
+    if (productLink) {
+        const encodedImg = encodeURIComponent(productLink);
+        const encodedText = encodeURIComponent(text);
+        const encodedPrice = encodeURIComponent(price);
+        const domain = 'https://bebejiplaza.pages.dev';
+        previewURL = `${domain}/product_preview.html?img=${encodedImg}&text=${encodedText}&price=${encodedPrice}&shop=${shopUID}`;
+        
+        message = encodeURIComponent(`${previewURL}\n\nHello, I am interested in this item: "${text.substring(0, 50)}..." (Price: ${price}).\n`);
+    } else {
+         message = encodeURIComponent(`Hello, I am interested in this item: "${text.substring(0, 50)}..." (Price: ${price}).\n`);
+    }
+           
+    if (action === 'chat') {      
+        const chatPayload = {
+            type: 'post', 
+            postId: postId,
+            productLink: productLink, 
+            text: text,
+            price: price,
+            shopUID: shopUID 
+        };
+               
+        const encodedPayload = encodeURIComponent(JSON.stringify(chatPayload));
+      
+        window.location.href = `chat.html?shopuid=${shopUID}&payload=${encodedPayload}`;
+               
+        return;
+    }
+    
+    if (action === 'whatsapp') { 
+        if (phoneNumber && phoneNumber !== 'N/A') {
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        } else {
+            showNotification('Error Network Try Again Nest time');
+        }
+    }
+    
+    document.getElementById(`buyOptions-${postId}`).classList.remove('show');
+}
+
+
+document.addEventListener('click', async (event) => {
+    const likeAction = event.target.closest('.like-action');
+    if (likeAction) {
+        event.preventDefault();
+
+       
+        const userOrGuestUID = (typeof currentLoggedInUserUID !== 'undefined' && currentLoggedInUserUID) 
+                               || (typeof getCustomerUIDIndex === 'function' ? getCustomerUIDIndex() : 'guest');
+
+        const postId = likeAction.dataset.postId;
+        const shopUID = likeAction.dataset.shopUid;
+        const likeIcon = likeAction.querySelector('i');  
+        const likeCountEl = likeAction.querySelector('.like-count');
+
+        const likeKey = `liked_${userOrGuestUID}_${postId}`;
+        const isAlreadyLiked = localStorage.getItem(likeKey);
+
+        const postRef = ref(db, `users/${shopUID}/Posting/${postId}`);
+
+        try {
+            const snap = await get(postRef);
+            let currentCount = snap.exists() && snap.val().likeCount ? snap.val().likeCount : 0;
+            let newCount;
+
+            if (isAlreadyLiked) {
+               
+                newCount = Math.max(0, currentCount - 1);
+                await update(postRef, { likeCount: newCount });
+
+                localStorage.removeItem(likeKey); 
+                likeIcon.classList.remove('liked');
+                
+            } else {
+               
+                newCount = currentCount + 1;
+                await update(postRef, { likeCount: newCount });
+
+                localStorage.setItem(likeKey, 'true');
+                likeIcon.classList.add('liked'); 
+                
+            }
+          
+            if (likeCountEl) likeCountEl.textContent = newCount;
+
+        } catch (e) {
+            console.error("Like Error:", e);
+        }
+    }
+});
+
+
+function setupVideoPlayer(videoEl) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                videoEl.play().catch(error => console.log("Video Play Error:", error));
+            } else {
+                videoEl.pause();
+            }
+        });
+    }, { threshold: 0.6 }); 
+    
+    observer.observe(videoEl);
+}
+
+function setupPostInteractions(postId, shopUID, isVideo, imageLink2) {
+    const mediaContainer = document.querySelector(`#post-${postId} .post-media-container`);
+    const mediaEl = document.getElementById(`media-${postId}`);
+    if (isVideo) {
+        setupVideoPlayer(mediaEl);
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                recordPostView(shopUID, postId);
+            }
+        });
+    }, { threshold: 0.5 }); 
+    observer.observe(document.getElementById(`post-${postId}`));
+   
+    if (mediaEl && mediaEl.tagName === 'IMG' && imageLink2) {
+        let currentImage = 1;
+        mediaEl.addEventListener('click', (event) => {
+            currentImage = currentImage === 1 ? 2 : 1;
+            mediaEl.src = currentImage === 1 ? mediaEl.src : imageLink2;
+            mediaContainer.querySelector('.image-indicator').textContent = `${currentImage}/2`;
+            event.stopPropagation(); 
+        });
+    }
+
+  
+    if (mediaContainer) {
+        mediaContainer.addEventListener('click', (event) => {
+            if (!event.target.closest('.buy-button')) {
+                viewMediaHandler(mediaContainer);
+            }
+        });
+    }
+}
+
+window.viewMediaHandler = (mediaContainer) => {
+    const overlay = document.getElementById('mediaViewerOverlay');
+    const mediaWrapper = document.getElementById('viewerMediaWrapper');
+    const viewerTextEl = document.getElementById('viewerText');
+    const viewerPriceEl = document.getElementById('viewerPrice');
+    const postWrapper = mediaContainer.closest('.post-content-wrapper') || mediaContainer.closest('.ad-content-wrapper');
+    mediaWrapper.innerHTML = ''; 
+    viewerTextEl.innerHTML = '';
+    viewerPriceEl.textContent = '';
+    
+    const mediaEl = mediaContainer.querySelector('.post-media, .ad-media');
+    if (!mediaEl) return;
+    const mediaType = mediaEl.dataset.mediaType;
+    const isProduct = postWrapper.classList.contains('post-content-wrapper');
+    
+    const text = postWrapper.dataset.text || '';
+    const price = postWrapper.dataset.price || '';
+    if (text) viewerTextEl.textContent = text;
+    if (isProduct && price) viewerPriceEl.innerHTML = `<i class="fas fa-naira-sign"></i> ${price}`;
+    
+    if (mediaType === 'video') {
+        mediaWrapper.innerHTML = `
+            <div class="viewer-video-container">
+                <video src="${mediaEl.src}" controls autoplay class="viewer-video"></video>
+            </div>
+        `;
+    } else if (mediaType === 'image') {
+        mediaWrapper.innerHTML = `<img src="${mediaEl.src}" class="viewer-content" alt="Product Image">`;
+    }
+    
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; 
+}
+
+viewerCloseBtn.addEventListener('click', () => {
+    const overlay = document.getElementById('mediaViewerOverlay');
+    const video = overlay.querySelector('video');
+    if (video) video.pause(); 
+    
+    overlay.style.display = 'none';
+    document.body.style.overflow = 'auto'; 
+});
+
+window.toggleReadMore = (adId) => {
+    const previewEl = document.getElementById(`ad-text-preview-${adId}`);
+    const adWrapper = document.getElementById(`ad-post-${adId}`).querySelector('.ad-content-wrapper');
+    const fullText = adWrapper.dataset.text;
+    
+    previewEl.innerHTML = fullText;
+};
+
+function animateVisiblePosts() {
+    const posts = postFeed.querySelectorAll('.post-card, .ad-post-card');
+    posts.forEach(post => {
+        const rect = post.getBoundingClientRect();
+        const isVisible = (rect.top <= window.innerHeight - 100);
+        if (isVisible) {
+            post.style.opacity = '1';
+            post.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+rmLogoutBtn.addEventListener('click', handleLogout);
+
+window.addEventListener('scroll', () => {
+  
+    const scrollThreshold = 2000; 
+    
+    if (!isLoadingPosts && 
+        (window.innerHeight + window.scrollY) >= document.body.offsetHeight - scrollThreshold) {
+        loadProductPosts();
+    }
+    
+    animateVisiblePosts();
+});
+        document.addEventListener('DOMContentLoaded', async () => {
+  
+});
+
+
+let deferredPrompt; 
+document.addEventListener('DOMContentLoaded', () => {   
+    const installButton = document.getElementById('fabUploadApp');
+  
+    window.addEventListener('beforeinstallprompt', (e) => {        
+        e.preventDefault();       
+        deferredPrompt = e;                
+        if (installButton) {
+            installButton.style.display = 'block';
+        }
+    });
+
+    if (installButton) {
+        installButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (deferredPrompt) {             
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showNotification('BEBEJI PLAZA App is installing...', 'success', 5000);                     
+                        installButton.style.display = 'none';
+                    } else {
+                        showNotification('App installation cancelled.', 'info', 5000);
+                    }
+                  
+                    deferredPrompt = null;
+                });
+            } else {
+                showNotification('Installation prompt not ready. Please try again or check your browser.', 'error', 6000);
+            }
+        });
+    }
+   
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+              
+            })
+            .catch(error => {
+               
+            });
+    }
+});
+
+window.toggleReadMore = (adId) => {
+    const preview = document.getElementById(`ad-text-preview-${adId}`);
+    const fullText = document.querySelector(`#ad-post-${adId} .ad-content-wrapper`).dataset.text;
+    
+    if (preview.innerHTML.includes('...Read More')) {
+        preview.innerHTML = fullText + ` <span class="ad-read-more" style="color:red; cursor:pointer;" onclick="toggleReadMore('${adId}')"> ...Show Less</span>`;
+    } else {
+        const textPreview = fullText.split('\n')[0];
+        preview.innerHTML = textPreview + ` <span class="ad-read-more" style="color:blue; cursor:pointer;" onclick="toggleReadMore('${adId}')"> ...Read More</span>`;
+    }
+};
+
+
+
+
+window.addEventListener("pageshow", (event) => {
+   
+    if (event.persisted) {
+        
+        if (loaderOverlay) {
+            loaderOverlay.style.display = "none";
+            loaderOverlay.style.opacity = "0";
+        }
+
+         fabMenuContainer?.classList.remove('open');
+        mainFab?.setAttribute('aria-expanded', 'false');
+
+        document.body.classList.remove("loading");
+    }
+});
+
+
+
+
+
+let networkTimeout = setTimeout(() => {
+    const loadingText = document.getElementById('loadingTextEl') || document.querySelector('.loading-text');
+    const loaderOverlay = document.getElementById('loaderOverlay');
+
+    if (loaderOverlay && loaderOverlay.style.display !== 'none') {
+        showNotification("Poor network connection. Checking internet...", 'error');
+        if (loadingText) {
+            loadingText.innerHTML = '<b style="color:red;">Network Error: Processing...</b>';
+        }
+    }
+}, 15000); 
+
+    </script>
+    
+</body>
+</html>
