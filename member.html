@@ -654,31 +654,13 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="email">Email Address</label>
-                    <div class="email-input-wrapper">
-                        <div class="input-field-wrapper" style="flex-grow: 1;">
-                            <input type="email" id="email" required placeholder="Enter email (for OTP verification)">
-                            <i class="fas fa-envelope input-icon"></i>
-                            <span id="emailVerificationStatus" style ="font-size:15px;">verify<i class="fas fa-times"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div id="otpSection" class="card otp-verify-section">
-                    <h3 style="color: var(--accent-green); text-align: center; font-size: 1.4rem;">Verify Email (OTP)</h3>
-                    <p style="text-align: center; color: var(--text-primary); margin-bottom: 15px;">Enter the 6-digit code sent to your email.</p>
-                    <div class="otp-input-group">
-                        <input type="number" class="otp-input" maxlength="1" data-index="0">
-                        <input type="number" class="otp-input" maxlength="1" data-index="1">
-                        <input type="number" class="otp-input" maxlength="1" data-index="2">
-                        <input type="number" class="otp-input" maxlength="1" data-index="3">
-                        <input type="number" class="otp-input" maxlength="1" data-index="4">
-                        <input type="number" class="otp-input" maxlength="1" data-index="5">
-                    </div>
-                    <button type="button" id="verifyOtpBtn" class="btn" style="margin-top: 10px; background-color: var(--success-green);">
-                        <i class="fas fa-check"></i> Verify Code
-                    </button>
-                </div>
-                
+    <label for="email">Email Address</label>
+    <div class="input-field-wrapper">
+        <input type="email" id="email" required placeholder="Enter email address">
+        <i class="fas fa-envelope input-icon"></i>
+    </div>
+</div>
+
                 <div class="input-group">
                     <label for="businessName">Business Name</label>
                     <div class="input-field-wrapper">
@@ -787,13 +769,16 @@
     </div>
     
     <script type="module">
-   
-import { app } from './firebase.js'; 
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+/* ===================== IMPORTS ===================== */
+import { app } from './firebase.js';
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-
+/* ===================== CONSTANTS ===================== */
 const API_MEMBER_URL = "https://bebejiplaza.pages.dev/api/member";
-const API_EMAIL_URL = "https://bebejiplaza.pages.dev/api/email";
 const API_KEY = "@haruna66";
 const IMGUR_CLIENT_ID = "5acf7eff9c91660";
 
@@ -803,67 +788,62 @@ const ALLOWED_USERS = [
     "lawaliharuna943@gmail.com"
 ];
 
-const ZAMFARA_LGS = ["Anka", "Bakura", "Birnin Magaji/Kiyaw", "Bukkuyum", "Bungudu", "Gummi", "Gusau", "Kaura Namoda", "Maradun", "Maru", "Shinkafi", "Talata Mafara", "Chafe", "Zurmi"];
+const ZAMFARA_LGS = [
+    "Anka","Bakura","Birnin Magaji/Kiyaw","Bukkuyum","Bungudu",
+    "Gummi","Gusau","Kaura Namoda","Maradun","Maru",
+    "Shinkafi","Talata Mafara","Chafe","Zurmi"
+];
 
+/* ===================== FIREBASE ===================== */
 const auth = getAuth(app);
 
+/* ===================== ELEMENTS ===================== */
 const loaderOverlay = document.getElementById('loaderOverlay');
 const loadingText = document.getElementById('loadingText');
+
 const loginStage = document.getElementById('loginStage');
-const formStage = document.getElementById('formStage');
-const loginForm = document.getElementById('loginForm');
+const formStage  = document.getElementById('formStage');
+const loginForm  = document.getElementById('loginForm');
 const memberForm = document.getElementById('memberForm');
-const localGovernmentSelect = document.getElementById('localGovernment');
+
 const emailInput = document.getElementById('email');
-const otpSection = document.getElementById('otpSection');
-const otpInputs = document.querySelectorAll('.otp-input');
-const emailVerificationStatus = document.getElementById('emailVerificationStatus');
+const localGovernmentSelect = document.getElementById('localGovernment');
 
-const idCardImageInput = document.getElementById('idCardImageInput');
+/* Images */
+const idCardImageInput  = document.getElementById('idCardImageInput');
+const userImageInput    = document.getElementById('userImageInput');
+const shopImageInput    = document.getElementById('shopImageInput');
+
 const idCardImagePreview = document.getElementById('idCardImagePreview');
-const userImageInput = document.getElementById('userImageInput');
-const userImagePreview = document.getElementById('userImagePreview');
-const shopImageInput = document.getElementById('shopImageInput');
-const shopImagePreview = document.getElementById('shopImagePreview');
-const idCardImageLinkEl = document.getElementById('idCardImageLink');
-const userImageLinkEl = document.getElementById('userImageLink');
-const shopImageLinkEl = document.getElementById('shopImageLink');
+const userImagePreview   = document.getElementById('userImagePreview');
+const shopImagePreview   = document.getElementById('shopImagePreview');
 
+const idCardImageLinkEl = document.getElementById('idCardImageLink');
+const userImageLinkEl   = document.getElementById('userImageLink');
+const shopImageLinkEl   = document.getElementById('shopImageLink');
+
+/* Camera */
 const cameraViewContainer = document.getElementById('cameraViewContainer');
-const videoElement = document.getElementById('videoElement');
+const videoElement  = document.getElementById('videoElement');
 const canvasElement = document.getElementById('canvasElement');
 const captureButton = document.getElementById('captureButton');
-const switchCameraButton = document.getElementById('switchCameraButton');
-const cancelButton = document.getElementById('cancelButton');
+const cancelButton  = document.getElementById('cancelButton');
 
+let stream = null;
 let currentImageTarget = '';
 let currentCamera = 'environment';
-let isEmailVerified = false;
-let correctOtp = '';
-let stream = null;
 
-function showNotification(message, type = 'info', duration = 5000) {
+/* ===================== HELPERS ===================== */
+function showNotification(message, type='info', duration=5000) {
     const container = document.getElementById('notificationContainer');
-    const notification = document.createElement('div');
-    notification.classList.add('notification', type);
-    let iconClass = (type === 'success') ? 'fa-check-circle' : (type === 'error') ? 'fa-times-circle' : 'fa-info-circle';
-    notification.innerHTML = `
-        <i class="fas ${iconClass} icon"></i>
-        <span class="message">${message}</span>
-        <button class="close-btn">&times;</button>
-    `;
-    container.appendChild(notification);
-    const closeNotification = () => {
-        notification.style.animation = 'fadeOut 0.5s forwards';
-        setTimeout(() => notification.remove(), 500);
-    };
-    notification.querySelector('.close-btn').addEventListener('click', closeNotification);
-    if (duration > 0) {
-        setTimeout(closeNotification, duration);
-    }
+    const div = document.createElement('div');
+    div.className = `notification ${type}`;
+    div.innerHTML = `<span>${message}</span>`;
+    container.appendChild(div);
+    setTimeout(() => div.remove(), duration);
 }
 
-function toggleLoader(show, text = "Processing...") {
+function toggleLoader(show, text="Processing...") {
     loaderOverlay.classList.toggle('show', show);
     loadingText.textContent = text;
 }
@@ -877,187 +857,78 @@ function fileToBase64(file) {
     });
 }
 
+/* ===================== IMGUR ===================== */
 async function uploadToImgur(base64) {
-    const formData = new URLSearchParams({ image: base64, type: "base64" });
+    const formData = new URLSearchParams();
+    formData.append("image", base64);
+    formData.append("type", "base64");
+
     const res = await fetch("https://api.imgur.com/3/image", {
         method: "POST",
         headers: { Authorization: `Client-ID ${IMGUR_CLIENT_ID}` },
         body: formData
     });
-    if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.data.error || 'Imgur upload failed.');
-    }
+
     const data = await res.json();
-    return data.data.link; 
+    if (!res.ok || !data.success) {
+        throw new Error(data?.data?.error || "Imgur upload failed");
+    }
+    return data.data.link;
 }
 
+/* ===================== LOGIN ===================== */
 async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    toggleLoader(true, 'Logging in with verification...');
+    toggleLoader(true, "Logging in...");
 
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const userEmail = userCredential.user.email;
+        const cred = await signInWithEmailAndPassword(auth, email, password);
 
-        if (!ALLOWED_USERS.includes(userEmail)) {
+        if (!ALLOWED_USERS.includes(cred.user.email)) {
             await signOut(auth);
-            throw new Error('Access denied. This email is not approved for registration.');
+            throw new Error("Access denied");
         }
-               
-        await signOut(auth);                
-        await signInWithEmailAndPassword(auth, email, password); 
 
-        showNotification(`Welcome, ${userEmail}! You are now logged in and can proceed.`, 'success', 3000);
+        showNotification("Login successful", "success");
         loginStage.classList.remove('active');
         formStage.classList.add('active');
 
-    } catch (error) {
-        let errorMessage = 'Login failed. Check your email, password, and access rights.';
-        if (error.code) {
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                errorMessage = 'Invalid email or password.';
-            } else if (error.code === 'auth/network-request-failed') {
-                errorMessage = 'Network error. Check your connection.';
-            } else if (error.message.includes('Access denied')) {
-                errorMessage = 'Access denied. This email is not authorized for registration.';
-            } else {
-                errorMessage = `An error occurred: ${error.code}`;
-            }
-        }
-        showNotification(errorMessage, 'error', 8000);
+    } catch (err) {
+        showNotification(err.message || "Login failed", "error", 7000);
     } finally {
         toggleLoader(false);
     }
 }
 
-
-
-async function sendOtp(email) {
-   
-    emailVerificationStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    otpSection.style.display = 'none'; 
-    otpSection.classList.remove('otp-verify-section');
-    otpInputs.forEach(input => input.value = ''); 
-    
-    try {
-        const response = await fetch(API_EMAIL_URL, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json', 
-                'x-api-key': API_KEY 
-            },
-            body: JSON.stringify({ email: email })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Failed to send OTP.');
-        }
-
-      
-        showNotification(`Verification code sent to ${email}. Please check your inbox.`, 'info', 10000);
-        emailVerificationStatus.innerHTML = '<i class="fas fa-paper-plane" style="color: #007bff;"></i>';
-        
-       
-        otpSection.style.display = 'block'; 
-        otpSection.classList.add('otp-verify-section');
-        
-      
-        setTimeout(() => otpInputs[0].focus(), 300);
-
-    } catch (error) {
-        console.error("OTP Error:", error);
-        showNotification(error.message || 'Error sending OTP. Please try again.', 'error', 8000);
-        emailVerificationStatus.innerHTML = '<i class="fas fa-times-circle" style="color: red;"></i>';
-        otpSection.style.display = 'none';
-    }
-}
-
-async function verifyOtp() {
-    const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
-    const email = emailInput.value.trim();
-
-    if (enteredOtp.length !== 6) {
-        showNotification('Please enter the complete 6-digit code.', 'error', 4000);
-        return;
-    }
-
-    toggleLoader(true, 'Verifying code...');
-
-    try {
-        const response = await fetch(`${API_EMAIL_URL}?action=verify`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json', 
-                'x-api-key': API_KEY 
-            },
-            body: JSON.stringify({ email: email, otp: enteredOtp })
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.status === 'verified') {
-            isEmailVerified = true;
-            emailVerificationStatus.innerHTML = '<i class="fas fa-check-circle" style="color: green;"></i>';
-            emailVerificationStatus.classList.add('verified');
-            
-          
-            otpSection.style.display = 'none';
-            otpSection.classList.remove('otp-verify-section');
-            
-            showNotification('Email verified successfully! You may now proceed.', 'success', 5000);
-        } else {
-            throw new Error(data.message || 'Invalid or expired code.');
-        }
-    } catch (error) {
-        showNotification(error.message, 'error', 6000);
-        otpInputs.forEach(input => input.value = '');
-        otpInputs[0].focus();
-    } finally {
-        toggleLoader(false);
-    }
-}
-
-
-
-async function handleImageUpload(inputEl, previewEl, linkEl) {
-    const file = inputEl.files[0];
+/* ===================== IMAGE HANDLER ===================== */
+async function handleImageUpload(input, preview, linkEl) {
+    const file = input.files[0];
     if (!file) return;
-    
-    const loadingEl = document.createElement('div');
-    loadingEl.classList.add('image-loading-overlay');
-    loadingEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    previewEl.appendChild(loadingEl);
-    linkEl.value = '';
 
     try {
+        toggleLoader(true, "Uploading image...");
         const base64 = await fileToBase64(file);
-        const imageUrl = await uploadToImgur(base64);
-
-        previewEl.style.backgroundImage = `url(${imageUrl})`;
-        previewEl.classList.add('has-image');
-        linkEl.value = imageUrl;
-
-        showNotification('Image uploaded successfully!', 'success', 3000);
-    } catch (error) {
-        showNotification(error.message, 'error', 6000);
-        previewEl.style.backgroundImage = 'none';
-        previewEl.classList.remove('has-image');
-        inputEl.value = null; 
-        linkEl.value = '';
+        const url = await uploadToImgur(base64);
+        preview.style.backgroundImage = `url(${url})`;
+        preview.classList.add('has-image');
+        linkEl.value = url;
+        showNotification("Image uploaded", "success");
+    } catch (err) {
+        showNotification(err.message, "error", 6000);
+        input.value = "";
+        linkEl.value = "";
     } finally {
-        loadingEl.remove();
+        toggleLoader(false);
     }
 }
 
+/* ===================== CAMERA ===================== */
 function stopCamera() {
     if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach(t => t.stop());
         stream = null;
     }
     cameraViewContainer.classList.remove('show');
@@ -1066,239 +937,161 @@ function stopCamera() {
 async function startCamera(facingMode) {
     stopCamera();
     currentCamera = facingMode;
-    videoElement.style.transform = (facingMode === 'user') ? 'scaleX(-1)' : 'scaleX(1)'; 
-    
+
     try {
-        const constraints = {
-            video: {
-                facingMode: facingMode,
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            }
-        };
-        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode }
+        });
         videoElement.srcObject = stream;
         cameraViewContainer.classList.add('show');
-    } catch (error) {
-        console.error("Camera access error:", error);
-        showNotification(`Camera access denied or failed: ${error.name}. Please ensure your device has a camera and permits access.`, 'error', 8000);
-        cameraViewContainer.classList.remove('show');
+    } catch (err) {
+        showNotification("Camera error", "error");
     }
 }
 
 function captureImage() {
-    const context = canvasElement.getContext('2d');
-    const videoWidth = videoElement.videoWidth;
-    const videoHeight = videoElement.videoHeight;
-    
-    let targetRatio; 
-
-    if (currentImageTarget === 'userImage') {
-        targetRatio = 1 / 1; 
-    } else {
-        targetRatio = 4 / 3; 
-    }
-
-    const videoRatio = videoWidth / videoHeight;
-    let cropX = 0;
-    let cropY = 0;
-    let cropWidth = videoWidth;
-    let cropHeight = videoHeight;
-
-    if (videoRatio > targetRatio) { 
-        cropWidth = videoHeight * targetRatio;
-        cropX = (videoWidth - cropWidth) / 2;
-    } else if (videoRatio < targetRatio) { 
-        cropHeight = videoWidth / targetRatio;
-        cropY = (videoHeight - cropHeight) / 2;
-    }
-
-    canvasElement.width = cropWidth;
-    canvasElement.height = cropHeight;
-
-    context.drawImage(videoElement, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
-    
-    const imageDataURL = canvasElement.toDataURL('image/jpeg', 0.9);
+    const ctx = canvasElement.getContext('2d');
+    canvasElement.width = videoElement.videoWidth;
+    canvasElement.height = videoElement.videoHeight;
+    ctx.drawImage(videoElement, 0, 0);
     stopCamera();
 
-    const base64Image = imageDataURL.split(',')[1];
-    const mime = 'image/jpeg';
-    const filename = `${currentImageTarget}.jpeg`;
-    
-    const byteCharacters = atob(base64Image);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: mime });
-    const file = new File([blob], filename, { type: mime });
+    canvasElement.toBlob(blob => {
+        const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+        const dt = new DataTransfer();
+        dt.items.add(file);
 
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    
-    const targetInput = document.getElementById(currentImageTarget + 'Input');
-    const targetPreview = document.getElementById(currentImageTarget + 'Preview');
-    const targetLink = document.getElementById(currentImageTarget + 'Link');
+        const input = document.getElementById(currentImageTarget + "Input");
+        const preview = document.getElementById(currentImageTarget + "Preview");
+        const link = document.getElementById(currentImageTarget + "Link");
 
-    targetInput.files = dataTransfer.files;
-    handleImageUpload(targetInput, targetPreview, targetLink);
+        input.files = dt.files;
+        handleImageUpload(input, preview, link);
+    }, "image/jpeg", 0.9);
 }
 
-function initializeLgSelect() {
+/* ===================== LG ===================== */
+function initLG() {
     ZAMFARA_LGS.forEach(lg => {
-        const option = document.createElement('option');
-        option.value = lg;
-        option.textContent = lg;
-        localGovernmentSelect.appendChild(option);
+        const opt = document.createElement('option');
+        opt.value = lg;
+        opt.textContent = lg;
+        localGovernmentSelect.appendChild(opt);
     });
-    localGovernmentSelect.value = "";
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    initializeLgSelect();
- 
-    loginStage.classList.add('active');
-    formStage.classList.remove('active');
-       
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-        await signOut(auth);
-        showNotification('Security check: You must re-login to proceed with member registration.', 'info', 5000);
+/* ===================== SUBMIT ===================== */
+memberForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!idCardImageLinkEl.value || !userImageLinkEl.value || !shopImageLinkEl.value) {
+        showNotification(
+          'Please upload/take photos for ID Card, Face, and Shop before submitting.',
+          'error',
+          6000
+        );
+        return;
     }
-    
-    loginForm.addEventListener('submit', handleLogin);
 
-    emailInput.addEventListener('change', (e) => {
-        if (isEmailVerified) return;
-        const email = e.target.value.trim();
-        if (email.includes('@') && email !== "") {
-            sendOtp(email);
-        } else {
-            otpSection.classList.remove('otp-verify-section');
-        }
-    });
+    const businessNameValue = businessName.value.trim(); // main correct value
 
-    otpInputs.forEach((input, index) => {
-        input.addEventListener('input', () => {
-            if (input.value.length === 1 && index < otpInputs.length - 1) {
-                otpInputs[index + 1].focus();
-            }
+    const formData = {
+        fullName: fullName.value.trim(),
+        phoneNumber: phoneNumber.value.trim(),
+        email: emailInput.value.trim(),
+        businessName: businessNameValue,    // ✅ daidai
+        businesName: businessNameValue,     // ⚠️ typo version don compatibility
+        shopNumber: shopNumber.value.trim(),
+        idCardNumber: idCardNumber.value.trim(),
+        country: country.value,
+        state: state.value,
+        lg: localGovernmentSelect.value,
+        idCardImageLink: idCardImageLinkEl.value,
+        userImageLink: userImageLinkEl.value,
+        shopImageLink: shopImageLinkEl.value
+    };             
+
+    if (formData.lg === "") {
+        showNotification('Please select a valid Local Government.', 'error', 4000);
+        return;
+    }
+
+    toggleLoader(true, 'Verifying data and saving member...');
+
+    try {
+        const response = await fetch(API_MEMBER_URL, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'x-api-key': API_KEY 
+            },
+            body: JSON.stringify(formData)
         });
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
-                otpInputs[index - 1].focus();
-            }
-        });
-    });
-    document.getElementById('verifyOtpBtn').addEventListener('click', verifyOtp);
 
-    idCardImageInput.addEventListener('change', () => handleImageUpload(idCardImageInput, idCardImagePreview, idCardImageLinkEl));
-    userImageInput.addEventListener('change', () => handleImageUpload(userImageInput, userImagePreview, userImageLinkEl));
-    shopImageInput.addEventListener('change', () => handleImageUpload(shopImageInput, shopImagePreview, shopImageLinkEl));
+        const data = await response.json();
 
-    document.querySelectorAll('.camera-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            currentImageTarget = btn.getAttribute('data-target');
-            const defaultFacingMode = (currentImageTarget === 'userImage') ? 'user' : 'environment';
-            startCamera(defaultFacingMode);
-        });
-    });
-
-    captureButton.addEventListener('click', captureImage);
-    cancelButton.addEventListener('click', stopCamera);
-    
-    switchCameraButton.addEventListener('click', () => {
-        const newFacingMode = (currentCamera === 'user') ? 'environment' : 'user';
-        startCamera(newFacingMode);
-    });
-
-    memberForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!isEmailVerified) {
-            showNotification('Please verify your email address using the OTP before submitting.', 'error', 6000);
-            return;
+        if (!response.ok) {
+            throw new Error(data.message || 'Submission failed. Please check your network.');
         }
 
-        if (!idCardImageLinkEl.value || !userImageLinkEl.value || !shopImageLinkEl.value) {
-            showNotification('Please upload/take photos for ID Card, Face, and Shop before submitting.', 'error', 6000);
-            return;
-        }
+        memberForm.reset();
+        document.getElementById('loginEmail').value = "";
 
-        const formData = {
-            fullName: document.getElementById('fullName').value.trim(),
-            phoneNumber: document.getElementById('phoneNumber').value.trim(),
-            businessName: document.getElementById('businessName').value.trim(),
-            shopNumber: document.getElementById('shopNumber').value.trim(),
-            idCardNumber: document.getElementById('idCardNumber').value.trim(),
-            email: emailInput.value.trim(),
-            country: document.getElementById('country').value,
-            state: document.getElementById('state').value,
-            lg: localGovernmentSelect.value,
-            idCardImageLink: idCardImageLinkEl.value,
-            userImageLink: userImageLinkEl.value,
-            shopImageLink: shopImageLinkEl.value
-        };
+        idCardImagePreview.style.backgroundImage = 'none';
+        idCardImagePreview.classList.remove('has-image');
+        userImagePreview.style.backgroundImage = 'none';
+        userImagePreview.classList.remove('has-image');
+        shopImagePreview.style.backgroundImage = 'none';
+        shopImagePreview.classList.remove('has-image');
+        idCardImageLinkEl.value = '';
+        userImageLinkEl.value = '';
+        shopImageLinkEl.value = '';
 
-        if (formData.lg === "") {
-            showNotification('Please select a valid Local Government.', 'error', 4000);
-            return;
-        }
+        isEmailVerified = false;
+        emailVerificationStatus.innerHTML = '<i class="fas fa-times"></i>';
+        emailVerificationStatus.classList.remove('verified');
 
-        toggleLoader(true, 'Verifying data and saving member...');
+        await signOut(auth); 
 
-        try {
-            const response = await fetch(API_MEMBER_URL, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'x-api-key': API_KEY 
-                },
-                body: JSON.stringify(formData)
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.message || 'Submission failed. Please check your network.');
-            }
+        showNotification('Form submitted successfully! You have been logged out for security. Please re-login to register another member.', 'success', 10000);
 
-            memberForm.reset();
-            document.getElementById('loginEmail').value = "";
-            
-            idCardImagePreview.style.backgroundImage = 'none';
-            idCardImagePreview.classList.remove('has-image');
-            userImagePreview.style.backgroundImage = 'none';
-            userImagePreview.classList.remove('has-image');
-            shopImagePreview.style.backgroundImage = 'none';
-            shopImagePreview.classList.remove('has-image');
-            idCardImageLinkEl.value = '';
-            userImageLinkEl.value = '';
-            shopImageLinkEl.value = '';
+        loginStage.classList.add('active');
+        formStage.classList.remove('active');
 
-            isEmailVerified = false;
-            emailVerificationStatus.innerHTML = '<i class="fas fa-times"></i>';
-            emailVerificationStatus.classList.remove('verified');
-            
-            await signOut(auth); 
-            
-            showNotification('Form submitted successfully! You have been logged out for security. Please re-login to register another member.', 'success', 10000);
-            
-            loginStage.classList.add('active');
-            formStage.classList.remove('active');
-
-        } catch (error) {
-            console.error("Submission Error:", error);
-            showNotification(error.message || 'An unexpected error occurred. Please try again.', 'error', 8000);
-        } finally {
-            toggleLoader(false);
-        }
-    });
-
-    toggleLoader(false); 
+    } catch (error) {
+        console.error("Submission Error:", error);
+        showNotification(error.message || 'An unexpected error occurred. Please try again.', 'error', 8000);
+    } finally {
+        toggleLoader(false);
+    }
 });
 
-    </script>
+/* ===================== INIT ===================== */
+document.addEventListener('DOMContentLoaded', () => {
+    initLG();
+    loginForm.addEventListener('submit', handleLogin);
+
+    idCardImageInput.addEventListener('change', () =>
+        handleImageUpload(idCardImageInput, idCardImagePreview, idCardImageLinkEl)
+    );
+    userImageInput.addEventListener('change', () =>
+        handleImageUpload(userImageInput, userImagePreview, userImageLinkEl)
+    );
+    shopImageInput.addEventListener('change', () =>
+        handleImageUpload(shopImageInput, shopImagePreview, shopImageLinkEl)
+    );
+
+    document.querySelectorAll('.camera-btn').forEach(btn => {
+   
+    if (btn.dataset.target) {
+        btn.onclick = () => {
+            currentImageTarget = btn.dataset.target;
+            startCamera(currentImageTarget === 'userImage' ? 'user' : 'environment');
+        };
+    }
+    
+});
+});
+</script>
 </body>
 </html>
