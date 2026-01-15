@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebeji Market Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>                   
+        :root {
+            --primary-bg: #1A1A2E;
+            --secondary-bg: #2B2B47;
+            --text-primary: #E8E8FF;
+            --text-secondary: #AAAAAA;
+            --accent-green: #00FF99;
+            --accent-blue: #4C72D6;
+            --shadow-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            background-image: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.8)), 
+                              radial-gradient(circle, #2b2b47 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px; 
+            padding: 20px;
+        }
+
+        
+        .search-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: var(--secondary-bg);
+            color: var(--text-secondary);
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            background: rgba(0, 255, 153, 0.1);
+        }
+
+        .search-area {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border-radius: 30px;
+            border: 2px solid var(--accent-blue);
+            background-color: #3B3E59;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            color: var(--accent-green);
+        }
+        
+       
+        .card {
+            background: var(--secondary-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid white;
+            transition: 0.3s;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); border-color: var(--accent-green); }
+
+       
+        .shop-card-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .shop-profile-overlay {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-green);
+            object-fit: cover;
+            background: #222;
+        }
+
+        .shop-info-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 15px 15px 15px;
+        }
+
+        .view-shop-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+       
+        .post-image-wrapper { position: relative; width: 100%; height: 250px; }
+        .post-image { width: 100%; height: 100%; object-fit: cover; }
+        .post-price { position: absolute; bottom: 10px; left: 10px; background: var(--accent-green); color: #000; padding: 5px 12px; border-radius: 8px; font-weight: 800; }
+        .post-info { padding: 15px; }
+        .buy-now-btn { background: linear-gradient(135deg, #28a745, #218838); color: white; border: none; padding: 10px; border-radius: 6px; width: 100%; cursor: pointer; font-weight: bold; }
+        .loader { display: none; text-align: center; margin: 20px; color: var(--accent-green); }
+        #noResultsMessage { text-align: center; padding: 40px; color: #888; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body>
+<div class="main-container">
+    <h2 style="text-align: center; color: var(--accent-green);">
+        <i class="fas fa-shopping-cart"></i> BEBEJI PLAZA MARKET 
+    </h2>
+
+    <div class="search-tabs">
+        <button id="btnProduct" class="tab-btn active" onclick="setSearchMode('product')">Search Product</button>
+        <button id="btnShop" class="tab-btn" onclick="setSearchMode('shop')">Search Shop</button>
+    </div>
+
+    <div class="search-area">
+        <input type="text" id="searchInput" placeholder="Search products...">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div id="loader" class="loader"><i class="fas fa-spinner fa-spin"></i> Searching...</div>
+    <div id="resultsContainer"></div>
+    <div id="noResultsMessage">
+        <i class="fas fa-search" style="font-size: 30px; margin-bottom: 10px;"></i>
+        <p>Start typing to search.</p>
+    </div>
+</div>
+
+<script type="module">
+    import { app } from './firebase.js';
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+    const db = getDatabase(app);
+    const searchInput = document.getElementById('searchInput');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const loader = document.getElementById('loader');
+    
+    let searchMode = 'product'; 
+    let searchTimeout = null;
+   
+    window.setSearchMode = (mode) => {
+        searchMode = mode;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        if(mode === 'product') {
+            document.getElementById('btnProduct').classList.add('active');
+            searchInput.placeholder = "Search product name or price...";
+        } else {
+            document.getElementById('btnShop').classList.add('active');
+            searchInput.placeholder = "Search shop name or phone...";
+        }
+        executeSearch(searchInput.value);
+    };
+
+    async function executeSearch(term) {
+        const query = term.toLowerCase().trim();
+        if (query.length < 1) {
+            resultsContainer.innerHTML = '';
+            noResultsMessage.style.display = 'block';
+            return;
+        }
+
+        loader.style.display = 'block';
+        noResultsMessage.style.display = 'none';
+        resultsContainer.innerHTML = '';
+
+        try {
+            const usersRef = ref(db, 'users');
+            const snapshot = await get(usersRef);
+
+            if (snapshot.exists()) {
+                let matchFound = false;
+
+                snapshot.forEach((userSnap) => {
+                    const uid = userSnap.key;
+                    const userData = userSnap.val();
+
+                    if (searchMode === 'product') {
+                       
+                        if (userData.Posting) {
+                            Object.entries(userData.Posting).forEach(([postId, post]) => {
+                                const text = (post.text || "").toLowerCase();
+                                const price = (post.price || "").toString();
+                                if (text.includes(query) || price.includes(query)) {
+                                    renderProductCard(post, postId, uid, userData.businesName || userData.businessName || "Shop");
+                                    matchFound = true;
+                                }
+                            });
+                        }
+                    } else {
+                       
+                        const bName = (userData.businessName || "").toLowerCase();
+                        const bNameErr = (userData.businesName || "").toLowerCase();
+                        const fName = (userData.fullName || "").toLowerCase();
+                        const sNum = (userData.bebejiShopNumber || "").toString();
+
+                        if (bName.includes(query) || bNameErr.includes(query) || fName.includes(query) || sNum.includes(query)) {
+                            renderShopCard(userData, uid);
+                            matchFound = true;
+                        }
+                    }
+                });
+
+                if (!matchFound) {
+                    noResultsMessage.style.display = 'block';
+                    noResultsMessage.innerHTML = `<p>No ${searchMode}s found for "${term}".</p>`;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function renderProductCard(post, postId, shopuid, shopName) {
+        const img = post.imageLink1 || 'https://i.imgur.com/gK9dY9N.png';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => window.location.href = `product.html?shopuid=${shopuid}&productId=${postId}`;
+        card.innerHTML = `
+            <div class="post-image-wrapper">
+                <img class="post-image" src="${img}">
+                <span class="post-price">₦${post.price || 0}</span>
+            </div>
+            <div class="post-info">
+                <p class="post-text">${post.text || 'Product'}</p>
+                <div style="font-size:12px; color:var(--accent-blue); margin-bottom:10px;">
+                    <i class="fas fa-store"></i> ${shopName}
+                </div>
+                <button class="buy-now-btn">View Details</button>
+            </div>
+        `;
+        resultsContainer.appendChild(card);
+    }
+
+    function renderShopCard(user, uid) {
+        const shopImg = user.shopImageLink || 'https://i.imgur.com/gK9dY9N.png';
+        const userImg = user.userImageLink || 'https://www.w3schools.com/howto/img_avatar.png';
+        const name = user.businessName || user.businesName || user.fullName || "Bebeji Shop";
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.position = 'relative';
+       
+        const goToShop = () => {
+            const marketId = ""; 
+            window.location.replace(`shop.html?shopuid=${uid}&marketid=${marketId}`);
+        };
+
+        card.onclick = goToShop;
+
+        card.innerHTML = `
+            <img src="${shopImg}" class="shop-card-img">
+            <img src="${userImg}" class="shop-profile-overlay">
+            <div class="shop-info-flex">
+                <div>
+                    <div style="font-weight:bold; font-size:16px;">${name}</div>
+                    <div style="font-size:12px; color:var(--text-secondary);">${user.fullName || ''}</div>
+                </div>
+                <button class="view-shop-btn">View Shop</button>
+            </div>
+        `;
+        resultsContainer.appendChild(card);
+    }
+
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => executeSearch(searchInput.value), 500);
+    });
+</script>
+</body>
+</html>
