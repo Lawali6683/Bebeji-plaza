@@ -1716,98 +1716,38 @@ function listenForGuestNotifications(shopOwnerUID) {
         });
     }
 
- function getShopOwnerTarget() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const shopuidParam = urlParams.get('shopuid');
-
-    const pathSegments = window.location.pathname
-        .split('/')
-        .filter(Boolean);
+function getShopOwnerTarget() {
+    const path = window.location.pathname;
     
-    if (shopuidParam) {
-        return shopuidParam;
-    }
-   
-    if (pathSegments[0] === 'shop' && pathSegments.length >= 3) {
-        return pathSegments[2];
-    }
 
-    return null;
-}
-
- 
- 
- 
-async function resolveUIDByMarketId(marketId) {
-    if (!marketId) return null;
-
-    try {
-        const usersRef = ref(db, 'users');
-        const snap = await get(usersRef);
-
-        if (!snap.exists()) return null;
-
-        for (const child of Object.entries(snap.val())) {
-            const uid = child[0];
-            const data = child[1];
-            if (data.marketId === marketId) {
-                return uid;
-            }
-        }
-    } catch (e) {
-        console.error("resolveUIDByMarketId error:", e);
-    }
-
-    return null;
-}
-
-
-
-async function resolveMarketId(marketId) {
-    if (!marketId) return null;
-
-    try {
-        const usersRef = ref(db, 'users');
-      
-        const snapshot = await get(usersRef);
-        
-        if (snapshot.exists()) {
-            let foundUID = null;
-            snapshot.forEach((userSnap) => {
-                const data = userSnap.val();
-               
-                if (data.marketId === marketId) {
-                    foundUID = userSnap.key;
-                }
-            });
-            return foundUID;
-        }
-    } catch (error) {
-        console.error("Error ID:", error);
-    }
-    return null;
-}
+    const segments = path.split('/').filter(Boolean);
 
   
- onAuthStateChanged(auth, async (user) => {
+    if (segments[0] === 'shop' && segments.length >= 3) {
+        return segments[2]; 
+    }
+
+    return null;
+}
+
+
+  
+onAuthStateChanged(auth, async (user) => {
     try {
-     
         currentLoggedInUserUID = user ? user.uid : null;
-      
+
         const targetFromLink = getShopOwnerTarget();
 
-        if (targetFromLink) {           
+        if (targetFromLink) {
             currentShopOwnerUID = targetFromLink;
-        } else if (currentLoggedInUserUID) {           
+        } else if (currentLoggedInUserUID) {
             currentShopOwnerUID = currentLoggedInUserUID;
         } else {
-            document.getElementById('loadingText').textContent =
-                "❌ Ba a gano shop ba.";
             showNotification("Invalid or missing shop link", "error", 5000);
             hideLoader();
             return;
         }
-      
+
         isShopOwner =
             currentLoggedInUserUID &&
             currentLoggedInUserUID === currentShopOwnerUID;
@@ -1820,6 +1760,7 @@ async function resolveMarketId(marketId) {
         hideLoader();
     }
 });
+
 
    async function initializeProfile() {
     try {
