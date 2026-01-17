@@ -1,9 +1,9 @@
 export async function onRequest(context) {
     const { request, env } = context;
     const origin = request.headers.get("Origin");
-    
+
     const FIREBASE_RTDB_URL = env.FIREBASE_RTDB_URL || "https://bebeji-plaza-6b176-default-rtdb.firebaseio.com";
-    
+
     const ALLOWED_ORIGINS = [
         "https://bebejiplaza.pages.dev",
         "http://localhost:8080",
@@ -28,87 +28,131 @@ export async function onRequest(context) {
         return new Response(JSON.stringify({ message: "Access denied." }), { status: 403 });
     }
 
-    const apiKey = request.headers.get('x-api-key');
+    const apiKey = request.headers.get("x-api-key");
     if (apiKey !== env.API_AUTH_KEY) {
         return new Response(JSON.stringify({ message: "Invalid API key." }), {
             status: 401,
-            headers: corsHeaders(origin)
+            headers: corsHeaders(origin),
         });
     }
 
     if (request.method !== "POST") {
         return new Response(JSON.stringify({ message: "Method Not Allowed." }), {
             status: 405,
-            headers: corsHeaders(origin)
+            headers: corsHeaders(origin),
         });
     }
 
     try {
         const data = await request.json();
-        const { fullName, phoneNumber, businessName, shopNumber, idCardNumber, email, country, state, lg, idCardImageLink, userImageLink, shopImageLink } = data;
 
-        if (!fullName || !phoneNumber || !businessName || !shopNumber || !idCardNumber || !lg || !idCardImageLink || !userImageLink || !shopImageLink || !email) {
-            return new Response(JSON.stringify({ message: "Missing required fields (email, all images, etc.)." }), { status: 400, headers: corsHeaders(origin) });
-        }
-
-        const checkDuplicate = async (field, value) => {
-            const safeValue = encodeURIComponent(value);
-            const queryUrl = `${FIREBASE_RTDB_URL}/Members.json?orderBy="${field}"&equalTo="${safeValue}"&auth=${env.FIREBASE_SECRET}`;
-            const res = await fetch(queryUrl);
-            const data = await res.json();
-            return data && Object.keys(data).length > 0;
-        };
-
-        if (await checkDuplicate('idcardNumber', idCardNumber)) {
-            return new Response(JSON.stringify({ message: "Error: This Member ID Card Number is already registered." }), { 
-                status: 409, 
-                headers: corsHeaders(origin) 
-            });
-        }
-
-        if (await checkDuplicate('bebejiShopNumber', shopNumber)) {
-            return new Response(JSON.stringify({ message: "Error: This Shop Number is already registered." }), { 
-                status: 409, 
-                headers: corsHeaders(origin) 
-            });
-        }
-        
-        const memberData = {
-            idcardNumber,
+        const {
             fullName,
-            businesName: businessName,
             phoneNumber,
+            businessName,
+            shopNumber,
+            idCardNumber,
             email,
             country,
-            bebejiShopNumber: shopNumber,
             state,
             lg,
             idCardImageLink,
-            userImageLink, 
-            shopImageLink, 
-            registerTime: new Date().toISOString(),
+            userImageLink,
+            shopImageLink
+        } = data;
+
+        if (
+            !fullName ||
+            !phoneNumber ||
+            !businessName ||
+            !shopNumber ||
+            !idCardNumber ||
+            !email ||
+            !lg ||
+            !idCardImageLink ||
+            !userImageLink ||
+            !shopImageLink
+        ) {
+            return new Response(
+                JSON.stringify({ message: "Missing required fields." }),
+                { status: 400, headers: corsHeaders(origin) }
+            );
+        }
+
+        
+        const checkIdCardExists = async (idCardNumber) => {
+            const queryUrl =
+                `${FIREBASE_RTDB_URL}/Members.json` +
+                `?orderBy="idcardNumber"&equalTo="${idCardNumber}"` +
+                `&auth=${env.FIREBASE_SECRET}`;
+
+            const res = await fetch(queryUrl);
+            const result = await res.json();
+            return result && Object.keys(result).length > 0;
         };
 
-        const firebaseWriteUrl = `${FIREBASE_RTDB_URL}/Members.json?auth=${env.FIREBASE_SECRET}`;
-        const writeResponse = await fetch(firebaseWriteUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(memberData)
+        if (await checkIdCardExists(idCardNumber)) {
+            return new Response(
+                JSON.stringify({
+                    message: "Error: This Member ID Card Number is already registered."
+                }),
+                { status: 409, headers: corsHeaders(origin) }
+            );
+        }
+
+       
+        const memberId = `MB-${Date.now()}`;
+
+        const memberData = {
+            memberId,
+            idcardNumber: idCardNumber,
+            fullName,
+            businessName,
+            phoneNumber,
+            email,
+            country,
+            state,
+            lg,
+            bebejiShopNumber: shopNumber,
+            idCardImageLink,
+            userImageLink,
+            shopImageLink,
+            registerTime: new Date().toISOString()
+        };
+
+    
+        const writeUrl =
+            `${FIREBASE_RTDB_URL}/Members/${memberId}.json?auth=${env.FIREBASE_SECRET}`;
+
+        const writeResponse = await fetch(writeUrl, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(memberData),
         });
 
-        if (!writeResponse.ok) throw new Error("Failed to write data to Firebase.");
-        
-        return new Response(JSON.stringify({ message: "Member data saved successfully.", member: memberData }), {
-            status: 201,
-            headers: { 
-                "Content-Type": "application/json", 
-                ...corsHeaders(origin) 
-            },
-        });
+        if (!writeResponse.ok) {
+            throw new Error("Failed to write member data.");
+        }
+
+        return new Response(
+            JSON.stringify({
+                message: "Member registered successfully.",
+                memberId,
+                member: memberData,
+            }),
+            {
+                status: 201,
+                headers: {
+                    "Content-Type": "application/json",
+                    ...corsHeaders(origin),
+                },
+            }
+        );
+
     } catch (error) {
-        return new Response(JSON.stringify({ message: `Internal server error: ${error.message}` }), { 
-            status: 500, 
-            headers: corsHeaders(origin) 
-        });
+        return new Response(
+            JSON.stringify({ message: `Internal server error: ${error.message}` }),
+            { status: 500, headers: corsHeaders(origin) }
+        );
     }
 }
