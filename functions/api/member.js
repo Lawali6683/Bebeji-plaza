@@ -81,24 +81,32 @@ export async function onRequest(context) {
 
         
         const checkIdCardExists = async (idCardNumber) => {
-            const queryUrl =
-                `${FIREBASE_RTDB_URL}/Members.json` +
-                `?orderBy="idcardNumber"&equalTo="${idCardNumber}"` +
-                `&auth=${env.FIREBASE_SECRET}`;
+    const url = `${FIREBASE_RTDB_URL}/Members.json?auth=${env.FIREBASE_SECRET}`;
+    const res = await fetch(url);
 
-            const res = await fetch(queryUrl);
-            const result = await res.json();
-            return result && Object.keys(result).length > 0;
-        };
+    if (!res.ok) {
+        throw new Error("Failed to read Members database.");
+    }
 
-        if (await checkIdCardExists(idCardNumber)) {
-            return new Response(
-                JSON.stringify({
-                    message: "Error: This Member ID Card Number is already registered."
-                }),
-                { status: 409, headers: corsHeaders(origin) }
-            );
+    const members = await res.json();
+
+    if (!members) return false;
+
+    for (const key in members) {
+        const member = members[key];
+
+       
+        if (
+            member &&
+            typeof member.idcardNumber === "string" &&
+            member.idcardNumber.trim() === idCardNumber.trim()
+        ) {
+            return true;
         }
+    }
+
+    return false; 
+};
 
        
         const memberId = `MB-${Date.now()}`;
