@@ -52,53 +52,65 @@ export async function onRequest(context) {
             });
         }
 
-        const safeIdCardNumber = encodeURIComponent(idCardNumber.trim());
-        
-        
-        const firebaseQuery = `${env.FIREBASE_RTDB_URL}/Members.json?orderBy="idcardNumber"&equalTo="${safeIdCardNumber}"&auth=${env.FIREBASE_SECRET}`;
 
-        const firebaseResponse = await fetch(firebaseQuery);
-        const firebaseData = await firebaseResponse.json();
+        const membersUrl = `${env.FIREBASE_RTDB_URL}/Members.json?auth=${env.FIREBASE_SECRET}`;
+const res = await fetch(membersUrl);
 
-        if (!firebaseData || Object.keys(firebaseData).length === 0) {
-            return new Response(JSON.stringify({ 
-                message: "Member ID Card Number not found. Please verify your number." 
-            }), { 
-                status: 404, 
-                headers: corsHeaders(origin) 
-            });
-        }
+if (!res.ok) {
+    throw new Error("Failed to read Members database.");
+}
 
-        const memberKey = Object.keys(firebaseData)[0];
-        const member = firebaseData[memberKey];
+const members = await res.json();
 
-       
-        const memberData = {
-            idcardNumber: member.idcardNumber,
-            fullName: member.fullName,
-            businesName: member.businesName || "", 
-            phoneNumber: member.phoneNumber || "",
-            email: member.email || "",
-            bebejiShopNumber: member.bebejiShopNumber || "",
-            state: member.state || "",
-            lg: member.lg || "",
-            idCardImageLink: member.idCardImageLink || "",
-            userImageLink: member.userImageLink || "", 
-            shopImageLink: member.shopImageLink || "",
-        };
+if (!members) {
+    return new Response(JSON.stringify({
+        message: "Member ID Card Number not found."
+    }), { status: 404, headers: corsHeaders(origin) });
+}
 
-        return new Response(JSON.stringify({ message: "Verification successful.", member: memberData }), {
-            status: 200,
-            headers: { 
-                "Content-Type": "application/json", 
-                ...corsHeaders(origin) 
-            },
-        });
-    } catch (error) {
-        console.error("Worker Error:", error.stack);
-        return new Response(JSON.stringify({ message: "Internal server error during processing." }), { 
-            status: 500, 
-            headers: corsHeaders(origin) 
-        });
+let foundMember = null;
+
+for (const memberId in members) {
+    const m = members[memberId];
+
+    if (
+        m &&
+        typeof m.idcardNumber === "string" &&
+        m.idcardNumber.trim() === idCardNumber.trim()
+    ) {
+        foundMember = m;
+        break;
     }
 }
+
+if (!foundMember) {
+    return new Response(JSON.stringify({
+        message: "Member ID Card Number not found. Please verify your number."
+    }), { status: 404, headers: corsHeaders(origin) });
+}
+
+/* SAHIHIN DATA DA FRONTEND KE BUKATA */
+const memberData = {
+    idcardNumber: foundMember.idcardNumber,
+    fullName: foundMember.fullName || "",
+    businesName: foundMember.businessName || foundMember.businesName || "",
+    phoneNumber: foundMember.phoneNumber || "",
+    email: foundMember.email || "",
+    bebejiShopNumber: foundMember.bebejiShopNumber || "",
+    state: foundMember.state || "",
+    lg: foundMember.lg || "",
+    idCardImageLink: foundMember.idCardImageLink || "",
+    userImageLink: foundMember.userImageLink || "",
+    shopImageLink: foundMember.shopImageLink || "",
+};
+
+return new Response(JSON.stringify({
+    message: "Verification successful.",
+    member: memberData
+}), {
+    status: 200,
+    headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders(origin)
+    }
+});
