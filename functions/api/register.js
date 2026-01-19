@@ -69,6 +69,7 @@ if (!members) {
 }
 
 let foundMember = null;
+let foundMemberId = null;
 
 for (const memberId in members) {
     const m = members[memberId];
@@ -79,33 +80,64 @@ for (const memberId in members) {
         m.idcardNumber.trim() === idCardNumber.trim()
     ) {
         foundMember = m;
+        foundMemberId = memberId;
         break;
     }
 }
 
 if (!foundMember) {
     return new Response(JSON.stringify({
-        message: "Member ID Card Number not found. Please verify your number."
+        message: "Member ID Card Number not found."
     }), { status: 404, headers: corsHeaders(origin) });
 }
 
-/* SAHIHIN DATA DA FRONTEND KE BUKATA */
+
 const memberData = {
     idcardNumber: foundMember.idcardNumber,
+
     fullName: foundMember.fullName || "",
-    businesName: foundMember.businessName || foundMember.businesName || "",
+  
+    businessName: foundMember.businessName || foundMember.businesName || "",
+    businesName: foundMember.businesName || foundMember.businessName || "",
+
     phoneNumber: foundMember.phoneNumber || "",
     email: foundMember.email || "",
+
     bebejiShopNumber: foundMember.bebejiShopNumber || "",
+
     state: foundMember.state || "",
     lg: foundMember.lg || "",
+
     idCardImageLink: foundMember.idCardImageLink || "",
     userImageLink: foundMember.userImageLink || "",
-    shopImageLink: foundMember.shopImageLink || "",
+    shopImageLink: foundMember.shopImageLink || ""
 };
 
+
+const requiredFields = [
+    "memberId",
+    "idcardNumber",
+    "fullName",
+    "businessName",
+    "phoneNumber",
+    "email",
+    "bebejiShopNumber"
+];
+
+const missing = requiredFields.filter(
+    f => !memberData[f] || memberData[f].trim?.() === ""
+);
+
+if (missing.length > 0) {
+    return new Response(JSON.stringify({
+        message: "Incomplete member data in database.",
+        missing
+    }), { status: 422, headers: corsHeaders(origin) });
+}
+
+
 return new Response(JSON.stringify({
-    message: "Verification successful.",
+    success: true,
     member: memberData
 }), {
     status: 200,
