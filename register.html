@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEBEJI PLAZA - New Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>  
+    :root {
+        --primary-bg: #1A1A2E;
+        --secondary-bg: #2B2B47;
+        --text-primary: #E8E8FF;
+        --accent-green: #00FF99;
+        --accent-blue: #4C72D6;
+        --danger-red: #E74C3C;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --input-border-color: rgba(76, 114, 214, 0.5);
+    }
+    
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    } 
+    
+     body {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;    
+    text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.3);    
+    background-color: var(--primary-bg);      
+    background-image: 
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);        
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;  
+    background-image:        
+        linear-gradient(rgba(26, 26, 46, 0.7), rgba(26, 26, 46, 0.7)),        
+        linear-gradient(45deg, var(--secondary-bg) 25%, transparent 25%), 
+        linear-gradient(-45deg, var(--secondary-bg) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-bg) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-bg) 75%);            
+    background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+    background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0px;       
+    background-attachment: scroll;        
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+    .main-content {
+        width: 100%;
+        max-width: 600px;
+        padding: 0 10px;
+    }
+  
+    .header-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .entrance-image {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px var(--shadow-color);
+        border: 2px solid var(--accent-blue);      
+        padding: 5px;
+        background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+    }
+    
+    .title {
+        font-size: 2.2rem;
+        color: var(--accent-green);
+        text-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+    }
+    .subtitle {
+        color: var(--text-primary);
+        opacity: 0.7;
+        margin-top: 5px;
+    }
+
+ 
+    .card {
+        background-color: var(--secondary-bg);
+        padding: 30px;
+                border-radius: 15px;
+                
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        border: 1px solid var(--input-border-color);
+        position: relative;
+        overflow: hidden;       
+          background-color: var(--secondary-bg);            
+            background: conic-gradient(
+          transparent, 
+                rgba(255, 0, 170, 0.6) 45%, 
+                transparent 50%,
+                transparent 95%
+            );
+            z-index: 0;
+            animation: rotate-shine 15s linear infinite;                        
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid rgba(76, 114, 214, 0.3);
+                                            
+    }
+    
+               
+    .card-title {
+        color: var(--accent-blue);
+        text-align: center;
+        margin-bottom: 25px;
+        border-bottom: 2px solid var(--input-border-color);
+        padding-bottom: 15px;
+        font-size: 1.5rem;
+    }
+  
+    
+    .input-group {
+        margin-bottom: 20px;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    .input-field-wrapper {
+        position: relative;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        background-color: var(--primary-bg);
+        border: 1px solid var(--input-border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus {
+        outline: none;
+        border-color: var(--accent-green);
+        box-shadow: 0 0 8px rgba(0, 255, 153, 0.4);
+    }
+    input[readonly] {
+        opacity: 0.6;
+        cursor: default;
+        background-color: #151525;
+    }
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-blue);
+        font-size: 0.9em;
+    }
+    .required {
+        color: var(--danger-red);
+    }
+      
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 1.1em;
+        padding: 5px;
+    }
+
+   
+    .btn {
+        width: 100%;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .btn-primary {
+        background-color: var(--accent-blue);
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #3861c7;
+        transform: translateY(-2px);
+    }
+    .btn-success {
+        background-color: var(--accent-green);
+        color: var(--primary-bg);
+    }
+    .btn-success:hover {
+        background-color: #00e88a;
+        transform: translateY(-2px);
+    }
+
+    .login-prompt {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9em;
+    }
+    .login-prompt a {
+        color: var(--accent-green);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+   
+    
+.modern-image-section {
+    position: relative;
+    width: 100%;
+    height: 250px;     
+    margin-bottom: 60px; 
+    background: var(--primary-bg);
+    border-radius: 15px;
+    overflow: visible;
+}
+
+.shop-cover-container {
+    width: 100%;
+    height: 180px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px dashed var(--input-border-color);
+}
+
+.shop-preview {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.user-avatar-container {
+    position: absolute;
+    bottom: -40px;
+    left: 20px;
+    width: 110px;
+    height: 110px;
+    z-index: 5;
+}
+
+.user-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid var(--secondary-bg);
+    background-color: var(--primary-bg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+
+.shop-preview.has-image::after, 
+.user-preview.has-image::after {
+    display: none !important;
+}
+
+.image-loading-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex; justify-content: center; align-items: center;
+    border-radius: inherit;
+    color: var(--accent-green);
+}
+
+
+    .loader-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .pulse {
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 3px solid #00eaff;
+        animation: pulseAnim 2.5s infinite ease-in-out;
+        opacity: 0.5;
+    }
+    @keyframes pulseAnim {
+        0% { transform: scale(0.6); opacity: 0.4; }
+        50% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(0.6); opacity: 0.4; }
+    }
+    .logo-wrapper {
+        width: 80px;
+        height: auto;
+        border-radius: 10px;
+        animation: floatLogo 3s infinite ease-in-out; 
+        box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+    }
+    @keyframes floatLogo {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+        100% { transform: translateY(0); }
+    }
+    .orbit {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 2px dashed #00eaff;
+        animation: spin 5s linear infinite;
+        opacity: 0.3;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    .loading-text {
+        position: absolute;
+        bottom: -60px;
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        color: #00eaff;
+        letter-spacing: 2px;
+        animation: fadeText 2s infinite;
+    }
+    @keyframes fadeText {
+        0% { opacity: 0.3; }
+        50% { opacity: 1; }
+        100% { opacity: 0.3; }
+    }
+    .loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0e0f11, #112233, #1a2b4d, #144b7a);
+        background-size: 400% 400%;
+        animation: gradientMove 7s ease infinite;
+        z-index: 999999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+    .loader-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+ 
+    #notificationContainer {
+        position: fixed;
+        top: 20px; 
+        right: 20px;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 380px;
+        pointer-events: none; 
+    }
+    .notification {
+        position: relative;
+        background-color: var(--secondary-bg);
+        color: var(--text-primary);
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        opacity: 0;
+        transform: translateX(100%);
+        animation: slideInRight 0.5s forwards;
+        pointer-events: all;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(76, 114, 214, 0.3);
+        overflow: hidden;
+    }
+    .notification.success {
+        border-left: 5px solid var(--accent-green);
+        box-shadow: 0 4px 15px rgba(0, 255, 153, 0.3);
+    }
+    .notification.error {
+        border-left: 5px solid var(--danger-red);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+    .notification.info {
+        border-left: 5px solid var(--accent-blue);
+        box-shadow: 0 4px 15px rgba(76, 114, 214, 0.3);
+    }
+    .notification .icon {
+        font-size: 1.6em;
+        min-width: 25px; 
+    }
+    .notification.success .icon {
+        color: var(--accent-green);
+    }
+    .notification.error .icon {
+        color: var(--danger-red);
+    }
+    .notification.info .icon {
+        color: var(--accent-blue);
+    }
+    .notification .message {
+        flex-grow: 1;
+        text-align: left;
+        line-height: 1.4;
+        font-size: 0.95em;
+    }
+    .notification .close-btn {
+        background: none;
+        border: none;
+        color: rgba(232, 232, 255, 0.7);
+        font-size: 1.5em;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.3s ease;
+        padding: 0;
+    }
+    .notification .close-btn:hover {
+        color: var(--danger-red);
+        transform: scale(1.1);
+    }
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateX(0); }
+        to { opacity: 0; transform: translateX(100%); }
+    }
+    .notification.timed::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .notification.timed .progress-bar {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        background-color: currentColor; 
+        animation: shrink-width var(--notification-duration) linear forwards;
+        width: 100%;
+    }
+    @keyframes shrink-width {
+        from { width: 100%; }
+        to { width: 0%; }
+    }
+
+   
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+            align-items: flex-start; 
+        }
+        .main-content {
+            padding: 0;
+        }
+        .card {
+            padding: 20px;
+        }
+        .title {
+            font-size: 1.1rem;
+        }
+        .image-upload-section {
+            flex-direction: column;
+        }
+        .upload-container {
+            flex: none;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .profile-shape {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #notificationContainer {
+            top: 10px;    
+            bottom: auto; 
+            left: 10px;   
+            right: 10px;
+            max-width: none;
+        }
+    }
+        
+     
+.modern-profile-header {
+    position: relative;
+    width: 100%;
+    margin-bottom: 70px; 
+    
+}
+
+.shop-banner {
+    width: 100%;
+    height: 180px;
+    background: #151525;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--accent-blue);
+    cursor: pointer;
+    position: relative;
+}
+
+.avatar-wrapper {
+    position: absolute;
+    bottom: -50px;
+    left: 20px;
+    width: 100px;
+    height: 100px;
+    z-index: 10;
+}
+
+.user-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #1A1A2E;
+    border: 4px solid var(--secondary-bg);
+    overflow: hidden;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-box {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.central-icon {
+    font-size: 2rem;
+    color: var(--accent-blue);
+    opacity: 0.5;
+}
+
+
+.has-image .central-icon {
+    display: none !important;
+}
+
+.upload-loader {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-green);
+    border-radius: inherit;
+}
+</style>
+</head>
+<body>
+    
+    
+    
+    <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader-container">
+        <div class="orbit"></div>
+        <div class="pulse"></div>
+        <img class="logo-wrapper" src="https://i.imgur.com/MNooQYo.png" alt="BEBEJI Logo" />
+        <div id="loadingText" class="loading-text">Verifying ID Card...</div>
+    </div>
+</div>
+
+<div id="notificationContainer"></div>
+<main class="main-content">
+    <div class="header-container">
+        <img src="https://i.imgur.com/mmiXbDo.png" alt="BEBEJI PLAZA Entrance" class="entrance-image">
+        <h1 class="title">BEBEJI PLAZA Registration Shop Services</h1>
+        <p class="subtitle">Secure your shop and profile today.</p>
+    </div>
+    
+    <section id="stage1" class="card form-stage active">
+        <h2 class="card-title"><i class="fas fa-id-card"></i> Verify Your Member ID</h2>
+        <form id="idVerificationForm">
+            <div class="input-group">
+                <label for="idCardNumber">Bebeji ID Card Number</label>
+                <div class="input-field-wrapper">
+                    <input type="text" id="idCardNumber" required placeholder="e.g., BBP-23-Gusau-101">
+                    <i class="fas fa-barcode input-icon"></i>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i> Verify ID & Continue
+            </button>
+        </form>
+    </section>
+    
+    <section id="stage2" class="card form-stage" style="display: none;">
+        <h2 class="card-title"><i class="fas fa-user-plus"></i> Complete Your Profile</h2>
+        <form id="registrationForm">
+         
+         
+        <div class="modern-profile-header">
+    <div class="shop-banner" id="shopPreviewFrame">
+        <div id="shopImagePreview" class="preview-box">
+             <i class="fas fa-store central-icon"></i>
+        </div>
+        <input type="file" id="shopImageInput" accept="image/*" hidden>
+        <div id="shopImageLoading" class="upload-loader"><i class="fas fa-sync fa-spin"></i></div>
+    </div>
+
+    <div class="avatar-wrapper">
+        <div id="userImagePreview" class="user-circle">
+            <i class="fas fa-user-tie central-icon"></i>
+        </div>
+        <input type="file" id="userImageInput" accept="image/*" hidden>
+        <div id="userImageLoading" class="upload-loader circle-loader"><i class="fas fa-sync fa-spin"></i></div>
+    </div>
+</div>
+                    
+                    
+                    <div id="userImageLoading" class="image-loading-overlay" style="display:none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="regIdCardNumber">
+            <input type="hidden" id="finalShopImageLink">
+            <input type="hidden" id="finalUserImageLink">
+            
+            <div class="input-group">
+                <label for="regFullName">Full Name</label>
+                <div class="input-field-wrapper">
+                    <input type="text" id="regFullName" readonly>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="regBusinessName">Business Name</label>
+                <div class="input-field-wrapper">
+                    <input type="text" id="regBusinessName" readonly>
+                    <i class="fas fa-store input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="regPhoneNumber">Phone Number</label>
+                <div class="input-field-wrapper">
+                    <input type="tel" id="regPhoneNumber" readonly>
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="regEmail">Email Address</label>
+                <div class="input-field-wrapper">
+                    <input type="email" id="regEmail" readonly>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="regShopNumber">Shop Number</label>
+                <div class="input-field-wrapper">
+                    <input type="text" id="regShopNumber" readonly>
+                    <i class="fas fa-map-marker-alt input-icon"></i>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Create Password <span class="required">*</span></label>
+                <div class="input-field-wrapper">
+                    <input type="password" id="password" required minlength="6" placeholder="Must be at least 6 characters">
+                    <i class="fas fa-lock input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')"><i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                <div class="input-field-wrapper">
+                    <input type="password" id="confirmPassword" required minlength="6" placeholder="Confirm your password">
+                    <i class="fas fa-lock input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')"><i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check-circle"></i> Complete Registration
+            </button>
+        </form>
+        <p class="login-prompt">Already Registered? <a href="login.html">Login Here</a></p>
+    </section>
+</main>
+<script type="module">
+import { app } from './firebase.js'; 
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const API_URL = "https://bebejiplaza.pages.dev/api/register";
+const API_KEY = "@haruna66";
+const IMGUR_CLIENT_ID = "5acf7eff9c91660";
+
+const loaderOverlay = document.getElementById('loaderOverlay');
+const loadingText = document.getElementById('loadingText');
+const stage1 = document.getElementById('stage1');
+const stage2 = document.getElementById('stage2');
+const idVerificationForm = document.getElementById('idVerificationForm');
+const registrationForm = document.getElementById('registrationForm');
+
+const shopImagePreview = document.getElementById('shopImagePreview');
+const userImagePreview = document.getElementById('userImagePreview');
+const shopImageInput = document.getElementById('shopImageInput');
+const userImageInput = document.getElementById('userImageInput');
+const finalShopImageLink = document.getElementById('finalShopImageLink');
+const finalUserImageLink = document.getElementById('finalUserImageLink');
+
+let memberData = {};
+
+function showNotification(message, type = 'info', duration = 5000) {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.classList.add('notification', type);
+    let iconClass = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-times-circle' : 'fa-info-circle');
+    notification.innerHTML = `
+        <i class="fas ${iconClass} icon"></i>
+        <span class="message">${message}</span>
+        <button class="close-btn">&times;</button>
+        ${duration > 0 ? `<div class="progress-bar"></div>` : ''}
+    `;
+    container.appendChild(notification);
+    const closeNotification = () => {
+        notification.style.animation = 'fadeOut 0.5s forwards';
+        setTimeout(() => notification.remove(), 500);
+    };
+    notification.querySelector('.close-btn').addEventListener('click', closeNotification);
+    if (duration > 0) {
+        notification.style.setProperty('--notification-duration', `${duration / 1000}s`);
+        setTimeout(closeNotification, duration);
+    }
+}
+
+function toggleLoader(show, text = "Loading...") {
+    loaderOverlay.classList.toggle('show', show);
+    loadingText.textContent = text;
+}
+
+const fileToBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+});
+
+async function uploadToImgur(base64) {
+    const res = await fetch("https://api.imgur.com/3/image", {
+        method: "POST",
+        headers: { Authorization: `Client-ID ${IMGUR_CLIENT_ID}` },
+        body: new URLSearchParams({ image: base64, type: "base64" })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.data.error || 'Imgur upload failed.');
+    return data.data.link;
+}
+
+
+function applyImageToPreview(url, previewEl, inputEl, linkEl) {
+    if (url && url.length > 10) {       
+        const finalUrl = url.startsWith('http') ? url : `https://${url}`;
+               
+        previewEl.style.backgroundImage = `url('${finalUrl}')`;
+        previewEl.style.backgroundSize = "cover";
+        previewEl.style.backgroundPosition = "center";
+        previewEl.classList.add('has-image');
+               
+        const icon = previewEl.querySelector('.upload-icon, .central-icon');
+        if (icon) icon.style.display = 'none';
+              
+        linkEl.value = finalUrl; 
+               
+        if (inputEl) inputEl.removeAttribute('required');
+        return true;
+    }
+    return false;
+}
+
+
+function setupImageUpload(inputEl, previewEl, loadingEl, linkEl) {
+    previewEl.onclick = () => inputEl.click();
+    
+    inputEl.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            loadingEl.style.display = 'flex';            
+           
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                previewEl.style.backgroundImage = `url('${event.target.result}')`;
+                previewEl.classList.add('has-image');
+                const icon = previewEl.querySelector('.upload-icon, .central-icon');
+                if (icon) icon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+            
+            const base64Data = await fileToBase64(file);
+            const uploadedUrl = await uploadToImgur(base64Data);
+            
+            linkEl.value = uploadedUrl; 
+            showNotification("Image updated successfully!", "success", 2000);
+            
+        } catch (error) {
+            showNotification("Upload failed: " + error.message, "error");
+        } finally {
+            loadingEl.style.display = 'none';
+        }
+    };
+}
+
+
+idVerificationForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const idCardNumber = document.getElementById('idCardNumber').value.trim();
+    toggleLoader(true, 'Verifying Member ID...');
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY },
+            body: JSON.stringify({ idCardNumber })
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Verification failed');
+        
+        memberData = data.member;
+               document.getElementById('regIdCardNumber').value = memberData.idcardNumber || '';
+        document.getElementById('regFullName').value = memberData.fullName || '';
+        document.getElementById('regBusinessName').value = memberData.businessName || '';
+        document.getElementById('regPhoneNumber').value = memberData.phoneNumber || '';
+        document.getElementById('regEmail').value = memberData.email || '';
+        document.getElementById('regShopNumber').value = memberData.bebejiShopNumber || '';
+      
+        const sImg = memberData.shopImageLink || memberData.shopImage || memberData.shopPhoto;
+        const uImg = memberData.userImageLink || memberData.userImage || memberData.facePhoto;
+       
+        applyImageToPreview(sImg, shopImagePreview, shopImageInput, finalShopImageLink);
+        applyImageToPreview(uImg, userImagePreview, userImageInput, finalUserImageLink);
+
+        stage1.style.display = 'none';
+        stage2.style.display = 'block';
+        showNotification(`Welcome, ${memberData.fullName}!`, 'success');
+
+    } catch (error) {
+        showNotification(error.message, 'error');
+    } finally {
+        toggleLoader(false);
+    }
+});
+
+registrationForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (password !== confirmPassword) {
+        showNotification('Passwords do not match!', 'error');
+        return;
+    }
+
+    if (!finalShopImageLink.value || !finalUserImageLink.value) {
+        showNotification('Please upload both Shop and Profile photos.', 'error');
+        return;
+    }
+
+    toggleLoader(true, 'Creating account...');
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, memberData.email, password);
+        const uid = userCredential.user.uid;
+
+        const userData = {
+            uid: uid,
+            email: memberData.email,
+            fullName: memberData.fullName,
+            businessName: document.getElementById('regBusinessName').value,
+            phoneNumber: memberData.phoneNumber,
+            bebejiShopNumber: memberData.bebejiShopNumber || document.getElementById('regShopNumber').value,
+            idcardNumber: memberData.idcardNumber,
+            shopImageLink: finalShopImageLink.value,
+            userImageLink: finalUserImageLink.value,
+            registerTime: new Date().toLocaleString("en-NG", { timeZone: "Africa/Lagos" }),
+            isProfilePublic: true
+        };
+
+        await set(ref(db, 'users/' + uid), userData);
+        showNotification("Registration Successful!", "success");
+        setTimeout(() => window.location.href = 'login.html', 2000);
+
+    } catch (error) {
+        showNotification(error.message, 'error');
+    } finally {
+        toggleLoader(false);
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupImageUpload(shopImageInput, shopImagePreview, document.getElementById('shopImageLoading'), finalShopImageLink);
+    setupImageUpload(userImageInput, userImagePreview, document.getElementById('userImageLoading'), finalUserImageLink);
+});
+</script>
+
+</body>
+</html>
